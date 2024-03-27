@@ -1,24 +1,29 @@
 import {AppBar, Box, Container, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import {AccountBalance, AccountCircle, Home, Logout} from "@mui/icons-material";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
+import {links} from "../router/links";
+import {useDispatch} from "react-redux";
+import {logout} from "../store/authSlice";
 
 export function BankAppBar() {
     const pages = [
         {
             name: 'Главная',
-            to: '/bank',
+            to: links.home,
         },
         {
             name: 'Платежи и переводы',
-            to: '/bank/payments',
+            to: links.payments,
         },
         {
             name: 'Операции',
-            to: '/bank/operations',
+            to: links.operations,
         }
     ]
     const [anchorEl, setAnchorEl] = useState(null)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -27,6 +32,11 @@ export function BankAppBar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    function handleLogout() {
+        dispatch(logout())
+        navigate(links.login, {replace: true})
+    }
 
     return (
         <AppBar
@@ -121,16 +131,16 @@ export function BankAppBar() {
                         >
                             <MenuItem
                                 component={RouterLink}
-                                to={"/bank/profile"}
+                                to={links.profile}
                             >
                                 <ListItemIcon>
-                                    <Home sx={{color: "primary.main"}} />
+                                    <Home sx={{color: "primary.main"}}/>
                                 </ListItemIcon>
                                 Профиль
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem onClick={handleLogout}>
                                 <ListItemIcon>
-                                    <Logout sx={{color: "primary.main"}} />
+                                    <Logout sx={{color: "primary.main"}}/>
                                 </ListItemIcon>
                                 Выйти
                             </MenuItem>

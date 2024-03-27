@@ -9,13 +9,11 @@ async function login({email, password}) {
         email,
         password
     })
-    instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
     return response.data
 }
 
 async function register(userData) {
     const response = await instance.post("/auth/register", userData)
-    instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
     return response.data
 }
 
@@ -27,5 +25,15 @@ async function getAuthorizedUser() {
 export const apiClient = {
     login,
     register,
-    getAuthorizedUser,
+    getUser: getAuthorizedUser,
+
+    setToken(token) {
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        localStorage.setItem('auth_token', token)
+    },
+
+    removeToken() {
+        delete instance.defaults.headers.common['Authorization']
+        localStorage.removeItem('auth_token')
+    },
 }

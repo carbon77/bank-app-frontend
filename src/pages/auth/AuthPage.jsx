@@ -1,8 +1,46 @@
-import {Box, Button, CssBaseline, Grid, Link, Paper, TextField, Typography} from "@mui/material";
+import {Alert, Box, CssBaseline, Grid, Link, Paper, TextField, Typography} from "@mui/material";
 import {LoginRounded} from "@mui/icons-material";
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {useState} from "react";
+import {LoadingButton} from "@mui/lab";
+import {useDispatch} from "react-redux";
+import {loginThunk} from "../../store/authSlice";
+import {links} from "../../router/links";
 
 export function AuthPage() {
+    const [isLoading, setIsLoading] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [loginData, setLoginData] = useState({
+        email: '',
+        password: '',
+    })
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    function handleChange(name) {
+        return e => {
+            setLoginData(data => {
+                const newData = {
+                    ...data,
+                    [name]: e.target.value,
+                }
+                return newData
+            })
+        }
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const data = await dispatch(loginThunk(loginData))
+            navigate(links.home, {replace: true})
+        } catch (e) {
+            setIsError(true)
+        }
+        setIsLoading(false)
+    }
+
     return (
         <Grid container component="main" sx={{height: '100vh'}}>
             <CssBaseline/>
@@ -39,6 +77,7 @@ export function AuthPage() {
                             flexDirection: 'column',
                             alignSelf: 'stretch',
                         }}
+                        onSubmit={handleSubmit}
                     >
                         <TextField
                             margin="normal"
@@ -48,6 +87,8 @@ export function AuthPage() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value={loginData.email}
+                            onChange={handleChange("email")}
                         />
                         <TextField
                             margin="normal"
@@ -57,18 +98,23 @@ export function AuthPage() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            value={loginData.password}
+                            onChange={handleChange('password')}
                         />
-                        <Button
+                        {isError ? <Alert severity={"error"}>Неверная почта или пароль!</Alert> : null}
+                        <LoadingButton
                             type="submit"
                             size={"large"}
                             endIcon={<LoginRounded/>}
                             variant="contained"
                             sx={{mt: 3, mb: 2, alignSelf: "center"}}
+                            loading={isLoading}
+                            loadingPosition="end"
                         >
                             Войти
-                        </Button>
+                        </LoadingButton>
                         <Link
-                            to={"/auth/signup"}
+                            to={links.register}
                             variant="body2"
                             sx={{alignSelf: "center"}}
                             component={RouterLink}

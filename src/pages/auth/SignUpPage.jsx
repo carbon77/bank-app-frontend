@@ -1,6 +1,7 @@
 import {Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import {AssignmentInd, LoginRounded} from "@mui/icons-material";
 import {Link as RouterLink} from "react-router-dom";
+import {links} from "../../router/links";
 
 export const SignUpPage = () => {
     return (
@@ -92,7 +93,7 @@ export const SignUpPage = () => {
                         Зарегистрироваться
                     </Button>
                     <Link
-                        to={"/auth"}
+                        to={links.login}
                         variant="body2"
                         sx={{alignSelf: "center"}}
                         component={RouterLink}
