@@ -9,10 +9,9 @@ export const loginThunk = createAsyncThunk(
     }
 )
 
-export const getUser = createAsyncThunk(
+export const getUserThunk = createAsyncThunk(
     'router/getUser',
     async (_, thunkAPI) => {
-        apiClient.setToken()
         const data = await apiClient.getUser()
         return data
     }
@@ -44,10 +43,10 @@ export const authSlice = createSlice({
                 throw new Error(action.error.message)
             })
 
-            .addCase(getUser.fulfilled, (state, action) => {
+            .addCase(getUserThunk.fulfilled, (state, action) => {
                 state.authorizedUser = action.payload
             })
-            .addCase(getUser.rejected, (state, action) => {
+            .addCase(getUserThunk.rejected, (state, action) => {
                 console.error(action.error)
                 throw new Error(action.error.message)
             })
