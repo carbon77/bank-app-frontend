@@ -10,6 +10,7 @@ import {BankRoot} from "../pages/BankRoot";
 import {HomePage} from "../pages/HomePage";
 import {links} from "./links";
 import {NotAuthOnlyRoute} from "./NotAuthOnlyRoute";
+import {AccountSidebarTemplate} from "../components/AccountSidebarTemplate";
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -18,9 +19,9 @@ export function Router() {
             errorElement: <ErrorPage/>,
             element: <ProtectedRoute><BankRoot/></ProtectedRoute>,
             children: [
-                {index: true, element: <HomePage/>},
-                {path: links.payments, element: <PaymentsPage/>},
-                {path: links.operations, element: <OperationsPage/>},
+                {index: true, element: <AccountSidebarTemplate><HomePage/></AccountSidebarTemplate>},
+                {path: links.payments, element: <AccountSidebarTemplate><PaymentsPage/></AccountSidebarTemplate>},
+                {path: links.operations, element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>},
                 {path: links.profile, element: <ProfilePage/>},
             ]
         },

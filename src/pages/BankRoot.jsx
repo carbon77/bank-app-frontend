@@ -9,6 +9,8 @@ export function BankRoot() {
             <BankAppBar/>
             <Box
                 sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
                     mt: 15
                 }}
             >
