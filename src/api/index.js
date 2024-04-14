@@ -4,6 +4,23 @@ const instance = axios.create({
     baseURL: 'http://localhost:8081/api',
 })
 
+instance.interceptors.response.use(
+    function (config) {
+        return config
+    },
+    function (error) {
+        if (error.response) {
+            if (error.response.status == 410) {
+                console.warn("JWT token expired")
+                localStorage.removeItem("auth_token")
+            }
+        } else {
+            console.error(error)
+        }
+        return Promise.reject(error)
+    }
+)
+
 async function login({email, password}) {
     const response = await instance.post("/auth/login", {
         email,
