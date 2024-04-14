@@ -16,6 +16,7 @@ import {useEffect, useState} from "react";
 import {getAccountsThunk} from "../store/accountSlice";
 import {Alert} from "@mui/lab";
 import {Add, CreditCard, CurrencyRuble, Savings} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 export function AccountSidebar() {
     const accounts = useSelector(state => state.accounts.accounts)
@@ -72,7 +73,12 @@ export function AccountSidebar() {
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '.5em 2em',
         }}>
             <Typography fontSize={'1.4em'}>Счета</Typography>
-            <IconButton color={"primary"} size={"large"}>
+            <IconButton
+                color={"primary"}
+                size={"large"}
+                component={Link}
+                to={"/accounts/create"}
+            >
                 <Add/>
             </IconButton>
         </Box>
@@ -81,7 +87,10 @@ export function AccountSidebar() {
         }}>
             {accounts.map(account => (
                 <ListItem key={account.id} disablePadding>
-                    <ListItemButton>
+                    <ListItemButton
+                        component={Link}
+                        to={`/accounts/${account.id}`}
+                    >
                         <ListItemAvatar>
                             <Avatar sx={{bgcolor: theme.palette.primary.main}}>
                                 {getAccountAvatarIcon(account)}

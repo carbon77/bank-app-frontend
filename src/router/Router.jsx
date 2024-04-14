@@ -11,6 +11,8 @@ import {HomePage} from "../pages/HomePage";
 import {links} from "./links";
 import {NotAuthOnlyRoute} from "./NotAuthOnlyRoute";
 import {AccountSidebarTemplate} from "../components/AccountSidebarTemplate";
+import {CreateAccountPage} from "../pages/accounts/CreateAccountPage";
+import {AccountPage} from "../pages/accounts/AccountPage";
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -23,6 +25,12 @@ export function Router() {
                 {path: links.payments, element: <AccountSidebarTemplate><PaymentsPage/></AccountSidebarTemplate>},
                 {path: links.operations, element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>},
                 {path: links.profile, element: <ProfilePage/>},
+                {
+                    path: links.accounts, children: [
+                        {path: ":accountId", element: <AccountPage/>},
+                        {path: "create", element: <CreateAccountPage/>}
+                    ]
+                }
             ]
         },
     ]

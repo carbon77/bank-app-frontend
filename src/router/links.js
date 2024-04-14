@@ -1,8 +1,9 @@
 export const links = {
-    login: '/login',
-    register: '/register',
+    login: 'login',
+    register: 'register',
     home: '/',
-    payments: '/payments',
-    operations: '/operations',
-    profile: '/profile',
+    payments: 'payments',
+    operations: 'operations',
+    profile: 'profile',
+    accounts: 'accounts',
 }
