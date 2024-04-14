@@ -1,10 +1,45 @@
-import {AppBar, Box, Container, IconButton, ListItemIcon, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    ListItemIcon,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import {AccountBalance, AccountCircle, Home, Logout} from "@mui/icons-material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {links} from "../router/links";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../store/authSlice";
+
+const LogoutDialog = ({open, handleCancel, handleAccept}) => {
+    return (
+        <Dialog
+            open={open}
+            onClose={handleCancel}
+        >
+            <DialogTitle>Выход</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Вы действительно хотите выйти?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant={"outlined"} onClick={handleCancel}>Отмена</Button>
+                <Button variant={"contained"} color={"error"} onClick={handleAccept}>Выйти</Button>
+            </DialogActions>
+        </Dialog>
+    )
+}
 
 export function BankAppBar() {
     const pages = [
@@ -22,8 +57,14 @@ export function BankAppBar() {
         }
     ]
     const [anchorEl, setAnchorEl] = useState(null)
+    const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const user = useSelector(state => state.auth.authorizedUser)
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -33,9 +74,21 @@ export function BankAppBar() {
         setAnchorEl(null);
     };
 
+    function handleLogoutDialogCancel() {
+        setIsLogoutDialogOpen(false)
+    }
+
     function handleLogout() {
         dispatch(logout())
         navigate(links.login, {replace: true})
+    }
+
+    function handleLogoutMenuClick() {
+        setIsLogoutDialogOpen(true)
+    }
+
+    if (!user) {
+        return <div>Loading...</div>
     }
 
     return (
@@ -47,6 +100,11 @@ export function BankAppBar() {
                 mt: 2,
                 boxShadow: 0,
             }}>
+            <LogoutDialog
+                open={isLogoutDialogOpen}
+                handleAccept={handleLogout}
+                handleCancel={handleLogoutDialogCancel}
+            />
             <Container maxWidth={"lg"}>
                 <Toolbar sx={(theme) => ({
                     display: 'flex',
@@ -93,28 +151,34 @@ export function BankAppBar() {
 
                     <Box sx={{ml: 3, flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map(({name, to}) => (
-                            <MenuItem
+                            <Button
                                 key={name}
                                 component={RouterLink}
                                 to={to}
+                                size={'large'}
                                 sx={{
-                                    color: 'primary.main',
-                                    display: 'block',
                                     borderRadius: '999px',
+                                    textTransform: 'none',
                                 }}
                             >
                                 {name}
-                            </MenuItem>
+                            </Button>
                         ))}
                     </Box>
 
                     <div>
-                        <IconButton
+                        <Button
                             onClick={handleMenu}
-                            color="inherit"
+                            size={'large'}
+                            variant={"contained"}
+                            sx={{
+                                borderRadius: '999px',
+                                textTransform: 'none',
+                            }}
+                            startIcon={<AccountCircle/>}
                         >
-                            <AccountCircle fontSize={"large"} sx={{color: 'primary.main'}}/>
-                        </IconButton>
+                            {`${user.firstName}`}
+                        </Button>
                         <Menu
                             anchorEl={anchorEl}
                             anchorOrigin={{
@@ -138,7 +202,7 @@ export function BankAppBar() {
                                 </ListItemIcon>
                                 Профиль
                             </MenuItem>
-                            <MenuItem onClick={handleLogout}>
+                            <MenuItem onClick={handleLogoutMenuClick}>
                                 <ListItemIcon>
                                     <Logout sx={{color: "primary.main"}}/>
                                 </ListItemIcon>
