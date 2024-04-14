@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {AccountBalance, AccountCircle, Home, Logout} from "@mui/icons-material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {links} from "../router/links";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../store/authSlice";
@@ -61,10 +61,6 @@ export function BankAppBar() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.authorizedUser)
-
-    useEffect(() => {
-        console.log(user)
-    }, [user])
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);

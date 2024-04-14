@@ -10,7 +10,7 @@ instance.interceptors.response.use(
     },
     function (error) {
         if (error.response) {
-            if (error.response.status == 410) {
+            if (error.response.status === 410) {
                 console.warn("JWT token expired")
                 localStorage.removeItem("auth_token")
             }
@@ -39,10 +39,16 @@ async function getAuthorizedUser() {
     return response.data
 }
 
+async function getAccounts() {
+    const response = await instance.get("/account/mine")
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
     getUser: getAuthorizedUser,
+    getAccounts,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
