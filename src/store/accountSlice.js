@@ -8,6 +8,13 @@ export const getAccountsThunk = createAsyncThunk(
     }
 )
 
+export const createAccountThunk = createAsyncThunk(
+    '/accounts/create',
+    async (accountData, thunkAPI) => {
+        return await apiClient.createAccount(accountData)
+    }
+)
+
 const initialState = {
     accounts: null,
 }
@@ -22,6 +29,11 @@ export const accountSlice = createSlice({
         })
 
         builder.addCase(getAccountsThunk.rejected, (state, action) => {
+            console.error(action.error)
+            throw new Error(action.error.message)
+        })
+
+        builder.addCase(createAccountThunk.rejected, (state, action) => {
             console.error(action.error)
             throw new Error(action.error.message)
         })

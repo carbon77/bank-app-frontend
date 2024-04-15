@@ -37,7 +37,7 @@ export function Router() {
 
     const routesForNotAuthenticatedOnly = [
         {path: links.login, element: <NotAuthOnlyRoute><AuthPage/></NotAuthOnlyRoute>},
-        {path: links.register, element: <NotAuthOnlyRoute><SignUpPage/></NotAuthOnlyRoute>},
+        {path: "/login/register", element: <NotAuthOnlyRoute><SignUpPage/></NotAuthOnlyRoute>},
     ]
 
     const router = createBrowserRouter([

@@ -1,6 +1,6 @@
 export const links = {
-    login: 'login',
-    register: 'register',
+    login: '/login',
+    register: '/login/register',
     home: '/',
     payments: 'payments',
     operations: 'operations',
