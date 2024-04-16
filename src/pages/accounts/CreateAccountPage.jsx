@@ -18,12 +18,14 @@ import {useDispatch} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {useNavigate} from "react-router-dom";
+import {getAccountTitle} from "../../utils";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')
     const [rate, setRate] = useState('16')
     const [accountLimit, setAccountLimit] = useState('300000')
     const [interestRate, setInterestRate] = useState('16')
+    const [accountName, setAccountName] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const theme = useTheme()
@@ -31,6 +33,9 @@ export function CreateAccountPage() {
     const navigate = useNavigate()
 
     const handleAccountTypeChange = (event) => {
+        if (accountName === '' || accountName === getAccountTitle(accountType)) {
+            setAccountName(getAccountTitle(event.target.value))
+        }
         setAccountType(event.target.value)
     }
 
@@ -52,6 +57,7 @@ export function CreateAccountPage() {
         try {
             await dispatch(createAccountThunk({
                 accountType,
+                name: accountName,
                 extraFields: {
                     accountLimit: Number.parseFloat(accountLimit),
                     rate: Number.parseFloat(rate),
@@ -103,6 +109,13 @@ export function CreateAccountPage() {
                             <MenuItem value={'CREDIT'}>Кредитный</MenuItem>
                         </Select>
                     </FormControl>
+                    <TextField
+                        fullWidth
+                        label="Название"
+                        value={accountName}
+                        onChange={e => setAccountName(e.target.value)}
+                        type={"text"}
+                    />
 
                     {accountType === 'SAVINGS' &&
                         <TextField
@@ -143,7 +156,7 @@ export function CreateAccountPage() {
                         variant="contained"
                         loading={isLoading}
                         loadingPosition="end"
-                        endIcon={<AddCard />}
+                        endIcon={<AddCard/>}
                     >
                         Открыть счёт
                     </LoadingButton>

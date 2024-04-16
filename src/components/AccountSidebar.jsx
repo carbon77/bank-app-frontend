@@ -15,34 +15,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getAccountsThunk} from "../store/accountSlice";
 import {Alert} from "@mui/lab";
-import {Add, CreditCard, CurrencyRuble, Savings} from "@mui/icons-material";
+import {Add} from "@mui/icons-material";
 import {Link} from "react-router-dom";
+import {getAccountAvatarIcon, getAccountTitle} from "../utils";
 
 export function AccountSidebar() {
     const accounts = useSelector(state => state.accounts.accounts)
     const dispatch = useDispatch()
     const [dispatchError, setDispatchError] = useState("")
     const theme = useTheme()
-
-    function getAccountAvatarIcon(account) {
-        if (account.accountType === 'CREDIT') {
-            return <CreditCard/>
-        } else if (account.accountType === 'SAVINGS') {
-            return <Savings/>
-        }
-        return <CurrencyRuble/>
-    }
-
-    function getAccountTitle(account) {
-        switch (account.accountType) {
-            case 'CREDIT':
-                return 'Кредитный'
-            case 'SAVINGS':
-                return 'Сберегательный'
-            case 'CHECKING':
-                return 'Расчётный'
-        }
-    }
 
     async function getAccounts() {
         try {
@@ -93,10 +74,13 @@ export function AccountSidebar() {
                     >
                         <ListItemAvatar>
                             <Avatar sx={{bgcolor: theme.palette.primary.main}}>
-                                {getAccountAvatarIcon(account)}
+                                {getAccountAvatarIcon(account.accountType)}
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={`${account.balance} ₽`} secondary={getAccountTitle(account)}/>
+                        <ListItemText
+                            primary={`${account.balance} ₽`}
+                            secondary={`${account.name} · ${getAccountTitle(account)}`}
+                        />
                     </ListItemButton>
                 </ListItem>
             ))}

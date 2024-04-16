@@ -26,7 +26,8 @@ export function BankRoot() {
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    mt: 15
+                    mt: 15,
+                    mb: 5,
                 }}
             >
                 <Outlet/>
