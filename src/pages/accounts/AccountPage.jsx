@@ -1,11 +1,12 @@
 import {useParams} from "react-router-dom";
-import {Box, Grid, Paper, Tab, Tabs, Typography, useTheme} from "@mui/material";
+import {Box, Grid, Paper, Stack, Tab, Tabs, Typography, useTheme} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getAccountsThunk} from "../../store/accountSlice";
 import {AccountActionsGroup} from "../../components/AccountActionsGroup";
 import {getAccountTitle} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
+import {AccountTariffPanel} from "../../components/AccountTariffPanel";
 
 const TabPanel = ({
     children, value, index
@@ -13,7 +14,7 @@ const TabPanel = ({
     <Box
         hidden={value !== index}
         sx={{
-            margin: '.5em',
+            margin: '1.5em .5em',
         }}
     >
         {children}
@@ -24,6 +25,7 @@ export function AccountPage() {
     const {accountId} = useParams()
     const accounts = useSelector(state => state.accounts.accounts)
     const account = useSelector(state => state.accounts.accounts?.find(account => account.id === +accountId))
+    const user = useSelector(state => state.auth.authorizedUser)
     const dispatch = useDispatch()
     const theme = useTheme()
     const [detailsTab, setDetailsTab] = useState(0)
@@ -42,7 +44,7 @@ export function AccountPage() {
         }
     }, [])
 
-    if (!accounts) {
+    if (!accounts || !user) {
         return <div>Loading...</div>
     }
 
@@ -87,20 +89,17 @@ export function AccountPage() {
                     <Paper elevation={2} sx={{
                         padding: '1em'
                     }}>
-                        <Typography variant={"h5"} sx={{
-                            margin: '0 0 .5em .5em'
-                        }}>Детали счёта</Typography>
                         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                             <Tabs value={detailsTab} onChange={(event, newValue) => setDetailsTab(newValue)}>
+                                <Tab label={"Детали счёта"}/>
                                 <Tab label={"Реквизиты"}/>
-                                <Tab label={"Тариф"}/>
                             </Tabs>
                         </Box>
                         <TabPanel value={detailsTab} index={0}>
-                            <AccountDetailsPanel details={account.accountDetails} />
+                            <AccountTariffPanel user={user} account={account} />
                         </TabPanel>
                         <TabPanel value={detailsTab} index={1}>
-                            Тариф
+                            <AccountDetailsPanel user={user} account={account} />
                         </TabPanel>
                     </Paper>
                 </Grid>

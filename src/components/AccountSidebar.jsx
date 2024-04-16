@@ -79,7 +79,7 @@ export function AccountSidebar() {
                         </ListItemAvatar>
                         <ListItemText
                             primary={`${account.balance} ₽`}
-                            secondary={`${account.name} · ${getAccountTitle(account)}`}
+                            secondary={`${account.name} · ${getAccountTitle(account.accountType)}`}
                         />
                     </ListItemButton>
                 </ListItem>

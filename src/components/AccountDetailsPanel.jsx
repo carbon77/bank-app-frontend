@@ -1,7 +1,11 @@
 import {Box, Stack, Typography} from "@mui/material";
 
-export function AccountDetailsPanel({details}) {
+export function AccountDetailsPanel({account, user}) {
     const fields = [
+        {
+            title: 'Получатель',
+            get: () => `${user.passport.patronimic} ${user.passport.firstName} ${user.passport.lastName}`,
+        },
         {
             name: 'number',
             title: 'Счёт',
@@ -23,6 +27,13 @@ export function AccountDetailsPanel({details}) {
         },
     ]
 
+    function getDetail(field) {
+        if (field.name) {
+            return account.accountDetails[field.name]
+        }
+        return field.get()
+    }
+
     return (
         <Stack spacing={3} width={"60%"}>
             {fields.map(field => (
@@ -34,7 +45,7 @@ export function AccountDetailsPanel({details}) {
                         {field.title}
                     </Typography>
                     <Typography>
-                        {details[field.name]}
+                        {getDetail(field)}
                     </Typography>
                 </Box>
             ))}
