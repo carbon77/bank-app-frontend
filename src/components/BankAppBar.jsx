@@ -173,7 +173,7 @@ export function BankAppBar() {
                             }}
                             startIcon={<AccountCircle/>}
                         >
-                            {`${user.firstName}`}
+                            {`${user.passport.firstName}`}
                         </Button>
                         <Menu
                             anchorEl={anchorEl}

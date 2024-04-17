@@ -2,18 +2,24 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
 
 export const loginThunk = createAsyncThunk(
-    'router/login',
+    'auth/login',
     async ({email, password}, thunkApi) => {
         const data = await apiClient.login({email, password})
         return data.jwtToken
     }
 )
 
+export const registerThunk = createAsyncThunk(
+    'auth/register',
+    async (userData) => {
+        return await apiClient.register(userData)
+    }
+)
+
 export const getUserThunk = createAsyncThunk(
-    'router/getUser',
+    'auth/getUser',
     async (_, thunkAPI) => {
-        const data = await apiClient.getUser()
-        return data
+        return await apiClient.getUser()
     }
 )
 
@@ -39,6 +45,14 @@ export const authSlice = createSlice({
                 state.token = action.payload
             })
             .addCase(loginThunk.rejected, (state, action) => {
+                console.error(action.error)
+                throw new Error(action.error.message)
+            })
+
+            .addCase(registerThunk.fulfilled, (state, action) => {
+                console.log("You have successfully signed up")
+            })
+            .addCase(registerThunk.rejected, (state, action) => {
                 console.error(action.error)
                 throw new Error(action.error.message)
             })
