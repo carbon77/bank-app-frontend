@@ -1,47 +1,77 @@
 import {List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper} from "@mui/material";
-import {Add, ArrowForward, Payment} from "@mui/icons-material";
+import {Add, Payment, SwapHoriz} from "@mui/icons-material";
+import {useState} from "react";
+import {WithdrawAccountModal} from "./WithdrawAccountModal";
+import {TopUpAccountModal} from "./TopUpAccountModal";
+import {TransferAccountModal} from "./TransferAccountModal";
 
 export function AccountActionsGroup() {
+    const [withdrawOpen, setWithdrawOpen] = useState(false)
+    const [topUpOpen, setTopUpOpen] = useState(false)
+    const [transferOpen, setTransferOpen] = useState(false)
     const actions = [
         {
-            text: 'Оплатить',
-            icon: <Payment color={"primary"} fontSize={"large"} />,
+            text: 'Снять',
+            icon: <Payment color={"primary"} fontSize={"large"}/>,
+            onClick: () => {
+                setWithdrawOpen(true)
+            },
         },
         {
-            text: 'Заплатить',
-            icon: <Add color={"primary"} fontSize={"large"} />,
+            text: 'Пополнить',
+            icon: <Add color={"primary"} fontSize={"large"}/>,
+            onClick: () => {
+                setTopUpOpen(true)
+            },
         },
         {
             text: 'Перевести',
-            icon: <ArrowForward color={"primary"} fontSize={"large"} />,
+            icon: <SwapHoriz color={"primary"} fontSize={"large"}/>,
+            onClick: () => {
+                setTransferOpen(true)
+            },
         },
     ]
 
     return (
-        <Paper elevation={2} sx={{
-            display: 'flex',
-            justifyContent: 'center',
-        }}>
-            <List sx={{
+        <>
+            <Paper elevation={2} sx={{
                 display: 'flex',
-                flexDirection: 'row',
+                justifyContent: 'center',
             }}>
-                {actions.map(action => (
-                    <ListItem key={action.text} disablePadding>
-                        <ListItemButton sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}>
-                            <ListItemIcon sx={{
+                <List sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                }}>
+                    {actions.map(action => (
+                        <ListItem key={action.text} disablePadding>
+                            <ListItemButton sx={{
                                 display: 'flex',
-                                justifyContent: 'center',
-                            }}>{action.icon}</ListItemIcon>
-                            <ListItemText>{action.text}</ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Paper>
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }} onClick={action.onClick}>
+                                <ListItemIcon sx={{
+                                    display: 'flex',
+                                    justifyContent:  'center',
+                                }}>{action.icon}</ListItemIcon>
+                                <ListItemText>{action.text}</ListItemText>
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Paper>
+            <WithdrawAccountModal
+                open={withdrawOpen}
+                onClose={() => setWithdrawOpen(false)}
+            />
+            <TopUpAccountModal
+                open={topUpOpen}
+                onClose={() => setTopUpOpen(false)}
+            />
+            <TransferAccountModal
+                open={transferOpen}
+                onClose={() => setTransferOpen(false)}
+            />
+        </>
     )
 }
