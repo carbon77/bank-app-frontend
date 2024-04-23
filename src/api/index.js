@@ -49,12 +49,18 @@ async function createAccount(accountData) {
     return response.data
 }
 
+async function createOperation(operationData) {
+    const response = await instance.post("/operations", operationData)
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
     getUser: getAuthorizedUser,
     getAccounts,
     createAccount,
+    createOperation,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

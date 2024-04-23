@@ -75,7 +75,7 @@ export function AccountPage() {
                 </Paper>
             </Grid>
             <Grid item md={4}>
-                <AccountActionsGroup/>
+                <AccountActionsGroup accountId={accountId}/>
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>

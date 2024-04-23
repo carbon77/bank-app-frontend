@@ -7,6 +7,10 @@ export function AccountTariffPanel({user, account}) {
             title: 'Баланс',
             get: () => `${account.balance} ₽`,
         },
+        {
+            title: 'Время открытия счёта',
+            get: () => account.createdAt,
+        },
     ]
     const [fields, setFields] = useState(initialFields)
 

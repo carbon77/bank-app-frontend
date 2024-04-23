@@ -5,7 +5,7 @@ import {WithdrawAccountModal} from "./WithdrawAccountModal";
 import {TopUpAccountModal} from "./TopUpAccountModal";
 import {TransferAccountModal} from "./TransferAccountModal";
 
-export function AccountActionsGroup() {
+export function AccountActionsGroup({ accountId }) {
     const [withdrawOpen, setWithdrawOpen] = useState(false)
     const [topUpOpen, setTopUpOpen] = useState(false)
     const [transferOpen, setTransferOpen] = useState(false)
@@ -63,10 +63,12 @@ export function AccountActionsGroup() {
             <WithdrawAccountModal
                 open={withdrawOpen}
                 onClose={() => setWithdrawOpen(false)}
+                accountId={accountId}
             />
             <TopUpAccountModal
                 open={topUpOpen}
                 onClose={() => setTopUpOpen(false)}
+                accountId={accountId}
             />
             <TransferAccountModal
                 open={transferOpen}

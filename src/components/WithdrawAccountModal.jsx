@@ -1,22 +1,26 @@
-import {
-    Box,
-    Button,
-    Dialog, DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Modal,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {createWithdrawOperationThunk} from "../store/operationSlice";
+import {LoadingButton} from "@mui/lab";
+import {getAccountsThunk} from "../store/accountSlice";
 
 export function WithdrawAccountModal({
-    open,
-    onClose,
-    onSubmit,
+                                         open,
+                                         onClose,
+                                         accountId,
                                      }) {
     const [withdrawAmount, setWithdrawAmount] = useState('')
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+
+    async function handleSubmit(e) {
+        setLoading(true)
+        await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId}))
+        await dispatch(getAccountsThunk())
+        setLoading(false)
+        onClose()
+    }
 
     function handleChange(e) {
         if (!isNaN(e.target.value)) {
@@ -43,7 +47,7 @@ export function WithdrawAccountModal({
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Отмена</Button>
-                <Button variant={"contained"} onChange={onSubmit}>Снять</Button>
+                <LoadingButton loading={loading} variant={"contained"} onClick={handleSubmit}>Снять</LoadingButton>
             </DialogActions>
         </Dialog>
     )

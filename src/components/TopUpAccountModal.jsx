@@ -1,12 +1,26 @@
 import {useState} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {createTopUpOperationThunk} from "../store/operationSlice";
+import {LoadingButton} from "@mui/lab";
+import {getAccountsThunk} from "../store/accountSlice";
 
 export function TopUpAccountModal({
-                                         open,
-                                         onClose,
-                                         onSubmit,
-                                     }) {
+                                      open,
+                                      onClose,
+                                      accountId,
+                                  }) {
     const [topUpAmount, setTopUpAmount] = useState('')
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
+
+    async function handleSubmit(e) {
+        setLoading(true)
+        await dispatch(createTopUpOperationThunk({amount: topUpAmount, accountId}))
+        await dispatch(getAccountsThunk())
+        setLoading(false)
+        onClose()
+    }
 
     function handleChange(e) {
         if (!isNaN(e.target.value)) {
@@ -33,7 +47,7 @@ export function TopUpAccountModal({
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Отмена</Button>
-                <Button variant={"contained"} onChange={onSubmit}>Пополнить</Button>
+                <LoadingButton loading={loading} variant={"contained"} onClick={handleSubmit}>Пополнить</LoadingButton>
             </DialogActions>
         </Dialog>
     )
