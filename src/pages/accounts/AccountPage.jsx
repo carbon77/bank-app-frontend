@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {Box, Grid, Paper, Stack, Tab, Tabs, Typography, useTheme} from "@mui/material";
+import {Box, Grid, Paper, Tab, Tabs, Typography, useTheme} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {getAccountsThunk} from "../../store/accountSlice";
@@ -7,10 +7,11 @@ import {AccountActionsGroup} from "../../components/AccountActionsGroup";
 import {getAccountTitle} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
+import {OperationsPanel} from "../../components/OperationsPanel";
 
 const TabPanel = ({
-    children, value, index
-}) => (
+                      children, value, index
+                  }) => (
     <Box
         hidden={value !== index}
         sx={{
@@ -79,11 +80,7 @@ export function AccountPage() {
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
-                    <Paper elevation={2} sx={{
-                        padding: '2em'
-                    }}>
-                        Операции
-                    </Paper>
+                    <OperationsPanel accounts={accounts} accountId={accountId}/>
                 </Grid>
                 <Grid item md={12}>
                     <Paper elevation={2} sx={{
@@ -96,10 +93,10 @@ export function AccountPage() {
                             </Tabs>
                         </Box>
                         <TabPanel value={detailsTab} index={0}>
-                            <AccountTariffPanel user={user} account={account} />
+                            <AccountTariffPanel user={user} account={account}/>
                         </TabPanel>
                         <TabPanel value={detailsTab} index={1}>
-                            <AccountDetailsPanel user={user} account={account} />
+                            <AccountDetailsPanel user={user} account={account}/>
                         </TabPanel>
                     </Paper>
                 </Grid>

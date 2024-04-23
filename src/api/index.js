@@ -54,6 +54,15 @@ async function createOperation(operationData) {
     return response.data
 }
 
+async function getOperations(accountId = null) {
+    let url = "/operations"
+    if (accountId !== null) {
+        url += '?accountId=' + accountId
+    }
+    const response = await instance.get(url)
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
@@ -61,6 +70,7 @@ export const apiClient = {
     getAccounts,
     createAccount,
     createOperation,
+    getOperations,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

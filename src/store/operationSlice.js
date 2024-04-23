@@ -3,27 +3,32 @@ import {apiClient} from "../api";
 
 export const createWithdrawOperationThunk = createAsyncThunk(
     "operations/withdraw",
-    async ({ amount, accountId }) => {
-        const response = await apiClient.createOperation({
+    async ({amount, accountId}) => {
+        return await apiClient.createOperation({
             type: 'EXPENSE',
             amount,
             accountId,
             category: "Снятие",
         })
-        return response.data
     }
 )
 
 export const createTopUpOperationThunk = createAsyncThunk(
     "operations/topup",
-    async ({ amount, accountId }) => {
-        const response = await apiClient.createOperation({
+    async ({amount, accountId}) => {
+        return await apiClient.createOperation({
             type: 'RECEIPT',
             amount,
             accountId,
             category: 'Пополнение',
         })
-        return response.data
+    }
+)
+
+export const getOperationsThunk = createAsyncThunk(
+    "operations/get",
+    async ({accountId = null}) => {
+        return await apiClient.getOperations(accountId)
     }
 )
 
@@ -41,6 +46,15 @@ export const operationSlice = createSlice({
         })
 
         builder.addCase(createWithdrawOperationThunk.rejected, (state, action) => {
+            console.error(action.error)
+            throw new Error(action.error.message)
+        })
+
+        builder.addCase(getOperationsThunk.fulfilled, (state, action) => {
+            state.operations = action.payload
+        })
+
+        builder.addCase(getOperationsThunk.rejected, (state, action) => {
             console.error(action.error)
             throw new Error(action.error.message)
         })
