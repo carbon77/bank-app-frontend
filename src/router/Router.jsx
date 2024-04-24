@@ -13,6 +13,7 @@ import {NotAuthOnlyRoute} from "./NotAuthOnlyRoute";
 import {AccountSidebarTemplate} from "../components/AccountSidebarTemplate";
 import {CreateAccountPage} from "../pages/accounts/CreateAccountPage";
 import {AccountPage} from "../pages/accounts/AccountPage";
+import {CardPage} from "../pages/CardPage";
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -29,6 +30,11 @@ export function Router() {
                     path: links.accounts, children: [
                         {path: ":accountId", element: <AccountPage/>},
                         {path: "create", element: <CreateAccountPage/>}
+                    ]
+                },
+                {
+                    path: links.cards, children: [
+                        {path: ':cardId', element: <CardPage/>}
                     ]
                 }
             ]

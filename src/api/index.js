@@ -49,6 +49,16 @@ async function createAccount(accountData) {
     return response.data
 }
 
+async function createCard(accountId) {
+    const response = await instance.post(`/account/${accountId}/card`)
+    return response.data
+}
+
+async function deleteCard(accountId, cardId) {
+    const response = await instance.delete(`/account/${accountId}/card/${cardId}`)
+    return response.data
+}
+
 async function createOperation(operationData) {
     const response = await instance.post("/operations", operationData)
     return response.data
@@ -69,6 +79,8 @@ export const apiClient = {
     getUser: getAuthorizedUser,
     getAccounts,
     createAccount,
+    createCard,
+    deleteCard,
     createOperation,
     getOperations,
 

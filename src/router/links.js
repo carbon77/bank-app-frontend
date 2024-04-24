@@ -6,4 +6,5 @@ export const links = {
     operations: 'operations',
     profile: 'profile',
     accounts: 'accounts',
+    cards: 'cards',
 }

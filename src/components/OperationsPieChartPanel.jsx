@@ -11,13 +11,13 @@ export function OperationsPieChartPanel({accountId = null}) {
     const [activeIndex, setActiveIndex] = useState(0)
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
     const [operationCategories, setOperationCategories] = useState([])
-    const [activeCategories, setActiveCategories] = useState([])
+    const [disabledCategories, setDisabledCategories] = useState([])
 
-    const onChipClickHandle = index => () => {
-        if (activeCategories.includes(index)) {
-            setActiveCategories(activeCategories.filter(c => c !== index))
+    const onChipClickHandle = catId => () => {
+        if (disabledCategories.includes(catId)) {
+            setDisabledCategories(disabledCategories.filter(c => c !== catId))
         } else {
-            setActiveCategories([...activeCategories, index])
+            setDisabledCategories([...disabledCategories, catId])
         }
     }
 
@@ -30,6 +30,7 @@ export function OperationsPieChartPanel({accountId = null}) {
         operations?.forEach((op, index) => {
             if (!categories[op.category.name]) {
                 categories[op.category.name] = {
+                    id: op.category.id,
                     name: op.category.name,
                     value: 0,
                 }
@@ -64,8 +65,8 @@ export function OperationsPieChartPanel({accountId = null}) {
                         <Chip
                             key={index}
                             label={cat.name}
-                            variant={activeCategories.includes(index) ? "contained" : "outlined"}
-                            onClick={onChipClickHandle(index)}
+                            variant={disabledCategories.includes(cat.id) ? "contained" : "outlined"}
+                            onClick={onChipClickHandle(cat.id)}
                             sx={{
                                 color: COLORS[index % COLORS.length],
                                 borderColor: COLORS[index % COLORS.length],
@@ -74,7 +75,7 @@ export function OperationsPieChartPanel({accountId = null}) {
                 </Stack>
             </Box>
             <PieChart width={200} height={200}>
-                <Pie data={operationCategories.filter((_, index) => !activeCategories.includes(index))}
+                <Pie data={operationCategories.filter(cat => !disabledCategories.includes(cat.id))}
                      activeIndex={activeIndex}
                      activeShape={renderActiveShape}
                      dataKey="value"

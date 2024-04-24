@@ -1,8 +1,8 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {createWithdrawOperationThunk} from "../store/operationSlice";
-import {LoadingButton} from "@mui/lab";
+import {createWithdrawOperationThunk, getOperationsThunk} from "../store/operationSlice";
+import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
 
 export function WithdrawAccountModal({
@@ -13,13 +13,24 @@ export function WithdrawAccountModal({
     const [withdrawAmount, setWithdrawAmount] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
+    const [errorMessage, setErrorMessage] = useState('')
+
+    function onCloseHandle() {
+        setErrorMessage('')
+        onClose()
+    }
 
     async function handleSubmit(e) {
         setLoading(true)
-        await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId}))
-        await dispatch(getAccountsThunk())
+        try {
+            await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId}))
+            await dispatch(getAccountsThunk())
+            await dispatch(getOperationsThunk({accountId}))
+            onCloseHandle()
+        } catch (e) {
+            setErrorMessage("Недостаточно денег на счету!")
+        }
         setLoading(false)
-        onClose()
     }
 
     function handleChange(e) {
@@ -29,7 +40,7 @@ export function WithdrawAccountModal({
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onCloseHandle}>
             <DialogTitle>Снятие со счёта</DialogTitle>
             <DialogContent>
                 <DialogContentText mb={1}>
@@ -44,9 +55,12 @@ export function WithdrawAccountModal({
                     onChange={handleChange}
                     variant={"standard"}
                 />
+                {!errorMessage ? null : (
+                    <Alert severity={"error"}>{errorMessage}</Alert>
+                )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Отмена</Button>
+                <Button onClick={onCloseHandle}>Отмена</Button>
                 <LoadingButton loading={loading} variant={"contained"} onClick={handleSubmit}>Снять</LoadingButton>
             </DialogActions>
         </Dialog>

@@ -1,14 +1,15 @@
-import {useParams} from "react-router-dom";
-import {Box, Grid, Paper, Tab, Tabs, Typography, useTheme} from "@mui/material";
+import {useNavigate, useParams} from "react-router-dom";
+import {Box, Chip, Grid, Paper, Stack, Tab, Tabs, Typography, useTheme} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {getAccountsThunk} from "../../store/accountSlice";
+import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
 import {AccountActionsGroup} from "../../components/AccountActionsGroup";
 import {getAccountTitle} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
 import {OperationsPanel} from "../../components/OperationsPanel";
 import {OperationsPieChartPanel} from "../../components/OperationsPieChartPanel";
+import {CreateCardDialog} from "../../components/CreateCardDialog";
 
 const TabPanel = ({
                       children, value, index
@@ -28,9 +29,11 @@ export function AccountPage() {
     const accounts = useSelector(state => state.accounts.accounts)
     const account = useSelector(state => state.accounts.accounts?.find(account => account.id === +accountId))
     const user = useSelector(state => state.auth.authorizedUser)
-    const dispatch = useDispatch()
-    const theme = useTheme()
     const [detailsTab, setDetailsTab] = useState(0)
+    const [cardDialogOpen, setCardDialogOpen] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const theme = useTheme()
 
     async function getAccounts() {
         try {
@@ -38,6 +41,12 @@ export function AccountPage() {
         } catch (e) {
             console.error(e.message)
         }
+    }
+
+    async function createCardHandle() {
+        await dispatch(createCardThunk({accountId}))
+        await dispatch(getAccountsThunk())
+        setCardDialogOpen(false)
     }
 
     useEffect(() => {
@@ -73,6 +82,45 @@ export function AccountPage() {
                         <Typography sx={{marginTop: '10px'}} variant={"h3"}>
                             {account.balance} ₽
                         </Typography>
+                        <Stack direction={"row"} spacing={1}>
+                            {account.cards.map(card => (
+                                <Chip
+                                    onClick={() => {
+                                        navigate(`/cards/${card.id}`)
+                                    }}
+                                    label={card.number.slice(0, 4)}
+                                    sx={{
+                                        color: theme.palette.primary.main,
+                                        background: 'white',
+                                        borderRadius: '10px',
+                                        fontSize: '1em',
+                                        '&:hover': {
+                                            background: 'lightgrey',
+                                        },
+                                    }}
+                                />
+                            ))}
+                            <Chip
+                                onClick={() => {
+                                    setCardDialogOpen(true)
+                                }}
+                                label={"+"}
+                                sx={{
+                                    color: theme.palette.primary.main,
+                                    background: 'white',
+                                    borderRadius: '10px',
+                                    fontSize: '1em',
+                                    '&:hover': {
+                                        background: 'lightgrey',
+                                    },
+                                }}
+                            />
+                            <CreateCardDialog
+                                open={cardDialogOpen}
+                                onClose={() => setCardDialogOpen(false)}
+                                onSubmit={() => createCardHandle()}
+                            />
+                        </Stack>
                     </Box>
                 </Paper>
             </Grid>

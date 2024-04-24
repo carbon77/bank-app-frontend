@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {createTopUpOperationThunk} from "../store/operationSlice";
+import {createTopUpOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
 
@@ -18,6 +18,7 @@ export function TopUpAccountModal({
         setLoading(true)
         await dispatch(createTopUpOperationThunk({amount: topUpAmount, accountId}))
         await dispatch(getAccountsThunk())
+        await dispatch(getOperationsThunk({accountId}))
         setLoading(false)
         onClose()
     }

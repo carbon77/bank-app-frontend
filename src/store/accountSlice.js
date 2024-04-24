@@ -3,17 +3,32 @@ import {apiClient} from "../api";
 
 export const getAccountsThunk = createAsyncThunk(
     '/accounts/get',
-    async (_, thunkAPI) => {
+    async (_) => {
         return await apiClient.getAccounts()
     }
 )
 
 export const createAccountThunk = createAsyncThunk(
     '/accounts/create',
-    async (accountData, thunkAPI) => {
+    async (accountData) => {
         return await apiClient.createAccount(accountData)
     }
 )
+
+export const createCardThunk = createAsyncThunk(
+    '/accounts/cards/create',
+    async ({accountId}) => {
+        return await apiClient.createCard(accountId)
+    }
+)
+
+export const deleteCardThunk = createAsyncThunk(
+    '/accounts/cards/delete',
+    async ({accountId, cardId}) => {
+        return await apiClient.deleteCard(accountId, cardId)
+    }
+)
+
 
 const initialState = {
     accounts: null,
@@ -34,6 +49,11 @@ export const accountSlice = createSlice({
         })
 
         builder.addCase(createAccountThunk.rejected, (state, action) => {
+            console.error(action.error)
+            throw new Error(action.error.message)
+        })
+
+        builder.addCase(createCardThunk.rejected, (state, action) => {
             console.error(action.error)
             throw new Error(action.error.message)
         })
