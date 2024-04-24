@@ -52,7 +52,12 @@ export const OperationsPanel = ({
                 <Typography variant={"h5"} paddingX={".5em"} paddingTop={".5em"}>Операции</Typography>
 
                 {(!operations || !accounts) ? <div>Loading...</div> :
-                    <List>{operations.map(getOperationElement)}</List>}
+                    <>
+                        {operations.length === 0 ? <Typography p={".5em 1em"}>Вы еще не совершили операций</Typography> : (
+                            <List>{operations.map(getOperationElement)}</List>
+                        )}
+                    </>
+                }
             </Paper>
             <OperationModal
                 account={pickedAccount}

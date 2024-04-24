@@ -8,6 +8,7 @@ import {getAccountTitle} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
 import {OperationsPanel} from "../../components/OperationsPanel";
+import {OperationsPieChartPanel} from "../../components/OperationsPieChartPanel";
 
 const TabPanel = ({
                       children, value, index
@@ -79,6 +80,9 @@ export function AccountPage() {
                 <AccountActionsGroup accountId={accountId}/>
             </Grid>
             <Grid item container md={8} spacing={2}>
+                <Grid item md={12}>
+                    <OperationsPieChartPanel accounts={accounts} accountId={accountId}/>
+                </Grid>
                 <Grid item md={12}>
                     <OperationsPanel accounts={accounts} accountId={accountId}/>
                 </Grid>

@@ -79,5 +79,5 @@ export function OperationModal({open, onClose, operation, account}) {
                 ) : null}
             </Paper>
         </Modal>
-    )
+    );
 }
