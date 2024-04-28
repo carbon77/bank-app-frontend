@@ -54,17 +54,14 @@ export const operationSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(createTopUpOperationThunk.rejected, (state, action) => {
             console.error(action.error)
-            throw new Error(action.error.message)
         })
 
         builder.addCase(createWithdrawOperationThunk.rejected, (state, action) => {
             console.error(action.error)
-            throw new Error(action.error.message)
         })
 
         builder.addCase(createTransferOperationThunk.rejected, (state, action) => {
             console.error(action.error)
-            throw new Error(action.error.message)
         })
 
         builder.addCase(getOperationsThunk.fulfilled, (state, action) => {
@@ -73,7 +70,6 @@ export const operationSlice = createSlice({
 
         builder.addCase(getOperationsThunk.rejected, (state, action) => {
             console.error(action.error)
-            throw new Error(action.error.message)
         })
     },
 })

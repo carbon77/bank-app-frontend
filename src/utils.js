@@ -103,9 +103,10 @@ export const CustomPatternFormat = React.forwardRef(
     }
 )
 
-export const moneyInputFormatter = numString => numericFormatter(numString, {
+export const moneyInputFormatter = (numString, options = {}) => numericFormatter(numString, {
     thousandSeparator: ' ',
     suffix: ' ₽',
+    ...options,
 })
 
 export function MoneyInputFormat(props) {

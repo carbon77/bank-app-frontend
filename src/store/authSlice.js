@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
+import axios from "axios";
 
 export const loginThunk = createAsyncThunk(
     'auth/login',
@@ -23,9 +24,21 @@ export const getUserThunk = createAsyncThunk(
     }
 )
 
+export const fetchCurrenciesThunk = createAsyncThunk(
+    'auth/fetchCurrencies',
+    async () => {
+        return await axios.get('https://api.freecurrencyapi.com/v1/latest?base_currency=RUB&apikey=fca_live_ko9CkmxeFyiT6rrXEE0BuIVDu9eqCHHQjCBwTKgI').then(res => {
+            const rub = res.data.data['RUB']
+            return Object.entries(res.data.data)
+                .map(([currency, value]) => [currency, rub / value])
+        })
+    }
+)
+
 const initialState = {
     authorizedUser: null,
     token: localStorage.getItem('auth_token'),
+    currencies: null,
 }
 
 export const authSlice = createSlice({
@@ -64,6 +77,13 @@ export const authSlice = createSlice({
             .addCase(getUserThunk.rejected, (state, action) => {
                 console.error(action.error)
                 throw new Error(action.error.message)
+            })
+
+            .addCase(fetchCurrenciesThunk.fulfilled, (state, action) => {
+                state.currencies = action.payload
+            })
+            .addCase(fetchCurrenciesThunk.rejected, (state, action) => {
+                console.error(action.error)
             })
     }
 })
