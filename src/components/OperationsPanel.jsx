@@ -30,7 +30,7 @@ export const OperationsPanel = ({
         return (
             <>
                 {isNewGroup(op, idx, arr) ? (
-                    <ListItem>
+                    <ListItem key={idx}>
                         <ListItemText>{convertDate(op.createdAt)}</ListItemText>
                     </ListItem>
                 ) : null}
@@ -53,9 +53,10 @@ export const OperationsPanel = ({
 
                 {(!operations || !accounts) ? <div>Loading...</div> :
                     <>
-                        {operations.length === 0 ? <Typography p={".5em 1em"}>Вы еще не совершили операций</Typography> : (
-                            <List>{operations.map(getOperationElement)}</List>
-                        )}
+                        {operations.length === 0 ?
+                            <Typography p={".5em 1em"}>Вы еще не совершили операций</Typography> : (
+                                <List>{operations.map(getOperationElement)}</List>
+                            )}
                     </>
                 }
             </Paper>

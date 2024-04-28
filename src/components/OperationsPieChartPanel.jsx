@@ -1,4 +1,4 @@
-import {Box, Chip, Paper, Stack, Typography} from "@mui/material";
+import {Box, Button, ButtonGroup, Chip, Paper, Stack, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getOperationsThunk} from "../store/operationSlice";
@@ -12,6 +12,7 @@ export function OperationsPieChartPanel({accountId = null}) {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
     const [operationCategories, setOperationCategories] = useState([])
     const [disabledCategories, setDisabledCategories] = useState([])
+    const [selectedType, setSelectedType] = useState('EXPENSE')
 
     const onChipClickHandle = catId => () => {
         if (disabledCategories.includes(catId)) {
@@ -28,6 +29,10 @@ export function OperationsPieChartPanel({accountId = null}) {
         const categories = {}
 
         operations?.forEach((op, index) => {
+            if (op.type !== selectedType) {
+                return
+            }
+
             if (!categories[op.category.name]) {
                 categories[op.category.name] = {
                     id: op.category.id,
@@ -38,7 +43,7 @@ export function OperationsPieChartPanel({accountId = null}) {
             categories[op.category.name].value += op.amount
         })
         setOperationCategories(Object.values(categories))
-    }, [operations])
+    }, [operations, selectedType])
 
     useEffect(() => {
         dispatch(getOperationsThunk({accountId}))
@@ -51,15 +56,23 @@ export function OperationsPieChartPanel({accountId = null}) {
     return (
         <Paper elevation={2} sx={{
             display: 'flex',
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
+            p: '1em 2em',
         }}>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                p: '1em 0',
-                gap: '10px',
-            }}>
-                <Typography variant={'h5'}>Категории</Typography>
+            <Stack spacing={1}>
+                <Typography variant={'h6'}>Операции</Typography>
+                <Box>
+                    <ButtonGroup size={"small"}>
+                        <Button sx={{
+                            textTransform: 'none',
+                        }} variant={selectedType === 'EXPENSE' ? 'contained' : 'outlined'}
+                                onClick={() => setSelectedType('EXPENSE')}>Расходы</Button>,
+                        <Button sx={{
+                            textTransform: 'none',
+                        }} variant={selectedType === 'RECEIPT' ? 'contained' : 'outlined'}
+                                onClick={() => setSelectedType('RECEIPT')}>Поступления</Button>,
+                    </ButtonGroup>
+                </Box>
                 <Stack width={'200px'} direction="row" gap={1} rowGap={1} flexWrap={'wrap'}>
                     {operationCategories.map((cat, index) => (
                         <Chip
@@ -73,7 +86,7 @@ export function OperationsPieChartPanel({accountId = null}) {
                             }}/>
                     ))}
                 </Stack>
-            </Box>
+            </Stack>
             <PieChart width={200} height={200}>
                 <Pie data={operationCategories.filter(cat => !disabledCategories.includes(cat.id))}
                      activeIndex={activeIndex}

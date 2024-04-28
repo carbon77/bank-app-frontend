@@ -124,7 +124,7 @@ export function MoneyInputFormat(props) {
         decimalSeparator={','}
         allowedDecimalSeparators={['.']}
         decimalScale={2}
-        prefix={"₽"}
+        prefix={"₽ "}
         valueIsNumericString
     />
 }

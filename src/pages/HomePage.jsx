@@ -1,12 +1,13 @@
 import {Grid, InputAdornment, Stack, TextField} from "@mui/material";
 import {ButtonPanel} from "../components/ButtonPanel";
-import {Add, Payment, Search, SwapHoriz} from "@mui/icons-material";
+import {Add, Payment, Search} from "@mui/icons-material";
 import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
 import {CurrenciesPanel} from "../components/CurrenciesPanel";
 import {WithdrawAccountModal} from "../components/WithdrawAccountModal";
 import {TopUpAccountModal} from "../components/TopUpAccountModal";
 import {TransferAccountModal} from "../components/TransferAccountModal";
 import {useState} from "react";
+import {TransferPanel} from "../components/TransferPanel";
 
 export function HomePage() {
     const [withdrawOpen, setWithdrawOpen] = useState(false)
@@ -31,14 +32,16 @@ export function HomePage() {
                     </Grid>
 
                     <Grid item md={12}>
-                        <Stack direction={"row"} justifyContent={"center"} spacing={2}>
-                            <ButtonPanel onClick={() => setTopUpOpen(true)} sx={{width: '120px'}}
+                        <Stack direction={"row"} spacing={2}>
+                            <ButtonPanel onClick={() => setTopUpOpen(true)} sx={{width: '100%'}}
                                          primaryText={"Пополнение"} icon={<Add/>}/>
-                            <ButtonPanel onClick={() => setWithdrawOpen(true)} sx={{width: '120px'}}
+                            <ButtonPanel onClick={() => setWithdrawOpen(true)} sx={{width: '100%'}}
                                          primaryText={"Снятие"} icon={<Payment/>}/>
-                            <ButtonPanel onClick={() => setTransferOpen(true)} sx={{width: '120px'}}
-                                         primaryText={"Перевод"} icon={<SwapHoriz/>}/>
                         </Stack>
+                    </Grid>
+
+                    <Grid item md={12}>
+                        <TransferPanel/>
                     </Grid>
 
                     <Grid item md={12}>

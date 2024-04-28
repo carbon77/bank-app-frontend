@@ -1,7 +1,14 @@
 import {ListItemText, MenuItem, Select} from "@mui/material";
-import {getAccountTitle} from "../utils";
+import {getAccountTitle, moneyInputFormatter} from "../utils";
+import {useSelector} from "react-redux";
 
-export function AccountSelect({accounts, value, onChange, ...other}) {
+export function AccountSelect({value, onChange, ...other}) {
+    const accounts = useSelector(state => state.accounts.accounts)
+
+    if (!accounts) {
+        return <div>Loading...</div>
+    }
+
     return (
         <Select
             {...other}
@@ -11,8 +18,8 @@ export function AccountSelect({accounts, value, onChange, ...other}) {
         >
             {accounts.map(account => (
                 <MenuItem key={account.id} value={account.id}>
-                    <ListItemText sx={{margin: 0}} primary={account.name}
-                                  secondary={getAccountTitle(account.accountType)}/>
+                    <ListItemText sx={{margin: 0}} primary={moneyInputFormatter(account.balance.toString())}
+                                  secondary={`${account.name} · ${getAccountTitle(account.accountType)}`}/>
                 </MenuItem>
             ))}
         </Select>
