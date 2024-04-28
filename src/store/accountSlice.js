@@ -37,6 +37,11 @@ const initialState = {
 export const accountSlice = createSlice({
     name: 'accounts',
     initialState,
+    reducers: {
+        clearAccounts(state) {
+            state.accounts = null
+        }
+    },
     extraReducers: builder => {
         builder.addCase(getAccountsThunk.fulfilled, (state, action) => {
             console.info("Getting accounts...")
@@ -61,3 +66,4 @@ export const accountSlice = createSlice({
 })
 
 export const accountsReducer = accountSlice.reducer
+export const {clearAccounts} = accountSlice.actions

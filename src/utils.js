@@ -89,17 +89,19 @@ export const renderActiveShape = (props) => {
     );
 };
 
-export const CustomPatternFormat = props => {
-    const {onChange, ...other} = props
-    return <PatternFormat
-        {...other}
-        onValueChange={values => {
-            onChange({
-                target: values,
-            })
-        }}
-    />
-}
+export const CustomPatternFormat = React.forwardRef(
+    function CustomPatternFormat(props, ref) {
+        const {onChange, ...other} = props
+        return <PatternFormat
+            {...other}
+            onValueChange={values => {
+                onChange({
+                    target: values,
+                })
+            }}
+        />
+    }
+)
 
 export const moneyInputFormatter = numString => numericFormatter(numString, {
     thousandSeparator: ' ',

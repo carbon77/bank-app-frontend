@@ -61,7 +61,6 @@ export const SignUpPage = () => {
         }
 
         for (const field of Object.keys(formData)) {
-            console.log(field, formData[field])
             if (formData[field] === '') {
                 setErrorMessage(`Поле ${field} не может быть пустым!`)
                 return false

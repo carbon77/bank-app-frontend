@@ -73,6 +73,16 @@ async function getOperations(accountId = null) {
     return response.data
 }
 
+async function createTransfer(transferData) {
+    const response = await instance.post("/operations/transfer", transferData)
+    return response.data
+}
+
+async function findUserByCardNumber(cardNumber) {
+    const response = await instance.get(`/users?bankNumber=${cardNumber}`)
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
@@ -83,6 +93,8 @@ export const apiClient = {
     deleteCard,
     createOperation,
     getOperations,
+    findUserByCardNumber,
+    createTransfer,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

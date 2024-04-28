@@ -34,6 +34,7 @@ export const authSlice = createSlice({
     reducers: {
         logout(state) {
             state.token = null
+            state.authorizedUser = null
             apiClient.removeToken()
         }
     },

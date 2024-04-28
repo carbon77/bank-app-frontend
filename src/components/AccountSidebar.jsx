@@ -17,7 +17,7 @@ import {getAccountsThunk} from "../store/accountSlice";
 import {Alert} from "@mui/lab";
 import {Add} from "@mui/icons-material";
 import {Link} from "react-router-dom";
-import {getAccountAvatarIcon, getAccountTitle} from "../utils";
+import {getAccountAvatarIcon, getAccountTitle, moneyInputFormatter} from "../utils";
 
 export function AccountSidebar() {
     const accounts = useSelector(state => state.accounts.accounts)
@@ -78,7 +78,7 @@ export function AccountSidebar() {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText
-                            primary={`${account.balance} ₽`}
+                            primary={moneyInputFormatter(account.balance.toString())}
                             secondary={`${account.name} · ${getAccountTitle(account.accountType)}`}
                         />
                     </ListItemButton>

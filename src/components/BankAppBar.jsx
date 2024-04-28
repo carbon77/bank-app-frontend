@@ -20,6 +20,8 @@ import {useState} from "react";
 import {links} from "../router/links";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../store/authSlice";
+import {clearAccounts} from "../store/accountSlice";
+import {clearOperations} from "../store/operationSlice";
 
 const LogoutDialog = ({open, handleCancel, handleAccept}) => {
     return (
@@ -76,6 +78,8 @@ export function BankAppBar() {
 
     function handleLogout() {
         dispatch(logout())
+        dispatch(clearAccounts())
+        dispatch(clearOperations())
         navigate(links.login, {replace: true})
     }
 

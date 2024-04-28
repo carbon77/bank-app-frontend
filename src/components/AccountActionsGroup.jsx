@@ -73,6 +73,7 @@ export function AccountActionsGroup({ accountId }) {
             <TransferAccountModal
                 open={transferOpen}
                 onClose={() => setTransferOpen(false)}
+                accountId={accountId}
             />
         </>
     )

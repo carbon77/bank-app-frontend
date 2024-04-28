@@ -1,19 +1,15 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
-import {PatternFormat} from "react-number-format";
-import {MoneyInputFormat} from "../utils";
+import {Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
+import {CustomPatternFormat, MoneyInputFormat} from "../utils";
+import {LoadingButton} from "@mui/lab";
+import {apiClient} from "../api";
+import {createTransferOperationThunk, getOperationsThunk} from "../store/operationSlice";
+import {getAccountsThunk} from "../store/accountSlice";
+import {useDispatch} from "react-redux";
 
 function ToNumberFormat(props) {
-    const {onChange, ...other} = props
-    return <PatternFormat
-        {...other}
-        onValueChange={(values) => {
-            onChange({
-                target: {
-                    value: values.value,
-                }
-            })
-        }}
+    return <CustomPatternFormat
+        {...props}
         format={"#### #### #### ####"}
         mask={"_"}
         valueIsNumericString
@@ -24,21 +20,58 @@ function ToNumberFormat(props) {
 export function TransferAccountModal({
                                          open,
                                          onClose,
-                                         onSubmit,
+                                         accountId,
                                      }) {
-    const [transferAmount, setTransferAmount] = useState('')
-    const [toNumber, setToNumber] = useState('')
-    const [message, setMessage] = useState('')
+    const [transferInfo, setTransferInfo] = useState({
+        amount: 0,
+        recipientCard: '',
+        message: '',
+    })
+    const [foundUser, setFoundUser] = useState(null)
+    const [userNotFound, setUserNotFound] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const dispatch = useDispatch()
 
-    const handleChange = (setField) => (e) => {
-        if (!isNaN(e.target.value)) {
-            setField(e.target.value)
+    const handleChange = (field) => async (e) => {
+        setTransferInfo({
+            ...transferInfo,
+            [field]: e.target.value,
+        })
+
+        if (field === 'recipientCard' && e.target.value.length === 16) {
+            try {
+                setLoading(true)
+                setFoundUser(await apiClient.findUserByCardNumber(e.target.value))
+                setUserNotFound(false)
+            } catch (e) {
+                setFoundUser(null)
+                setUserNotFound(true)
+            }
+            setLoading(false)
+        } else if (field === 'recipientCard') {
+            setFoundUser(null)
+            setUserNotFound(false)
         }
     }
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        console.log(toNumber)
+        setLoading(true)
+        try {
+            await dispatch(createTransferOperationThunk({
+                data: {
+                    ...transferInfo,
+                    senderAccountId: accountId,
+                }
+            }))
+            await dispatch(getAccountsThunk())
+            await dispatch(getOperationsThunk({accountId}))
+            onClose()
+        } catch (e) {
+            setErrorMessage("Недостаточно денег на счету!")
+        }
+        setLoading(false)
     }
 
     return (
@@ -51,20 +84,29 @@ export function TransferAccountModal({
                         required
                         label={"Номер получателя"}
                         fullWidth
-                        value={toNumber}
-                        onChange={handleChange(setToNumber)}
+                        value={transferInfo.recipientCard}
+                        onChange={handleChange("recipientCard")}
                         size={"small"}
+                        name={"toNumber"}
                         InputProps={{
                             inputComponent: ToNumberFormat,
                         }}
                     />
+                    {foundUser ? (
+                        <Alert
+                            severity={"success"}>Получатель: {foundUser.passport.firstName} {foundUser.passport.lastName[0]}.</Alert>
+                    ) : null}
+                    {userNotFound ? (
+                        <Alert severity={"error"}>Получатель не найден!</Alert>
+                    ) : null}
                     <TextField
                         required
                         label={"Сумма"}
                         fullWidth
-                        value={transferAmount}
-                        onChange={handleChange(setTransferAmount)}
+                        value={transferInfo.amount}
+                        onChange={handleChange('amount')}
                         size={"small"}
+                        name={"amount"}
                         InputProps={{
                             inputComponent: MoneyInputFormat,
                         }}
@@ -74,15 +116,20 @@ export function TransferAccountModal({
                         rows={4}
                         label={"Сообщение"}
                         fullWidth
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        value={transferInfo.message}
+                        name={"message"}
+                        onChange={handleChange('message')}
                         size={"small"}
                     />
+                    {!errorMessage ? null : (
+                        <Alert severity={"error"}>{errorMessage}</Alert>
+                    )}
                 </Stack>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Отмена</Button>
-                <Button variant={"contained"} type={"submit"}>Перевести</Button>
+                <LoadingButton loading={loading} disabled={!foundUser} variant={"contained"}
+                               type={"submit"}>Перевести</LoadingButton>
             </DialogActions>
         </Dialog>
     )

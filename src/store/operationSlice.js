@@ -25,6 +25,13 @@ export const createTopUpOperationThunk = createAsyncThunk(
     }
 )
 
+export const createTransferOperationThunk = createAsyncThunk(
+    "operations/transfer",
+    async ({data}) => {
+        return await apiClient.createTransfer(data)
+    }
+)
+
 export const getOperationsThunk = createAsyncThunk(
     "operations/get",
     async ({accountId = null}) => {
@@ -39,6 +46,11 @@ const initialState = {
 export const operationSlice = createSlice({
     name: 'operations',
     initialState,
+    reducers: {
+        clearOperations(state) {
+            state.operations = null
+        }
+    },
     extraReducers: builder => {
         builder.addCase(createTopUpOperationThunk.rejected, (state, action) => {
             console.error(action.error)
@@ -46,6 +58,11 @@ export const operationSlice = createSlice({
         })
 
         builder.addCase(createWithdrawOperationThunk.rejected, (state, action) => {
+            console.error(action.error)
+            throw new Error(action.error.message)
+        })
+
+        builder.addCase(createTransferOperationThunk.rejected, (state, action) => {
             console.error(action.error)
             throw new Error(action.error.message)
         })
@@ -62,3 +79,4 @@ export const operationSlice = createSlice({
 })
 
 export const operationsReducer = operationSlice.reducer
+export const {clearOperations} = operationSlice.actions
