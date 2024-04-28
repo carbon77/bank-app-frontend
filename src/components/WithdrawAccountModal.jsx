@@ -1,20 +1,33 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    Stack,
+    TextField
+} from "@mui/material";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createWithdrawOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
 import {MoneyInputFormat} from "../utils";
+import {AccountSelect} from "./AccountSelect";
 
 export function WithdrawAccountModal({
                                          open,
                                          onClose,
-                                         accountId,
+                                         accountId = null,
                                      }) {
     const [withdrawAmount, setWithdrawAmount] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const [errorMessage, setErrorMessage] = useState('')
+    const accounts = useSelector(state => state.accounts.accounts)
+    const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : accounts.at(0)?.id)
 
     function onCloseHandle() {
         setErrorMessage('')
@@ -24,9 +37,12 @@ export function WithdrawAccountModal({
     async function handleSubmit(e) {
         setLoading(true)
         try {
-            await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId}))
+            await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId: selectedAccount}))
             await dispatch(getAccountsThunk())
-            await dispatch(getOperationsThunk({accountId}))
+
+            if (selectedAccount === accountId) {
+                await dispatch(getOperationsThunk({accountId: selectedAccount}))
+            }
             onCloseHandle()
         } catch (e) {
             setErrorMessage("Недостаточно денег на счету!")
@@ -44,24 +60,27 @@ export function WithdrawAccountModal({
         <Dialog open={open} onClose={onCloseHandle}>
             <DialogTitle>Снятие со счёта</DialogTitle>
             <DialogContent>
-                <DialogContentText mb={1}>
-                    Введите сумму для снятия
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    required
-                    label={"Сумма"}
-                    fullWidth
-                    value={withdrawAmount}
-                    onChange={handleChange}
-                    variant={"standard"}
-                    InputProps={{
-                        inputComponent: MoneyInputFormat,
-                    }}
-                />
-                {!errorMessage ? null : (
-                    <Alert severity={"error"}>{errorMessage}</Alert>
-                )}
+                <Stack spacing={2} mt={2} width={'400px'}>
+                    <FormControl>
+                        <InputLabel>Выберите счёт</InputLabel>
+                        <AccountSelect accounts={accounts} value={selectedAccount}
+                                       onChange={(e) => setSelectedAccount(e.target.value)}/>
+                    </FormControl>
+                    <TextField
+                        autoFocus
+                        required
+                        label={"Сумма для снятия"}
+                        fullWidth
+                        value={withdrawAmount}
+                        onChange={handleChange}
+                        InputProps={{
+                            inputComponent: MoneyInputFormat,
+                        }}
+                    />
+                    {!errorMessage ? null : (
+                        <Alert severity={"error"}>{errorMessage}</Alert>
+                    )}
+                </Stack>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onCloseHandle}>Отмена</Button>

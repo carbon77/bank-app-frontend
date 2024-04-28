@@ -1,11 +1,23 @@
 import React, {useState} from "react";
-import {Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    Stack,
+    TextField
+} from "@mui/material";
 import {CustomPatternFormat, MoneyInputFormat} from "../utils";
 import {LoadingButton} from "@mui/lab";
 import {apiClient} from "../api";
 import {createTransferOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {getAccountsThunk} from "../store/accountSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {AccountSelect} from "./AccountSelect";
 
 function ToNumberFormat(props) {
     return <CustomPatternFormat
@@ -20,7 +32,7 @@ function ToNumberFormat(props) {
 export function TransferAccountModal({
                                          open,
                                          onClose,
-                                         accountId,
+                                         accountId = null,
                                      }) {
     const [transferInfo, setTransferInfo] = useState({
         amount: 0,
@@ -31,6 +43,8 @@ export function TransferAccountModal({
     const [userNotFound, setUserNotFound] = useState(false)
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const accounts = useSelector(state => state.accounts.accounts)
+    const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : accounts.at(0)?.id)
     const dispatch = useDispatch()
 
     const handleChange = (field) => async (e) => {
@@ -62,11 +76,14 @@ export function TransferAccountModal({
             await dispatch(createTransferOperationThunk({
                 data: {
                     ...transferInfo,
-                    senderAccountId: accountId,
+                    senderAccountId: selectedAccount,
                 }
             }))
             await dispatch(getAccountsThunk())
-            await dispatch(getOperationsThunk({accountId}))
+
+            if (selectedAccount === accountId) {
+                await dispatch(getOperationsThunk({accountId: selectedAccount}))
+            }
             onClose()
         } catch (e) {
             setErrorMessage("Недостаточно денег на счету!")
@@ -79,6 +96,11 @@ export function TransferAccountModal({
             <DialogTitle>Перевод</DialogTitle>
             <DialogContent>
                 <Stack spacing={2} mt={2} width={'400px'}>
+                    <FormControl>
+                        <InputLabel>Выберите счёт</InputLabel>
+                        <AccountSelect accounts={accounts} value={selectedAccount}
+                                       onChange={(e) => setSelectedAccount(e.target.value)}/>
+                    </FormControl>
                     <TextField
                         autoFocus
                         required
