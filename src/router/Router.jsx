@@ -1,6 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ErrorPage} from "../pages/ErrorPage";
-import {PaymentsPage} from "../pages/PaymentsPage";
 import {OperationsPage} from "../pages/OperationsPage";
 import {ProfilePage} from "../pages/ProfilePage";
 import {AuthPage} from "../pages/auth/AuthPage";
@@ -23,7 +22,6 @@ export function Router() {
             element: <ProtectedRoute><BankRoot/></ProtectedRoute>,
             children: [
                 {index: true, element: <AccountSidebarTemplate><HomePage/></AccountSidebarTemplate>},
-                {path: links.payments, element: <AccountSidebarTemplate><PaymentsPage/></AccountSidebarTemplate>},
                 {path: links.operations, element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>},
                 {path: links.profile, element: <ProfilePage/>},
                 {

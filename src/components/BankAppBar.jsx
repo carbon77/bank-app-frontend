@@ -50,10 +50,6 @@ export function BankAppBar() {
             to: links.home,
         },
         {
-            name: 'Платежи и переводы',
-            to: links.payments,
-        },
-        {
             name: 'Операции',
             to: links.operations,
         }
