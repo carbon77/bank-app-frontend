@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {createTopUpOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
+import {MoneyInputFormat} from "../utils";
 
 export function TopUpAccountModal({
                                       open,
@@ -44,6 +45,9 @@ export function TopUpAccountModal({
                     value={topUpAmount}
                     onChange={handleChange}
                     variant={"standard"}
+                    InputProps={{
+                        inputComponent: MoneyInputFormat,
+                    }}
                 />
             </DialogContent>
             <DialogActions>

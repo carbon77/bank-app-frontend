@@ -2,9 +2,19 @@ import {Alert, Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextFiel
 import {AssignmentInd, LoginRounded} from "@mui/icons-material";
 import {Link as RouterLink} from "react-router-dom";
 import {links} from "../../router/links";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";
+import {CustomPatternFormat} from "../../utils";
+
+
+export const PhoneNumberFormat = props => {
+    return <CustomPatternFormat {...props} format={"+# (###) ###-##-##"} mask={"_"}/>
+}
+
+export const DepartmentCodeFormat = props => {
+    return <CustomPatternFormat {...props} format={"###-###"} mask={"_"}/>
+}
 
 function getFormattedDate() {
     const today = new Date()
@@ -152,6 +162,9 @@ export const SignUpPage = () => {
                                 size={"small"}
                                 value={formData.phoneNumber}
                                 onChange={onChangeHandler('phoneNumber')}
+                                InputProps={{
+                                    inputComponent: PhoneNumberFormat,
+                                }}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -223,6 +236,9 @@ export const SignUpPage = () => {
                                 size={"small"}
                                 value={formData.departmentCode}
                                 onChange={onChangeHandler("departmentCode")}
+                                InputProps={{
+                                    inputComponent: DepartmentCodeFormat,
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>

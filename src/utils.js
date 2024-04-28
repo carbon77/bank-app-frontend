@@ -1,5 +1,7 @@
 import {Add, CreditCard, CurrencyRuble, Payment, Savings, SwapHoriz} from "@mui/icons-material";
 import {Sector} from "recharts";
+import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
+import React from "react";
 
 export function getAccountAvatarIcon(accountType) {
     if (accountType === 'CREDIT') {
@@ -24,22 +26,22 @@ export function getAccountTitle(accountType) {
 export function getOperationIconByCategory(op) {
     switch (op.category.name) {
         case 'Пополнение':
-            return <Add />
+            return <Add/>
         case 'Снятие':
-            return <Payment />
+            return <Payment/>
         case 'Перевод':
-            return <SwapHoriz />
+            return <SwapHoriz/>
     }
-    return <CurrencyRuble />
+    return <CurrencyRuble/>
 }
 
 export function convertDateTime(inputString) {
     const date = new Date(inputString)
 
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    const options = {year: 'numeric', month: 'long', day: 'numeric'}
     const formattedDate = date.toLocaleDateString('ru-RU', options)
 
-    const optionsTime = { hour: '2-digit', minute: '2-digit' }
+    const optionsTime = {hour: '2-digit', minute: '2-digit'}
     const formattedTime = date.toLocaleTimeString('ru-RU', optionsTime)
 
     return `${formattedDate}, ${formattedTime}`
@@ -48,7 +50,7 @@ export function convertDateTime(inputString) {
 export function convertDate(inputString) {
     const date = new Date(inputString)
 
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    const options = {year: 'numeric', month: 'long', day: 'numeric'}
     const formattedDate = date.toLocaleDateString('ru-RU', options)
 
     return `${formattedDate}`
@@ -86,3 +88,40 @@ export const renderActiveShape = (props) => {
         </g>
     );
 };
+
+export const CustomPatternFormat = props => {
+    const {onChange, ...other} = props
+    return <PatternFormat
+        {...other}
+        onValueChange={values => {
+            onChange({
+                target: values,
+            })
+        }}
+    />
+}
+
+export const moneyInputFormatter = numString => numericFormatter(numString, {
+    thousandSeparator: ' ',
+    suffix: ' ₽',
+})
+
+export function MoneyInputFormat(props) {
+    const {onChange, ...other} = props
+    return <NumericFormat
+        {...other}
+        onValueChange={(values) => {
+            onChange({
+                target: {
+                    value: values.value,
+                }
+            })
+        }}
+        thousandSeparator={' '}
+        decimalSeparator={','}
+        allowedDecimalSeparators={['.']}
+        decimalScale={2}
+        prefix={"₽"}
+        valueIsNumericString
+    />
+}

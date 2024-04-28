@@ -18,7 +18,7 @@ import {useDispatch} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {useNavigate} from "react-router-dom";
-import {getAccountTitle} from "../../utils";
+import {getAccountTitle, MoneyInputFormat} from "../../utils";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')
@@ -123,7 +123,7 @@ export function CreateAccountPage() {
                             label="Ставка"
                             value={rate}
                             onChange={handleRateChange}
-                            type={"number"}
+                            disabled
                         />
                     }
 
@@ -134,14 +134,16 @@ export function CreateAccountPage() {
                                 label="Кредитный лимит"
                                 value={accountLimit}
                                 onChange={handleAccountLimitChange}
-                                type={"number"}
+                                InputProps={{
+                                    inputComponent: MoneyInputFormat,
+                                }}
                             />
                             <TextField
                                 fullWidth
                                 label="Процентная ставка"
                                 value={interestRate}
                                 onChange={handleInterestRateChange}
-                                type={"number"}
+                                disabled
                             />
                         </>
                     }

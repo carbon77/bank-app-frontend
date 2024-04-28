@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
 import {AccountActionsGroup} from "../../components/AccountActionsGroup";
-import {getAccountTitle} from "../../utils";
+import {getAccountTitle, moneyInputFormatter} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
 import {OperationsPanel} from "../../components/OperationsPanel";
@@ -80,7 +80,7 @@ export function AccountPage() {
                             {getAccountTitle(account.accountType)}
                         </Typography>
                         <Typography sx={{marginTop: '10px'}} variant={"h3"}>
-                            {account.balance} ₽
+                            {moneyInputFormatter(account.balance.toString())}
                         </Typography>
                         <Stack direction={"row"} spacing={1}>
                             {account.cards.map(card => (

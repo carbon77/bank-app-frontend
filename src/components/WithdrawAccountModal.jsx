@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {createWithdrawOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
+import {MoneyInputFormat} from "../utils";
 
 export function WithdrawAccountModal({
                                          open,
@@ -54,6 +55,9 @@ export function WithdrawAccountModal({
                     value={withdrawAmount}
                     onChange={handleChange}
                     variant={"standard"}
+                    InputProps={{
+                        inputComponent: MoneyInputFormat,
+                    }}
                 />
                 {!errorMessage ? null : (
                     <Alert severity={"error"}>{errorMessage}</Alert>

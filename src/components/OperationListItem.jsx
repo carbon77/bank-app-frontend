@@ -1,5 +1,5 @@
 import {Avatar, Box, ListItem, ListItemAvatar, ListItemButton, Typography, useTheme} from "@mui/material";
-import {getOperationIconByCategory} from "../utils";
+import {getOperationIconByCategory, moneyInputFormatter} from "../utils";
 
 export function OperationListItem({operation, onClick, account}) {
     const theme = useTheme()
@@ -27,7 +27,8 @@ export function OperationListItem({operation, onClick, account}) {
                     </div>
                     <Typography sx={{
                         color: operation.type === 'EXPENSE' ? theme.palette.error.main : theme.palette.success.main
-                    }}>{operation.type === 'EXPENSE' ? '-' : '+'}{operation.amount} ₽</Typography>
+                    }}>{operation.type === 'EXPENSE' ? '-' : ''}
+                        {moneyInputFormatter(operation.amount.toString())}</Typography>
                 </Box>
             </ListItemButton>
         </ListItem>
