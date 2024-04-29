@@ -44,8 +44,17 @@ export function OperationModal({open, onClose, operation, account}) {
                     py: '20px',
                 }}>
                     <Typography variant={"h5"}>{operation.category.name}</Typography>
-                    <Typography
-                        variant={"h4"}>{operation.type === 'EXPENSE' ? '-' : '+'}{operation.amount} ₽</Typography>
+                    <Typography variant={"h4"} sx={{
+                        color: operation.status === 'FAILED' ? theme.palette.error.main : ''
+                    }}>
+                        {operation.type === 'EXPENSE' ? '-' : '+'}{operation.amount} ₽
+                    </Typography>
+                    {operation.status === 'FAILED' ? (
+                        <Typography sx={{
+                            p: '0',
+                            color: operation.status === 'FAILED' ? theme.palette.error.main : '',
+                        }}>Операция не прошла</Typography>
+                    ) : null}
                 </Box>
                 <Divider/>
                 <Box sx={{

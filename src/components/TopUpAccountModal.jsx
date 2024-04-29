@@ -1,15 +1,5 @@
 import {useState} from "react";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    InputLabel,
-    Stack,
-    TextField
-} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {createTopUpOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {LoadingButton} from "@mui/lab";
@@ -50,11 +40,8 @@ export function TopUpAccountModal({
             <DialogTitle>Пополнение счёта</DialogTitle>
             <DialogContent>
                 <Stack spacing={2} mt={2} width={'400px'}>
-                    <FormControl>
-                        <InputLabel>Выберите счёт</InputLabel>
-                        <AccountSelect value={selectedAccount}
-                                       onChange={(e) => setSelectedAccount(e.target.value)}/>
-                    </FormControl>
+                    <AccountSelect value={selectedAccount}
+                                   onChange={(e) => setSelectedAccount(e.target.value)}/>
                     <TextField
                         autoFocus
                         required
@@ -62,7 +49,7 @@ export function TopUpAccountModal({
                         fullWidth
                         value={topUpAmount}
                         onChange={handleChange}
-                        variant={"standard"}
+                        variant={"outlined"}
                         InputProps={{
                             inputComponent: MoneyInputFormat,
                         }}

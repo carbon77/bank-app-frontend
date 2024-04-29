@@ -1,4 +1,4 @@
-import {Add, CreditCard, CurrencyRuble, Payment, Savings, SwapHoriz} from "@mui/icons-material";
+import {Add, CreditCard, CurrencyRuble, Error, Payment, Savings, SwapHoriz} from "@mui/icons-material";
 import {Sector} from "recharts";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
 import React from "react";
@@ -24,6 +24,10 @@ export function getAccountTitle(accountType) {
 }
 
 export function getOperationIconByCategory(op) {
+    if (op.status === 'FAILED') {
+        return <Error />
+    }
+
     switch (op.category.name) {
         case 'Пополнение':
             return <Add/>

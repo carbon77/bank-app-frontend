@@ -10,7 +10,9 @@ export function OperationListItem({operation, onClick, account}) {
                 onClick={onClick}
             >
                 <ListItemAvatar>
-                    <Avatar sx={{bgcolor: theme.palette.primary.main}}>
+                    <Avatar sx={{
+                        bgcolor: operation.status === 'FAILED' ? theme.palette.error.main : theme.palette.primary.main
+                    }}>
                         {getOperationIconByCategory(operation)}
                     </Avatar>
                 </ListItemAvatar>
@@ -26,8 +28,9 @@ export function OperationListItem({operation, onClick, account}) {
                                     fontSize={"small"}>{account.name}</Typography>
                     </div>
                     <Typography sx={{
-                        color: operation.type === 'EXPENSE' ? theme.palette.error.main : theme.palette.success.main
-                    }}>{operation.type === 'EXPENSE' ? '-' : ''}
+                        color: operation.status === 'FAILED' ? theme.palette.error.main :
+                            (operation.type === 'EXPENSE' ? '' : theme.palette.success.main),
+                    }}>{operation.type === 'EXPENSE' ? '-' : '+'}
                         {moneyInputFormatter(operation.amount.toString())}</Typography>
                 </Box>
             </ListItemButton>

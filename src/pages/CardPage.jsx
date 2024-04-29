@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import {deleteCardThunk, getAccountsThunk} from "../store/accountSlice";
 import {getAccountAvatarIcon} from "../utils";
-import {Delete} from "@mui/icons-material";
+import {Delete, Lock, LockOpen} from "@mui/icons-material";
 
 export function CardPage() {
     const {cardId} = useParams()
@@ -74,6 +74,10 @@ export function CardPage() {
             }
         }
     }, [accounts])
+
+    function blockCardHandle() {
+
+    }
 
     if (!accounts || !account || !card) {
         return <div>Loading...</div>
@@ -155,6 +159,18 @@ export function CardPage() {
                 <Paper elevation={2}>
                     <Typography variant={"h5"} p={'15px'} pb={'0'}>Действия</Typography>
                     <List>
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={blockCardHandle}>
+                                <ListItemAvatar>
+                                    <Avatar sx={{bgcolor: theme.palette.primary.main}}>
+                                        {card.blocked ? <LockOpen/> : <Lock/>}
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={card.blocked ? `Разблокировать` : 'Заблокировать'}
+                                />
+                            </ListItemButton>
+                        </ListItem>
                         <ListItem disablePadding>
                             <ListItemButton disabled={account.cards.length === 1} onClick={deleteCardHandle}>
                                 <ListItemAvatar>

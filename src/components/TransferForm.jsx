@@ -73,11 +73,8 @@ export function TransferForm({accountId = null, ...props}) {
 
     return (
         <Stack {...props} component={'form'} onSubmit={handleSubmit} spacing={2} mt={2}>
-            <FormControl size={"small"} required>
-                <InputLabel>Выберите счёт</InputLabel>
-                <AccountSelect value={selectedAccount}
-                               onChange={(e) => setSelectedAccount(e.target.value)}/>
-            </FormControl>
+            <AccountSelect value={selectedAccount}
+                           onChange={(e) => setSelectedAccount(e.target.value)}/>
             <TextField
                 required
                 label={"Номер получателя"}
