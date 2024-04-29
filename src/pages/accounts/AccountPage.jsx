@@ -3,13 +3,15 @@ import {Box, Chip, Grid, Paper, Stack, Tab, Tabs, Typography, useTheme} from "@m
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
-import {AccountActionsGroup} from "../../components/AccountActionsGroup";
 import {getAccountTitle, moneyInputFormatter} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
 import {OperationsPanel} from "../../components/OperationsPanel";
 import {OperationsPieChartPanel} from "../../components/OperationsPieChartPanel";
 import {CreateCardDialog} from "../../components/CreateCardDialog";
+import {TopUpButtonPanel} from "../../components/TopUpButtonPanel";
+import {WithdrawButtonPanel} from "../../components/WithdrawButtonPanel";
+import {TransferButtonPanel} from "../../components/TransferButtonPanel";
 
 const TabPanel = ({
                       children, value, index
@@ -125,7 +127,11 @@ export function AccountPage() {
                 </Paper>
             </Grid>
             <Grid item md={4}>
-                <AccountActionsGroup accountId={accountId}/>
+                <Stack direction={"row"} spacing={1}>
+                    <TopUpButtonPanel sx={{width: '100%'}}/>
+                    <WithdrawButtonPanel sx={{width: '100%'}}/>
+                    <TransferButtonPanel sx={{width: '100%'}}/>
+                </Stack>
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
