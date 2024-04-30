@@ -1,8 +1,9 @@
-import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {moneyInputFormatter} from "../utils";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrenciesThunk} from "../store/authSlice";
+import {Panel} from "./Panel";
 
 const TabPanel = ({
                       children, value, index
@@ -40,7 +41,7 @@ export function CurrenciesPanel() {
     }, [currencies])
 
     return (
-        <Paper elevation={2}>
+        <Panel sx={{p: 0}}>
             <Typography variant={"h6"} sx={{padding: '.5em 1em'}}>Курсы валют</Typography>
 
             {isLoading ? <div>Loading...</div> : (
@@ -80,6 +81,6 @@ export function CurrenciesPanel() {
                     </TabPanel>
                 </>
             )}
-        </Paper>
+        </Panel>
     )
 }

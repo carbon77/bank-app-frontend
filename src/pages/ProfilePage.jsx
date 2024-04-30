@@ -4,6 +4,7 @@ import {Person} from "@mui/icons-material";
 import {PassportPanel} from "../components/PassportPanel";
 import {ProfileEmailPanel} from "../components/ProfileEmailPanel";
 import {ProfilePhonePanel} from "../components/ProfilePhonePanel";
+import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
 
 export function ProfilePage() {
     const user = useSelector(state => state.auth.authorizedUser)
@@ -17,6 +18,9 @@ export function ProfilePage() {
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Grid container spacing={2}>
+                    <Grid item md>
+                        <RouterBreadcrumb/>
+                    </Grid>
                     <Grid item md={12}>
                         <Paper elevation={3}>
                             <Stack spacing={2} direction={"row"} alignItems={"center"} padding={"2em"}>

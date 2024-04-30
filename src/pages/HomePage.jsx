@@ -1,15 +1,15 @@
 import {Grid, InputAdornment, Stack, TextField} from "@mui/material";
 import {Search} from "@mui/icons-material";
 import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
-import {CurrenciesPanel} from "../components/CurrenciesPanel";
 import {TransferPanel} from "../components/TransferPanel";
 import {TopUpButtonPanel} from "../components/TopUpButtonPanel";
 import {WithdrawButtonPanel} from "../components/WithdrawButtonPanel";
+import {CurrenciesPanel} from "../components/CurrenciesPanel";
 
 export function HomePage() {
     return (
         <Grid container spacing={2}>
-            <Grid item md={8}>
+            <Grid item md>
                 <Grid container spacing={2}>
                     <Grid item md={12}>
                         <TextField
@@ -26,8 +26,8 @@ export function HomePage() {
 
                     <Grid item md={12}>
                         <Stack direction={"row"} spacing={2}>
-                            <TopUpButtonPanel sx={{width: '100%'}}/>
-                            <WithdrawButtonPanel sx={{width: '100%'}}/>
+                            <TopUpButtonPanel/>
+                            <WithdrawButtonPanel/>
                         </Stack>
                     </Grid>
 

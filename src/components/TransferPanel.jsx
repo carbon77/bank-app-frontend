@@ -1,15 +1,14 @@
 import React, {useState} from "react";
-import {IconButton, Paper, Stack, Typography} from "@mui/material";
+import {IconButton, Stack, Typography} from "@mui/material";
 import {TransferForm} from "./TransferForm";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {Panel} from "./Panel";
 
 export function TransferPanel() {
     const [isFormOpen, setIsFormOpen] = useState(false)
 
     return (
-        <Paper elevation={2} sx={{
-            p: '1em 2em',
-        }}>
+        <Panel>
             <Stack direction={'row'} alignItems={"center"} justifyContent={'space-between'}>
                 <Typography sx={{
                     cursor: 'pointer',
@@ -21,6 +20,6 @@ export function TransferPanel() {
                 </IconButton>
             </Stack>
             {isFormOpen ? <TransferForm/> : null}
-        </Paper>
+        </Panel>
     )
 }

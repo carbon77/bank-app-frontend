@@ -1,10 +1,11 @@
-import {List, ListItem, ListItemText, Paper, Typography} from "@mui/material";
+import {List, ListItem, ListItemText, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useMemo, useState} from "react";
 import {getOperationsThunk} from "../store/operationSlice";
 import {convertDate} from "../utils";
 import {OperationModal} from "./OperationModal";
 import {OperationListItem} from "./OperationListItem";
+import {Panel} from "./Panel";
 
 export const OperationsPanel = ({
                                     accounts,
@@ -48,7 +49,7 @@ export const OperationsPanel = ({
 
     return (
         <>
-            <Paper elevation={2}>
+            <Panel sx={{p: 0}}>
                 <Typography variant={"h5"} paddingX={".5em"} paddingTop={".5em"}>Операции</Typography>
 
                 {(!operations || !accounts) ? <div>Loading...</div> :
@@ -59,7 +60,7 @@ export const OperationsPanel = ({
                             )}
                     </>
                 }
-            </Paper>
+            </Panel>
             <OperationModal
                 account={pickedAccount}
                 operation={pickedOp}

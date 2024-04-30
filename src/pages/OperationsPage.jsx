@@ -1,7 +1,8 @@
-import {Box} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import {OperationsPanel} from "../components/OperationsPanel";
 import {useSelector} from "react-redux";
 import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
+import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
 
 export function OperationsPage() {
     const accounts = useSelector(state => state.accounts.accounts)
@@ -11,13 +12,19 @@ export function OperationsPage() {
     }
 
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1em',
-        }}>
-            <OperationsPieChartPanel />
-            <OperationsPanel accounts={accounts}/>
-        </Box>
+        <Grid container spacing={2}>
+            <Grid item md={12}>
+                <RouterBreadcrumb/>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant={"h4"}>Операции</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <OperationsPieChartPanel/>
+            </Grid>
+            <Grid item md={12}>
+                <OperationsPanel accounts={accounts}/>
+            </Grid>
+        </Grid>
     )
 }

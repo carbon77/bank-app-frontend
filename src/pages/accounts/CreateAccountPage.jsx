@@ -1,24 +1,22 @@
 import {
-    Avatar,
-    Box,
-    Container,
     CssBaseline,
     FormControl,
+    Grid,
     InputLabel,
     MenuItem,
-    Paper,
     Select,
+    Stack,
     TextField,
-    Typography,
-    useTheme
+    Typography
 } from "@mui/material";
 import {useState} from "react";
-import {AddCard, CreditCard} from "@mui/icons-material";
+import {AddCard} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountTitle, MoneyInputFormat, useShowSnackbar} from "../../utils";
 import {useNavigate} from "react-router-dom";
+import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')
@@ -28,7 +26,6 @@ export function CreateAccountPage() {
     const [accountName, setAccountName] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const theme = useTheme()
     const dispatch = useDispatch()
     const showSnackbar = useShowSnackbar()
     const navigate = useNavigate()
@@ -76,28 +73,16 @@ export function CreateAccountPage() {
     }
 
     return (
-        <Container maxWidth={"xs"}>
+        <Grid container spacing={2}>
             <CssBaseline/>
-            <Paper elevation={2} noValidate sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '2em'
-            }}>
-                <Avatar
-                    sx={{bgcolor: theme.palette.primary.main, width: 50, height: 50}}
-                ><CreditCard/></Avatar>
-                <Typography variant={"h5"}>Открытие счёта</Typography>
-
-                <Box component={"form"} noValidate sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '10px',
-                    marginTop: '2em',
-                    width: '100%',
-                }} onSubmit={onCreateAccountSubmit}>
+            <Grid item md={12}>
+                <RouterBreadcrumb/>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant={"h4"}>Открытие счёта</Typography>
+            </Grid>
+            <Grid item md={8}>
+                <Stack component={"form"} noValidate onSubmit={onCreateAccountSubmit} spacing={2}>
                     <FormControl fullWidth>
                         <InputLabel id={"account-type-select"}>Тип счёта</InputLabel>
                         <Select
@@ -164,8 +149,8 @@ export function CreateAccountPage() {
                     >
                         Открыть счёт
                     </LoadingButton>
-                </Box>
-            </Paper>
-        </Container>
+                </Stack>
+            </Grid>
+        </Grid>
     )
 }

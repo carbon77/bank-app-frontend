@@ -1,21 +1,24 @@
-import {Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper, useTheme} from "@mui/material";
+import {Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, useTheme} from "@mui/material";
+import {Panel} from "./Panel";
 
 export function ButtonPanel({
                                 onClick,
                                 primaryText,
                                 secondaryText = '',
+                                direction = 'column',
                                 icon = null,
+                                sx,
                                 ...props
                             }) {
     const theme = useTheme()
 
     return (
-        <Paper {...props} elevation={2}>
+        <Panel {...props} sx={{p: 0, textDecoration: 'none', ...sx}}>
             <List sx={{p: 0}}>
                 <ListItem sx={{p: 0}}>
                     <ListItemButton onClick={onClick} sx={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: direction,
                         alignItems: 'center',
                     }}>
                         {icon ? (
@@ -32,6 +35,6 @@ export function ButtonPanel({
                     </ListItemButton>
                 </ListItem>
             </List>
-        </Paper>
+        </Panel>
     )
 }
