@@ -6,7 +6,6 @@ import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
 import {getAccountTitle, moneyInputFormatter} from "../../utils";
 import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/AccountTariffPanel";
-import {OperationsPanel} from "../../components/OperationsPanel";
 import {OperationsPieChartPanel} from "../../components/OperationsPieChartPanel";
 import {CreateCardDialog} from "../../components/CreateCardDialog";
 import {TopUpButtonPanel} from "../../components/TopUpButtonPanel";
@@ -135,10 +134,7 @@ export function AccountPage() {
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
-                    <OperationsPieChartPanel accounts={accounts} accountId={accountId}/>
-                </Grid>
-                <Grid item md={12}>
-                    <OperationsPanel accounts={accounts} accountId={accountId}/>
+                    <OperationsPieChartPanel accountId={accountId}/>
                 </Grid>
                 <Grid item md={12}>
                     <Paper elevation={2} sx={{

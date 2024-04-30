@@ -6,6 +6,7 @@ import {LoadingButton} from "@mui/lab";
 import {useDispatch} from "react-redux";
 import {loginThunk} from "../../store/authSlice";
 import {links} from "../../router/links";
+import {useShowSnackbar} from "../../utils";
 
 export function AuthPage() {
     const [isLoading, setIsLoading] = useState(false)
@@ -16,6 +17,7 @@ export function AuthPage() {
     })
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const showSnackbar = useShowSnackbar()
 
     function handleChange(name) {
         return e => {
@@ -35,6 +37,7 @@ export function AuthPage() {
         try {
             const data = await dispatch(loginThunk(loginData))
             navigate(links.home, {replace: true})
+            showSnackbar("Вы успешно вошли!")
         } catch (e) {
             setIsError(true)
         }

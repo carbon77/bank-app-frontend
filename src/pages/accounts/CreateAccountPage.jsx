@@ -17,8 +17,8 @@ import {AddCard, CreditCard} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
+import {getAccountTitle, MoneyInputFormat, useShowSnackbar} from "../../utils";
 import {useNavigate} from "react-router-dom";
-import {getAccountTitle, MoneyInputFormat} from "../../utils";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')
@@ -30,6 +30,7 @@ export function CreateAccountPage() {
     const [errorMessage, setErrorMessage] = useState('')
     const theme = useTheme()
     const dispatch = useDispatch()
+    const showSnackbar = useShowSnackbar()
     const navigate = useNavigate()
 
     const handleAccountTypeChange = (event) => {
@@ -70,7 +71,8 @@ export function CreateAccountPage() {
             setIsLoading(false)
         }
         dispatch(getAccountsThunk())
-        navigate("/?success_message=Account has created!")
+        showSnackbar("Счёт успешно создан!")
+        navigate("/")
     }
 
     return (

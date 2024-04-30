@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {createWithdrawOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
-import {MoneyInputFormat} from "../utils";
+import {MoneyInputFormat, useShowSnackbar} from "../utils";
 import {AccountSelect} from "./AccountSelect";
 
 export function WithdrawAccountModal({
@@ -17,6 +17,7 @@ export function WithdrawAccountModal({
     const dispatch = useDispatch()
     const [errorMessage, setErrorMessage] = useState('')
     const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : null)
+    const showSnackbar = useShowSnackbar()
 
     function onCloseHandle() {
         setErrorMessage('')
@@ -33,6 +34,7 @@ export function WithdrawAccountModal({
                 await dispatch(getOperationsThunk({accountId: selectedAccount}))
             }
             onCloseHandle()
+            showSnackbar("Операция успешно прошла!")
         } catch (e) {
             setErrorMessage("Недостаточно денег на счету!")
         }

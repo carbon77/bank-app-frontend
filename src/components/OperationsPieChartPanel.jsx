@@ -29,7 +29,7 @@ export function OperationsPieChartPanel({accountId = null}) {
         const categories = {}
 
         operations?.forEach((op, index) => {
-            if (op.type !== selectedType) {
+            if (op.type !== selectedType || op.status === 'FAILED') {
                 return
             }
 

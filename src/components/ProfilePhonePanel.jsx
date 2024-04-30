@@ -16,9 +16,11 @@ import React, {useState} from "react";
 import {PhoneNumberFormat} from "../pages/auth/SignUpPage";
 import {useDispatch} from "react-redux";
 import {getUserThunk, patchUserThunk} from "../store/authSlice";
+import {useShowSnackbar} from "../utils";
 
 function ProfilePhoneDialog({user, open, onClose, ...props}) {
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
+    const showSnackbar = useShowSnackbar()
     const dispatch = useDispatch()
 
     async function handleClick() {
@@ -28,13 +30,14 @@ function ProfilePhoneDialog({user, open, onClose, ...props}) {
 
         await dispatch(patchUserThunk({phoneNumber}))
         await dispatch(getUserThunk())
+        showSnackbar("Телефон успешно изменён!")
         onClose()
     }
 
     return (
         <Dialog open={open} onClose={onClose} {...props}>
             <DialogTitle>Редактирование</DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{width: '400px'}}>
                 <TextField
                     sx={{m: '1em 0'}}
                     required

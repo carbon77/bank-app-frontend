@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {createTopUpOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../store/accountSlice";
-import {MoneyInputFormat} from "../utils";
+import {MoneyInputFormat, useShowSnackbar} from "../utils";
 import {AccountSelect} from "./AccountSelect";
 
 export function TopUpAccountModal({
@@ -16,6 +16,7 @@ export function TopUpAccountModal({
     const [loading, setLoading] = useState(false)
     const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : null)
     const dispatch = useDispatch()
+    const showSnackbar = useShowSnackbar()
 
     async function handleSubmit(e) {
         setLoading(true)
@@ -26,6 +27,7 @@ export function TopUpAccountModal({
             await dispatch(getOperationsThunk({accountId: selectedAccount}))
         }
         setLoading(false)
+        showSnackbar("Операция успешно прошла!")
         onClose()
     }
 

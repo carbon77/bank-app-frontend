@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../store/authSlice";
 import {clearAccounts} from "../store/accountSlice";
 import {clearOperations} from "../store/operationSlice";
+import {useShowSnackbar} from "../utils";
 
 const LogoutDialog = ({open, handleCancel, handleAccept}) => {
     return (
@@ -59,6 +60,7 @@ export function BankAppBar() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.authorizedUser)
+    const showSnackbar = useShowSnackbar()
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -77,6 +79,7 @@ export function BankAppBar() {
         dispatch(clearAccounts())
         dispatch(clearOperations())
         navigate(links.login, {replace: true})
+        showSnackbar("Вы успешно вышли!")
     }
 
     function handleLogoutMenuClick() {

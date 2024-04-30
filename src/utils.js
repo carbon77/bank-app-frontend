@@ -1,7 +1,9 @@
-import {Add, CreditCard, CurrencyRuble, Error, Payment, Savings, SwapHoriz} from "@mui/icons-material";
+import {Add, Close, CreditCard, CurrencyRuble, Error, Payment, Savings, SwapHoriz} from "@mui/icons-material";
 import {Sector} from "recharts";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
 import React from "react";
+import {useSnackbar} from "notistack";
+import {IconButton} from "@mui/material";
 
 export function getAccountAvatarIcon(accountType) {
     if (accountType === 'CREDIT') {
@@ -25,7 +27,7 @@ export function getAccountTitle(accountType) {
 
 export function getOperationIconByCategory(op) {
     if (op.status === 'FAILED') {
-        return <Error />
+        return <Error/>
     }
 
     switch (op.category.name) {
@@ -131,4 +133,15 @@ export function MoneyInputFormat(props) {
         prefix={"₽ "}
         valueIsNumericString
     />
+}
+
+export function useShowSnackbar() {
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+
+    return function showSnackbar(text, variant = 'success') {
+        const key = enqueueSnackbar(text, {
+            variant: variant,
+            action: () => <IconButton sx={{color: 'white'}} onClick={() => closeSnackbar(key)}><Close/></IconButton>
+        })
+    }
 }

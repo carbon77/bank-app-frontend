@@ -5,7 +5,7 @@ import {links} from "../../router/links";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";
-import {CustomPatternFormat} from "../../utils";
+import {CustomPatternFormat, useShowSnackbar} from "../../utils";
 
 
 export const PhoneNumberFormat = props => {
@@ -40,8 +40,8 @@ export const SignUpPage = () => {
         birthday: getFormattedDate(),
     })
     const [errorMessage, setErrorMessage] = useState("")
-    const [successMessage, setSuccessMessage] = useState('')
     const dispatch = useDispatch()
+    const showSnackbar = useShowSnackbar()
 
     const onChangeHandler = field => e => {
         return setFormData(formData => {
@@ -84,13 +84,10 @@ export const SignUpPage = () => {
 
         try {
             await dispatch(registerThunk(registerData))
+            showSnackbar("Вы успешно зарегистрировались! Теперь вы можете войти в аккаунт")
         } catch (e) {
-            setErrorMessage(e.message)
+            setErrorMessage("Пользователь уже существует!")
         }
-        setSuccessMessage("You are signed up!")
-        setTimeout(() => {
-            setSuccessMessage("")
-        }, 2000)
     }
 
     return (
@@ -268,12 +265,6 @@ export const SignUpPage = () => {
                         {!errorMessage ? null : (
                             <Alert severity={"error"}>
                                 {errorMessage}
-                            </Alert>
-                        )}
-
-                        {!successMessage ? null : (
-                            <Alert severity={'success'}>
-                                {successMessage}
                             </Alert>
                         )}
                     </Box>

@@ -1,6 +1,6 @@
-import {Alert, FormControl, InputLabel, Stack, TextField} from "@mui/material";
+import {Alert, Stack, TextField} from "@mui/material";
 import {AccountSelect} from "./AccountSelect";
-import {CustomPatternFormat, MoneyInputFormat} from "../utils";
+import {CustomPatternFormat, MoneyInputFormat, useShowSnackbar} from "../utils";
 import {LoadingButton} from "@mui/lab";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
@@ -29,6 +29,7 @@ export function TransferForm({accountId = null, ...props}) {
     })
     const [selectedAccount, setSelectedAccount] = useState(!!accountId ? accountId : null)
     const dispatch = useDispatch()
+    const showSnackbar = useShowSnackbar()
 
     const handleChange = (field) => async (e) => {
         setTransferInfo({
@@ -65,6 +66,7 @@ export function TransferForm({accountId = null, ...props}) {
             await dispatch(getAccountsThunk())
             await dispatch(getOperationsThunk({accountId: selectedAccount}))
             setErrorMessage("")
+            showSnackbar("Перевод успешно произошёл!")
         } catch (e) {
             setErrorMessage("Недостаточно денег на счету!")
         }
