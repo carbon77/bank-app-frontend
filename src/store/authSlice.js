@@ -92,6 +92,11 @@ export const authSlice = createSlice({
             .addCase(fetchCurrenciesThunk.rejected, (state, action) => {
                 console.error(action.error)
             })
+
+            .addCase(patchUserThunk.rejected, (state, action) => {
+                console.error(action.error)
+                throw new Error(action.error.message)
+            })
     }
 })
 

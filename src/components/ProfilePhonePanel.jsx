@@ -28,10 +28,14 @@ function ProfilePhoneDialog({user, open, onClose, ...props}) {
             return
         }
 
-        await dispatch(patchUserThunk({phoneNumber}))
-        await dispatch(getUserThunk())
-        showSnackbar("Телефон успешно изменён!")
-        onClose()
+        try {
+            await dispatch(patchUserThunk({phoneNumber}))
+            await dispatch(getUserThunk())
+            showSnackbar("Телефон успешно изменён!")
+            onClose()
+        } catch (e) {
+            showSnackbar("Телефон уже занят!", "error")
+        }
     }
 
     return (
