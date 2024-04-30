@@ -20,15 +20,21 @@ export function TopUpAccountModal({
 
     async function handleSubmit(e) {
         setLoading(true)
-        await dispatch(createTopUpOperationThunk({amount: topUpAmount, accountId: selectedAccount}))
-        await dispatch(getAccountsThunk())
+        try {
+            await dispatch(createTopUpOperationThunk({amount: topUpAmount, accountId: selectedAccount}))
+            await dispatch(getAccountsThunk())
 
-        if (selectedAccount === accountId) {
-            await dispatch(getOperationsThunk({accountId: selectedAccount}))
+            if (selectedAccount === accountId) {
+                await dispatch(getOperationsThunk({accountId: selectedAccount}))
+            }
+            setLoading(false)
+            showSnackbar("Операция успешно прошла!")
+            onClose()
+        } catch (e) {
+            showSnackbar("Операция не прошла!", 'error')
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
-        showSnackbar("Операция успешно прошла!")
-        onClose()
     }
 
     function handleChange(e) {

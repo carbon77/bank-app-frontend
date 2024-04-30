@@ -68,7 +68,8 @@ export function TransferForm({accountId = null, ...props}) {
             setErrorMessage("")
             showSnackbar("Перевод успешно произошёл!")
         } catch (e) {
-            setErrorMessage("Недостаточно денег на счету!")
+            setErrorMessage("Ошибка при переводе")
+            showSnackbar("Операция не прошла!", 'error')
         }
         setLoading(false)
     }

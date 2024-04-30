@@ -37,6 +37,7 @@ export function WithdrawAccountModal({
             showSnackbar("Операция успешно прошла!")
         } catch (e) {
             setErrorMessage("Недостаточно денег на счету!")
+            showSnackbar("Операция не прошла!", 'error')
         }
         setLoading(false)
     }

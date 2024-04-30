@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
 
 export const createWithdrawOperationThunk = createAsyncThunk(
@@ -52,18 +52,6 @@ export const operationSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(createTopUpOperationThunk.rejected, (state, action) => {
-            console.error(action.error)
-        })
-
-        builder.addCase(createWithdrawOperationThunk.rejected, (state, action) => {
-            console.error(action.error)
-        })
-
-        builder.addCase(createTransferOperationThunk.rejected, (state, action) => {
-            console.error(action.error)
-        })
-
         builder.addCase(getOperationsThunk.fulfilled, (state, action) => {
             state.operations = action.payload
         })
@@ -71,6 +59,14 @@ export const operationSlice = createSlice({
         builder.addCase(getOperationsThunk.rejected, (state, action) => {
             console.error(action.error)
         })
+
+        builder.addMatcher(
+            isAnyOf(isRejected(createWithdrawOperationThunk), isRejected(createTopUpOperationThunk), isRejected(createTransferOperationThunk)),
+            (state, action) => {
+                console.error(action.error)
+                throw Error(action.error)
+            }
+        )
     },
 })
 
