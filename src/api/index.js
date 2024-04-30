@@ -83,10 +83,16 @@ async function findUserByCardNumber(cardNumber) {
     return response.data
 }
 
+async function patchUser(patchData) {
+    const response = await instance.patch('/users', patchData)
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
     getUser: getAuthorizedUser,
+    patchUser,
     getAccounts,
     createAccount,
     createCard,

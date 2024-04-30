@@ -24,6 +24,13 @@ export const getUserThunk = createAsyncThunk(
     }
 )
 
+export const patchUserThunk = createAsyncThunk(
+    'auth/patchUser',
+    async (patchData) => {
+        return await apiClient.patchUser(patchData)
+    }
+)
+
 export const fetchCurrenciesThunk = createAsyncThunk(
     'auth/fetchCurrencies',
     async () => {

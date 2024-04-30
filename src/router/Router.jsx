@@ -23,7 +23,7 @@ export function Router() {
             children: [
                 {index: true, element: <AccountSidebarTemplate><HomePage/></AccountSidebarTemplate>},
                 {path: links.operations, element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>},
-                {path: links.profile, element: <ProfilePage/>},
+                {path: links.profile, element: <AccountSidebarTemplate><ProfilePage/></AccountSidebarTemplate>},
                 {
                     path: links.accounts, children: [
                         {path: ":accountId", element: <AccountPage/>},

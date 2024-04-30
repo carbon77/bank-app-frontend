@@ -1,51 +1,52 @@
-import {useSelector} from "react-redux";
-import {Avatar, Box, Container, CssBaseline, Grid, Paper, Typography} from "@mui/material";
-import {GridBlock} from "../components/GridBlock";
+import {useSelector} from "react-redux"
+import {Avatar, Grid, Paper, Stack, Typography, useTheme} from "@mui/material"
+import {Person} from "@mui/icons-material";
+import {PassportPanel} from "../components/PassportPanel";
+import {ProfileEmailPanel} from "../components/ProfileEmailPanel";
+import {ProfilePhonePanel} from "../components/ProfilePhonePanel";
 
 export function ProfilePage() {
     const user = useSelector(state => state.auth.authorizedUser)
-
-    function avatarString() {
-        return user.firstName[0] + user.lastName[0]
-    }
+    const theme = useTheme()
 
     if (!user) {
         return <div>Loading...</div>
     }
 
     return (
-        <Container sx={{
-            display: 'flex',
-            justifyContent: 'center'
-        }}>
-            <CssBaseline/>
-            <Grid container gap={2} width={{xs: '100%', md: '50%'}} sx={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-                <Grid item component={GridBlock} sx={{
-                    display: 'flex'
-                }}>
-                    <Box>
-                        <Avatar>{avatarString()}</Avatar>
-                    </Box>
-                    <Box sx={{
-                        display: 'flex',
-                        direction: 'column'
-                    }}>
-                        <Typography>{user.firstName} {user.lastName}</Typography>
-                    </Box>
-                </Grid>
-                <Grid item component={GridBlock}>
-                    item 2
-                </Grid>
-                <Grid item component={GridBlock}>
-                    item 3
-                </Grid>
-                <Grid item component={GridBlock}>
-                    item 4
+        <Grid container spacing={2}>
+            <Grid item md={12}>
+                <Grid container spacing={2}>
+                    <Grid item md={12}>
+                        <Paper elevation={3}>
+                            <Stack spacing={2} direction={"row"} alignItems={"center"} padding={"2em"}>
+                                <Avatar sx={{
+                                    bgcolor: theme.palette.primary.main,
+                                    height: 100,
+                                    width: 100,
+                                }}><Person sx={{fontSize: 60}}/></Avatar>
+                                <Stack>
+                                    <Typography variant={"h4"}>{user.passport.firstName}</Typography>
+                                    <Typography
+                                        variant={"h4"}>{user.passport.patronimic} {user.passport.lastName[0]}.</Typography>
+                                </Stack>
+                            </Stack>
+                        </Paper>
+                    </Grid>
+
+                    <Grid item md={12}>
+                        <ProfileEmailPanel user={user}/>
+                    </Grid>
+
+                    <Grid item md={12}>
+                        <ProfilePhonePanel user={user}/>
+                    </Grid>
+
+                    <Grid item md={12}>
+                        <PassportPanel passport={user.passport}/>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Container>
+        </Grid>
     )
 }
