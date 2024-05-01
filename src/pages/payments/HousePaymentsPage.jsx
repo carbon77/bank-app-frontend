@@ -16,10 +16,12 @@ export function HousePaymentsPage() {
 
             <Grid item md={12}>
                 <Stack direction={"row"} spacing={2}>
-                    <ButtonPanel direction={"row"} icon={<ElectricBolt/>} primaryText={"Электроэнергия"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Электроэнергия"} direction={"row"}
+                                 icon={<ElectricBolt/>} primaryText={"Электроэнергия"}/>
                     <ButtonPanel component={Link} to={"/payments/pay/Газ"} direction={"row"} icon={<Whatshot/>}
                                  primaryText={"Газ"}/>
-                    <ButtonPanel direction={"row"} icon={<WaterDrop/>} primaryText={"Вода"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Водоснабжение"} direction={"row"}
+                                 icon={<WaterDrop/>} primaryText={"Водоснабжение"}/>
                 </Stack>
             </Grid>
         </Grid>

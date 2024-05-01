@@ -1,94 +1,14 @@
-import {Button, Grid, InputAdornment, Stack, Step, StepLabel, Stepper, TextField, Typography} from "@mui/material";
+import {Button, Grid, Stack, Step, StepLabel, Stepper, Typography} from "@mui/material";
 import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
 import React, {useEffect, useState} from "react";
-import {Panel} from "../../components/Panel";
-import {CustomNumericFormat, CustomPatternFormat, MoneyInputFormat, useShowSnackbar} from "../../utils";
-import {Check} from "@mui/icons-material";
-import {useParams} from "react-router-dom";
+import {useShowSnackbar} from "../../utils";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {createOperationThunk, getPaymentInfoThunk} from "../../store/operationSlice";
-import {AccountSelect} from "../../components/AccountSelect";
 import {getAccountsThunk} from "../../store/accountSlice";
-
-function PaymentInfoForm({paymentInfo, paymentData, setPaymentData}) {
-    function handleDataChange(field) {
-        return e => {
-            setPaymentData({
-                ...paymentData,
-                [field]: e.target.value,
-            })
-        }
-    }
-
-    if (!paymentInfo || !paymentData) {
-        return <div>Loading...</div>
-    }
-
-    return (
-        <Panel>
-            <Typography variant={"h5"} mb={2}>Введите данные</Typography>
-            <Stack spacing={2}>
-                {paymentInfo.fields.map(field => {
-                    const inputProps = {
-                        key: field.name,
-                        label: field.name,
-                        value: paymentData[field.name],
-                        onChange: handleDataChange(field.name),
-                        format: field.pattern,
-                        size: "small",
-                        helperText: field.description,
-                        InputProps: {
-                            startAdornment: field.prefix ?
-                                <InputAdornment position={'start'}>{field.prefix}</InputAdornment> : null,
-                            endAdornment: field.suffix ?
-                                <InputAdornment position={'end'}>{field.suffix}</InputAdornment> : null,
-                        }
-                    }
-
-                    if (field.type === 'NUMBER') {
-                        return <CustomNumericFormat {...inputProps}/>
-                    }
-
-                    if (!field.pattern) {
-                        return <TextField {...inputProps} />
-                    }
-
-                    return <CustomPatternFormat {...inputProps}/>
-                })}
-            </Stack>
-        </Panel>
-    )
-}
-
-function PaymentAmountForm({amount, setAmount, selectedAccount, setSelectedAccount}) {
-    return (
-        <Panel>
-            <Stack spacing={2}>
-
-                <Typography variant={"h5"} mb={2}>Введите сумму платежа</Typography>
-                <AccountSelect value={selectedAccount}
-                               onChange={(e) => setSelectedAccount(e.target.value)}/>
-                <TextField
-                    label={"Сумма"}
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)}
-                    InputProps={{
-                        inputComponent: MoneyInputFormat,
-                    }}
-                />
-            </Stack>
-        </Panel>
-    )
-}
-
-function PaymentSubmitElement({onClick}) {
-    return (
-        <Panel>
-            <Typography variant={"h5"} mb={2}>Подтвердите платёж</Typography>
-            <Button onClick={onClick} color={"primary"} startIcon={<Check/>} size={"large"}>Оплатить</Button>
-        </Panel>
-    )
-}
+import {PaymentInfoForm} from "../../components/PaymentInfoForm";
+import {PaymentAmountForm} from "../../components/PaymentAmountForm";
+import {PaymentSubmitForm} from "../../components/PaymentSubmitForm";
 
 const steps = [
     "Заполнение информации",
@@ -105,6 +25,7 @@ export const PaymentPage = () => {
     const paymentInfo = useSelector(state => state.operations.paymentInfo)
     const [isLoading, setIsLoading] = useState()
     const showSnackbar = useShowSnackbar()
+    const navigate = useNavigate()
     const [selectedAccount, setSelectedAccount] = useState(null)
 
     useEffect(() => {
@@ -120,7 +41,7 @@ export const PaymentPage = () => {
 
         const initialPaymentData = {}
         paymentInfo.fields.forEach(field => {
-            initialPaymentData[field.name] = field.type === 'STRING' ? '' : ''
+            initialPaymentData[field.name] = ''
         })
         setPaymentData(initialPaymentData)
     }, [paymentInfo])
@@ -130,6 +51,7 @@ export const PaymentPage = () => {
         try {
             await dispatch(getPaymentInfoThunk({categoryName}))
         } catch (e) {
+            console.error(e)
         } finally {
             setIsLoading(false)
         }
@@ -147,6 +69,7 @@ export const PaymentPage = () => {
         try {
             await dispatch(createOperationThunk(operationData))
             await dispatch(getAccountsThunk())
+            navigate("/")
             showSnackbar("Платёж успешно совершён!")
         } catch (e) {
             showSnackbar("Платёж не совершён!")
@@ -174,6 +97,9 @@ export const PaymentPage = () => {
                         <RouterBreadcrumb/>
                     </Grid>
                     <Grid item md={12}>
+                        <Typography variant={"h4"}>{categoryName}</Typography>
+                    </Grid>
+                    <Grid item md={12}>
                         <Stepper activeStep={activeStep}>
                             {steps.map((label) => (
                                 <Step key={label}>
@@ -191,14 +117,21 @@ export const PaymentPage = () => {
                                                setSelectedAccount={setSelectedAccount}
                                                selectedAccount={selectedAccount}/>
                         ) : (
-                            <PaymentSubmitElement onClick={handleSubmit}/>
+                            <PaymentSubmitForm onClick={handleSubmit}/>
                         )}
                     </Grid>
                     <Grid item md={12}>
                         <Stack direction={"row"} justifyContent={"space-between"}>
-                            <Button onClick={handleBack} color={"primary"} disabled={activeStep === 0}>Назад</Button>
-                            <Button onClick={handleNext} color={"primary"}
-                                    disabled={activeStep === steps.length - 1}>Далее</Button>
+                            <Button
+                                onClick={handleBack}
+                                color={"primary"}
+                                disabled={activeStep === 0}
+                            >Назад</Button>
+                            <Button
+                                onClick={handleNext}
+                                color={"primary"}
+                                disabled={activeStep === steps.length - 1}
+                            >Далее</Button>
                         </Stack>
                     </Grid>
                 </Grid>

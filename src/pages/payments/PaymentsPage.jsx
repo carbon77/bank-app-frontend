@@ -31,10 +31,12 @@ export function PaymentsPage() {
 
             <Grid item md={12}>
                 <Stack direction={"row"} spacing={2}>
-                    <ButtonPanel direction={"row"} icon={<CarCrash/>} primaryText={"Штрафы ГИБДД"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Штрафы ГИБДД"} direction={"row"} icon={<CarCrash/>}
+                                 primaryText={"Штрафы ГИБДД"}/>
                     <ButtonPanel component={Link} to={"/payments/pay/Мобильная связь"} direction={"row"}
                                  icon={<PhoneAndroid/>} primaryText={"Мобильная связь"}/>
-                    <ButtonPanel direction={"row"} icon={<Wifi/>} primaryText={"Интернет"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Интернет"} direction={"row"} icon={<Wifi/>}
+                                 primaryText={"Интернет"}/>
                 </Stack>
             </Grid>
 
@@ -43,8 +45,10 @@ export function PaymentsPage() {
                     <ButtonPanel component={Link} to={"/payments/house"} direction={"row"}
                                  icon={<House/>}
                                  primaryText={"ЖКХ"}/>
-                    <ButtonPanel direction={"row"} icon={<DirectionsBus/>} primaryText={"Транспортая карта"}/>
-                    <ButtonPanel direction={"row"} icon={<Receipt/>} primaryText={"По реквизитам"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Транспортная карта"} direction={"row"}
+                                 icon={<DirectionsBus/>} primaryText={"Транспортая карта"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/По реквизитам"} direction={"row"} icon={<Receipt/>}
+                                 primaryText={"По реквизитам"}/>
                 </Stack>
             </Grid>
         </Grid>

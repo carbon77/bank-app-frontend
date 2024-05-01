@@ -1,14 +1,17 @@
 import {
-    Add,
+    Add, CarCrash,
     Close,
     CreditCard,
-    CurrencyRuble,
+    CurrencyRuble, DirectionsBus,
+    ElectricBolt,
     Error,
     Payment,
-    PhoneAndroid,
+    PhoneAndroid, Receipt,
     Savings,
     SwapHoriz,
-    Whatshot
+    WaterDrop,
+    Whatshot,
+    Wifi
 } from "@mui/icons-material";
 import {Sector} from "recharts";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
@@ -52,6 +55,18 @@ export function getOperationIconByCategory(op) {
             return <PhoneAndroid/>
         case 'Газ':
             return <Whatshot/>
+        case 'Водоснабжение':
+            return <WaterDrop/>
+        case 'Электроэнергия':
+            return <ElectricBolt/>
+        case 'Интернет':
+            return <Wifi/>
+        case 'Штрафы ГИБДД':
+            return <CarCrash/>
+        case 'По реквизитам':
+            return <Receipt/>
+        case 'Транспортая карта':
+            return <DirectionsBus/>
     }
     return <CurrencyRuble/>
 }
