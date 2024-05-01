@@ -53,9 +53,25 @@ export const getPaymentInfoThunk = createAsyncThunk(
     }
 )
 
+export const getOperationCategoriesThunk = createAsyncThunk(
+    "operations/categories",
+    async ({accountId = null}) => {
+        return await apiClient.getOperationCategoryGroups({accountId})
+    }
+)
+
+export const getOperationsStatsByMonthsThunk = createAsyncThunk(
+    "operations/stats/months",
+    async ({accountId = null}) => {
+        return await apiClient.getOperationStatsByMonths({accountId})
+    }
+)
+
 const initialState = {
     operations: null,
     paymentInfo: null,
+    categoryGroups: null,
+    operationStats: null,
 }
 
 export const operationSlice = createSlice({
@@ -68,6 +84,14 @@ export const operationSlice = createSlice({
         }
     },
     extraReducers: builder => {
+        builder.addCase(getOperationsStatsByMonthsThunk.fulfilled, (state, action) => {
+            state.operationStats = action.payload
+        })
+
+        builder.addCase(getOperationCategoriesThunk.fulfilled, (state, action) => {
+            state.categoryGroups = action.payload
+        })
+
         builder.addCase(getPaymentInfoThunk.fulfilled, (state, action) => {
             state.paymentInfo = action.payload
         })
@@ -87,6 +111,8 @@ export const operationSlice = createSlice({
                 isRejected(createTransferOperationThunk),
                 isRejected(createOperationThunk),
                 isRejected(getPaymentInfoThunk),
+                isRejected(getOperationCategoriesThunk),
+                isRejected(getOperationsStatsByMonthsThunk),
             ),
             (state, action) => {
                 console.error(action.error)

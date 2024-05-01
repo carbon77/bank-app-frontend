@@ -15,6 +15,7 @@ import {Panel} from "../../components/Panel";
 import {AccountPageName} from "../../components/AccountPageName";
 import {darkTheme} from "../../theme";
 import {Add, Block} from "@mui/icons-material";
+import {OperationsBarChartPanel} from "../../components/OperationsBarChartPanel";
 
 const TabPanel = ({
                       children, value, index
@@ -119,6 +120,9 @@ export function AccountPage() {
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
                     <OperationsPieChartPanel accountId={accountId}/>
+                </Grid>
+                <Grid item md={12}>
+                    <OperationsBarChartPanel accountId={accountId}/>
                 </Grid>
                 <Grid item md={12}>
                     <Panel>

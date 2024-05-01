@@ -101,6 +101,24 @@ async function patchCard({accountId, cardId, data}) {
     return await instance.patch(`/account/${accountId}/card/${cardId}`, data)
 }
 
+async function getOperationCategoryGroups({accountId = null}) {
+    const response = await instance.get("/operations/categories", {
+        params: {
+            accountId,
+        },
+    })
+    return response.data
+}
+
+async function getOperationStatsByMonths({accountId = null}) {
+    const response = await instance.get("/operations/stats/months", {
+        params: {
+            accountId,
+        },
+    })
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
@@ -117,6 +135,8 @@ export const apiClient = {
     findPaymentInfo,
     patchAccount,
     patchCard,
+    getOperationCategoryGroups,
+    getOperationStatsByMonths,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

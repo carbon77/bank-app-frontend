@@ -1,19 +1,21 @@
 import {
-    Add, CarCrash,
+    Add,
+    CarCrash,
     Close,
     CreditCard,
-    CurrencyRuble, DirectionsBus,
+    CurrencyRuble,
+    DirectionsBus,
     ElectricBolt,
     Error,
     Payment,
-    PhoneAndroid, Receipt,
+    PhoneAndroid,
+    Receipt,
     Savings,
     SwapHoriz,
     WaterDrop,
     Whatshot,
     Wifi
 } from "@mui/icons-material";
-import {Sector} from "recharts";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
 import React from "react";
 import {useSnackbar} from "notistack";
@@ -91,39 +93,6 @@ export function convertDate(inputString) {
 
     return `${formattedDate}`
 }
-
-export const renderActiveShape = (props) => {
-    const {cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value} = props;
-
-    return (
-        <g>
-            <text x={cx} y={cy} dy={-5} textAnchor="middle" fill={fill}>
-                {payload.name}
-            </text>
-            <text x={cx} y={cy} dy={20} textAnchor="middle" fill={fill}>
-                {payload.value} ₽
-            </text>
-            <Sector
-                cx={cx}
-                cy={cy}
-                innerRadius={innerRadius}
-                outerRadius={outerRadius}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                fill={fill}
-            />
-            <Sector
-                cx={cx}
-                cy={cy}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                innerRadius={outerRadius + 6}
-                outerRadius={outerRadius + 10}
-                fill={fill}
-            />
-        </g>
-    );
-};
 
 export function CustomPatternFormat({value, onChange, format, ...other}) {
     return <PatternFormat
