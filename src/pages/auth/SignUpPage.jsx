@@ -7,15 +7,6 @@ import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";
 import {CustomPatternFormat, useShowSnackbar} from "../../utils";
 
-
-export const PhoneNumberFormat = props => {
-    return <CustomPatternFormat {...props} format={"+# (###) ###-##-##"} mask={"_"}/>
-}
-
-export const DepartmentCodeFormat = props => {
-    return <CustomPatternFormat {...props} format={"###-###"} mask={"_"}/>
-}
-
 function getFormattedDate() {
     const today = new Date()
     const year = today.getFullYear()
@@ -102,7 +93,6 @@ export const SignUpPage = () => {
                     alignItems: 'center',
                     gap: 1,
                     p: 2,
-                    mt: 8
                 }}
             >
                 <Avatar sx={{bgcolor: 'primary.main'}}>
@@ -151,16 +141,15 @@ export const SignUpPage = () => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
+                            <CustomPatternFormat
                                 required
                                 fullWidth
                                 label={"Телефон"}
                                 size={"small"}
                                 value={formData.phoneNumber}
                                 onChange={onChangeHandler('phoneNumber')}
-                                InputProps={{
-                                    inputComponent: PhoneNumberFormat,
-                                }}
+                                format={"+# (###) ###-##-##"}
+                                mask={"_"}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -202,29 +191,31 @@ export const SignUpPage = () => {
                         </Grid>
 
                         <Grid item xs={6}>
-                            <TextField
+                            <CustomPatternFormat
                                 required
                                 fullWidth
                                 label="Серия"
-                                type="number"
                                 size={"small"}
                                 value={formData.series}
                                 onChange={onChangeHandler("series")}
+                                format={"## ##"}
+                                mask={"_"}
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
+                            <CustomPatternFormat
                                 required
                                 fullWidth
                                 label="Номер"
-                                type="number"
                                 size={"small"}
                                 value={formData.number}
                                 onChange={onChangeHandler("number")}
+                                format={"######"}
+                                mask={"_"}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
+                            <CustomPatternFormat
                                 required
                                 fullWidth
                                 label="Код подразделения"
@@ -232,9 +223,8 @@ export const SignUpPage = () => {
                                 size={"small"}
                                 value={formData.departmentCode}
                                 onChange={onChangeHandler("departmentCode")}
-                                InputProps={{
-                                    inputComponent: DepartmentCodeFormat,
-                                }}
+                                format={"###-###"}
+                                mask={"_"}
                             />
                         </Grid>
                         <Grid item xs={12}>

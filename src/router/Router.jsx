@@ -15,6 +15,7 @@ import {AccountPage} from "../pages/accounts/AccountPage";
 import {CardPage} from "../pages/CardPage";
 import {PaymentsPage} from "../pages/payments/PaymentsPage";
 import {HousePaymentsPage} from "../pages/payments/HousePaymentsPage";
+import {PaymentPage} from "../pages/payments/PaymentPage";
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -57,6 +58,13 @@ export function Router() {
                                 title: "ЖКХ",
                             },
                             element: <AccountSidebarTemplate><HousePaymentsPage/></AccountSidebarTemplate>,
+                        },
+                        {
+                            path: "pay/:categoryName",
+                            handle: {
+                                title: "Оплата",
+                            },
+                            element: <AccountSidebarTemplate><PaymentPage /></AccountSidebarTemplate>
                         }
                     ]
                 },

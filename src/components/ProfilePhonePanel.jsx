@@ -7,16 +7,14 @@ import {
     IconButton,
     Paper,
     Stack,
-    TextField,
     Typography
 } from "@mui/material";
 import {Edit} from "@mui/icons-material";
 import {patternFormatter} from "react-number-format";
 import React, {useState} from "react";
-import {PhoneNumberFormat} from "../pages/auth/SignUpPage";
 import {useDispatch} from "react-redux";
 import {getUserThunk, patchUserThunk} from "../store/authSlice";
-import {useShowSnackbar} from "../utils";
+import {CustomPatternFormat, useShowSnackbar} from "../utils";
 
 function ProfilePhoneDialog({user, open, onClose, ...props}) {
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)
@@ -42,16 +40,14 @@ function ProfilePhoneDialog({user, open, onClose, ...props}) {
         <Dialog open={open} onClose={onClose} {...props}>
             <DialogTitle>Редактирование</DialogTitle>
             <DialogContent sx={{width: '400px'}}>
-                <TextField
+                <CustomPatternFormat
                     sx={{m: '1em 0'}}
                     required
                     fullWidth
                     label={"Телефон"}
+                    format={"+# (###) ###-##-##"}
                     value={phoneNumber}
                     onChange={e => setPhoneNumber(e.target.value)}
-                    InputProps={{
-                        inputComponent: PhoneNumberFormat,
-                    }}
                 />
                 <DialogActions>
                     <Button onClick={onClose} color={"primary"} value={"outlined"}>Отмена</Button>

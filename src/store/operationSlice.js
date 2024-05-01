@@ -1,6 +1,13 @@
 import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
 
+export const createOperationThunk = createAsyncThunk(
+    "operations/create",
+    async (operationData) => {
+        return await apiClient.createOperation(operationData)
+    }
+)
+
 export const createWithdrawOperationThunk = createAsyncThunk(
     "operations/withdraw",
     async ({amount, accountId}) => {
@@ -39,8 +46,16 @@ export const getOperationsThunk = createAsyncThunk(
     }
 )
 
+export const getPaymentInfoThunk = createAsyncThunk(
+    "operations/getPaymentInfo",
+    async ({categoryName}) => {
+        return await apiClient.findPaymentInfo(categoryName)
+    }
+)
+
 const initialState = {
     operations: null,
+    paymentInfo: null,
 }
 
 export const operationSlice = createSlice({
@@ -49,9 +64,14 @@ export const operationSlice = createSlice({
     reducers: {
         clearOperations(state) {
             state.operations = null
+            state.paymentInfo = null
         }
     },
     extraReducers: builder => {
+        builder.addCase(getPaymentInfoThunk.fulfilled, (state, action) => {
+            state.paymentInfo = action.payload
+        })
+
         builder.addCase(getOperationsThunk.fulfilled, (state, action) => {
             state.operations = action.payload
         })
@@ -61,7 +81,13 @@ export const operationSlice = createSlice({
         })
 
         builder.addMatcher(
-            isAnyOf(isRejected(createWithdrawOperationThunk), isRejected(createTopUpOperationThunk), isRejected(createTransferOperationThunk)),
+            isAnyOf(
+                isRejected(createWithdrawOperationThunk),
+                isRejected(createTopUpOperationThunk),
+                isRejected(createTransferOperationThunk),
+                isRejected(createOperationThunk),
+                isRejected(getPaymentInfoThunk),
+            ),
             (state, action) => {
                 console.error(action.error)
                 throw Error(action.error)

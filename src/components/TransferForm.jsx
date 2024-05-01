@@ -8,15 +8,6 @@ import {apiClient} from "../api";
 import {createTransferOperationThunk, getOperationsThunk} from "../store/operationSlice";
 import {getAccountsThunk} from "../store/accountSlice";
 
-function ToNumberFormat(props) {
-    return <CustomPatternFormat
-        {...props}
-        format={"#### #### #### ####"}
-        mask={"_"}
-        valueIsNumericString
-    />
-}
-
 export function TransferForm({accountId = null, ...props}) {
     const [foundUser, setFoundUser] = useState(null)
     const [userNotFoundError, setUserNotFoundError] = useState(false)
@@ -78,7 +69,7 @@ export function TransferForm({accountId = null, ...props}) {
         <Stack {...props} component={'form'} onSubmit={handleSubmit} spacing={2} mt={2}>
             <AccountSelect value={selectedAccount}
                            onChange={(e) => setSelectedAccount(e.target.value)}/>
-            <TextField
+            <CustomPatternFormat
                 required
                 label={"Номер получателя"}
                 fullWidth
@@ -86,9 +77,8 @@ export function TransferForm({accountId = null, ...props}) {
                 onChange={handleChange("recipientCard")}
                 size={"small"}
                 name={"toNumber"}
-                InputProps={{
-                    inputComponent: ToNumberFormat,
-                }}
+                format={"#### #### #### ####"}
+                mask={"_"}
             />
             {foundUser ? (
                 <Alert

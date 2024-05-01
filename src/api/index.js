@@ -88,6 +88,11 @@ async function patchUser(patchData) {
     return response.data
 }
 
+async function findPaymentInfo(categoryName) {
+    const response = await instance.get(`/payments/info/${categoryName}`)
+    return response.data
+}
+
 export const apiClient = {
     login,
     register,
@@ -101,6 +106,7 @@ export const apiClient = {
     getOperations,
     findUserByCardNumber,
     createTransfer,
+    findPaymentInfo,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`

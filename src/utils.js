@@ -1,9 +1,20 @@
-import {Add, Close, CreditCard, CurrencyRuble, Error, Payment, Savings, SwapHoriz} from "@mui/icons-material";
+import {
+    Add,
+    Close,
+    CreditCard,
+    CurrencyRuble,
+    Error,
+    Payment,
+    PhoneAndroid,
+    Savings,
+    SwapHoriz,
+    Whatshot
+} from "@mui/icons-material";
 import {Sector} from "recharts";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
 import React from "react";
 import {useSnackbar} from "notistack";
-import {IconButton} from "@mui/material";
+import {IconButton, TextField} from "@mui/material";
 
 export function getAccountAvatarIcon(accountType) {
     if (accountType === 'CREDIT') {
@@ -37,6 +48,10 @@ export function getOperationIconByCategory(op) {
             return <Payment/>
         case 'Перевод':
             return <SwapHoriz/>
+        case 'Мобильная связь':
+            return <PhoneAndroid/>
+        case 'Газ':
+            return <Whatshot/>
     }
     return <CurrencyRuble/>
 }
@@ -95,19 +110,34 @@ export const renderActiveShape = (props) => {
     );
 };
 
-export const CustomPatternFormat = React.forwardRef(
-    function CustomPatternFormat(props, ref) {
-        const {onChange, ...other} = props
-        return <PatternFormat
-            {...other}
-            onValueChange={values => {
-                onChange({
-                    target: values,
-                })
-            }}
-        />
-    }
-)
+export function CustomPatternFormat({value, onChange, format, ...other}) {
+    return <PatternFormat
+        {...other}
+        format={format}
+        value={value}
+        onValueChange={values => {
+            onChange({
+                target: values
+            })
+        }}
+        customInput={TextField}
+    />
+}
+
+export function CustomNumericFormat({value, onChange, format, ...other}) {
+    return <NumericFormat
+        {...other}
+        value={value}
+        onValueChange={values => {
+            onChange({
+                target: values
+            })
+        }}
+        customInput={TextField}
+        thousandSeparator={' '}
+        decimalSeparator={','}
+    />
+}
 
 export const moneyInputFormatter = (numString, options = {}) => numericFormatter(numString, {
     thousandSeparator: ' ',
@@ -115,25 +145,27 @@ export const moneyInputFormatter = (numString, options = {}) => numericFormatter
     ...options,
 })
 
-export function MoneyInputFormat(props) {
-    const {onChange, ...other} = props
-    return <NumericFormat
-        {...other}
-        onValueChange={(values) => {
-            onChange({
-                target: {
-                    value: values.value,
-                }
-            })
-        }}
-        thousandSeparator={' '}
-        decimalSeparator={','}
-        allowedDecimalSeparators={['.']}
-        decimalScale={2}
-        prefix={"₽ "}
-        valueIsNumericString
-    />
-}
+export const MoneyInputFormat = React.forwardRef(
+    function MoneyInputFormat(props) {
+        const {onChange, ...other} = props
+        return <NumericFormat
+            {...other}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        value: values.value,
+                    }
+                })
+            }}
+            thousandSeparator={' '}
+            decimalSeparator={','}
+            allowedDecimalSeparators={['.']}
+            decimalScale={2}
+            prefix={"₽ "}
+            valueIsNumericString
+        />
+    }
+)
 
 export function useShowSnackbar() {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar()

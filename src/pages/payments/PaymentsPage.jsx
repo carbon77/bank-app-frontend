@@ -1,5 +1,5 @@
 import {Grid, Stack, Typography} from "@mui/material";
-import {CarCrash, DirectionsBus, Games, House, PhoneAndroid, Wifi} from "@mui/icons-material";
+import {CarCrash, DirectionsBus, House, PhoneAndroid, Receipt, Wifi} from "@mui/icons-material";
 import {ButtonPanel} from "../../components/ButtonPanel";
 import {TopUpButtonPanel} from "../../components/TopUpButtonPanel";
 import {WithdrawButtonPanel} from "../../components/WithdrawButtonPanel";
@@ -32,7 +32,8 @@ export function PaymentsPage() {
             <Grid item md={12}>
                 <Stack direction={"row"} spacing={2}>
                     <ButtonPanel direction={"row"} icon={<CarCrash/>} primaryText={"Штрафы ГИБДД"}/>
-                    <ButtonPanel direction={"row"} icon={<PhoneAndroid/>} primaryText={"Мобильная связь"}/>
+                    <ButtonPanel component={Link} to={"/payments/pay/Мобильная связь"} direction={"row"}
+                                 icon={<PhoneAndroid/>} primaryText={"Мобильная связь"}/>
                     <ButtonPanel direction={"row"} icon={<Wifi/>} primaryText={"Интернет"}/>
                 </Stack>
             </Grid>
@@ -43,7 +44,7 @@ export function PaymentsPage() {
                                  icon={<House/>}
                                  primaryText={"ЖКХ"}/>
                     <ButtonPanel direction={"row"} icon={<DirectionsBus/>} primaryText={"Транспортая карта"}/>
-                    <ButtonPanel direction={"row"} icon={<Games/>} primaryText={"Игры"}/>
+                    <ButtonPanel direction={"row"} icon={<Receipt/>} primaryText={"По реквизитам"}/>
                 </Stack>
             </Grid>
         </Grid>

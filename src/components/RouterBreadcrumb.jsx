@@ -1,6 +1,6 @@
 import {Breadcrumbs, Link, Typography} from "@mui/material";
 import {Link as RouterLink, useMatches} from "react-router-dom";
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 
 function LinkRouter(props) {
     return <Link {...props} component={RouterLink}/>;
@@ -9,10 +9,6 @@ function LinkRouter(props) {
 export const RouterBreadcrumb = () => {
     const matches = useMatches()
     const links = useMemo(() => matches.filter(({pathname}) => pathname === '/' || !pathname.endsWith('/')), [matches])
-
-    useEffect(() => {
-        console.log(matches)
-    }, [matches])
 
     return (
         <Breadcrumbs>
