@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
-import axios from "axios";
 
 export const getAccountsThunk = createAsyncThunk(
     '/accounts/get',
@@ -27,6 +26,20 @@ export const deleteCardThunk = createAsyncThunk(
     '/accounts/cards/delete',
     async ({accountId, cardId}) => {
         return await apiClient.deleteCard(accountId, cardId)
+    }
+)
+
+export const patchAccountThunk = createAsyncThunk(
+    '/accounts/patch',
+    async ({accountId, data}) => {
+        return await apiClient.patchAccount({accountId, data})
+    }
+)
+
+export const patchCardThunk = createAsyncThunk(
+    '/accounts/cards/patch',
+    async ({accountId, cardId, data}) => {
+        return await apiClient.patchCard({accountId, cardId, data})
     }
 )
 

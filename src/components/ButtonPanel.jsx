@@ -4,10 +4,11 @@ import {Panel} from "./Panel";
 export function ButtonPanel({
                                 onClick,
                                 primaryText,
+                                sx,
                                 secondaryText = '',
                                 direction = 'column',
                                 icon = null,
-                                sx,
+                                disabled = false,
                                 ...props
                             }) {
     const theme = useTheme()
@@ -20,7 +21,7 @@ export function ButtonPanel({
                         display: 'flex',
                         flexDirection: direction,
                         alignItems: 'center',
-                    }}>
+                    }} disabled={disabled}>
                         {icon ? (
                             <ListItemAvatar sx={{
                                 display: 'flex',

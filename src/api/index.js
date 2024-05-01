@@ -93,6 +93,14 @@ async function findPaymentInfo(categoryName) {
     return response.data
 }
 
+async function patchAccount({accountId, data}) {
+    return await instance.patch(`/account/${accountId}`, data)
+}
+
+async function patchCard({accountId, cardId, data}) {
+    return await instance.patch(`/account/${accountId}/card/${cardId}`, data)
+}
+
 export const apiClient = {
     login,
     register,
@@ -107,6 +115,8 @@ export const apiClient = {
     findUserByCardNumber,
     createTransfer,
     findPaymentInfo,
+    patchAccount,
+    patchCard,
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
