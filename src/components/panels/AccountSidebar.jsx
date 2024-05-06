@@ -48,7 +48,7 @@ export function AccountSidebar() {
     }
 
     return (<Paper elevation={2} sx={{
-        display: 'flex', flexDirection: 'column', borderRadius: '1em',
+        display: 'flex', flexDirection: 'column',
     }}>
         <Box sx={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '.5em 2em',
