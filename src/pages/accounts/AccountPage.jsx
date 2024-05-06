@@ -4,18 +4,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
 import {getAccountTitle, moneyInputFormatter} from "../../utils";
-import {AccountDetailsPanel} from "../../components/AccountDetailsPanel";
-import {AccountTariffPanel} from "../../components/AccountTariffPanel";
-import {OperationsPieChartPanel} from "../../components/OperationsPieChartPanel";
-import {CreateCardDialog} from "../../components/CreateCardDialog";
-import {TopUpButtonPanel} from "../../components/TopUpButtonPanel";
-import {WithdrawButtonPanel} from "../../components/WithdrawButtonPanel";
-import {TransferButtonPanel} from "../../components/TransferButtonPanel";
-import {Panel} from "../../components/Panel";
-import {AccountPageName} from "../../components/AccountPageName";
+import {AccountDetailsPanel} from "../../components/panels/AccountDetailsPanel";
+import {AccountTariffPanel} from "../../components/panels/AccountTariffPanel";
+import {OperationsPieChartPanel} from "../../components/panels/OperationsPieChartPanel";
+import {CreateCardDialog} from "../../components/forms/CreateCardDialog";
+import {TopUpButtonPanel} from "../../components/panels/TopUpButtonPanel";
+import {WithdrawButtonPanel} from "../../components/panels/WithdrawButtonPanel";
+import {TransferButtonPanel} from "../../components/panels/TransferButtonPanel";
+import {Panel} from "../../components/panels/Panel";
+import {AccountPageName} from "../../components/shared/AccountPageName";
 import {darkTheme} from "../../theme";
 import {Add, Block} from "@mui/icons-material";
-import {OperationsBarChartPanel} from "../../components/OperationsBarChartPanel";
+import {OperationsBarChartPanel} from "../../components/panels/OperationsBarChartPanel";
 
 const TabPanel = ({
                       children, value, index

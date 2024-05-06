@@ -1,7 +1,7 @@
 import {Alert, Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import {AssignmentInd, LoginRounded} from "@mui/icons-material";
 import {Link as RouterLink} from "react-router-dom";
-import {links} from "../../router/links";
+import {links} from "../../links";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";

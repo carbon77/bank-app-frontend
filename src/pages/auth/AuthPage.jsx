@@ -5,7 +5,7 @@ import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
 import {useDispatch} from "react-redux";
 import {loginThunk} from "../../store/authSlice";
-import {links} from "../../router/links";
+import {links} from "../../links";
 import {useShowSnackbar} from "../../utils";
 
 export function AuthPage() {

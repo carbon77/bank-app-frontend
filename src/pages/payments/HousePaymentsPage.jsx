@@ -1,6 +1,6 @@
 import {Grid, Stack, Typography} from "@mui/material";
-import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
-import {ButtonPanel} from "../../components/ButtonPanel";
+import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
+import {ButtonPanel} from "../../components/panels/ButtonPanel";
 import {ElectricBolt, WaterDrop, Whatshot} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 

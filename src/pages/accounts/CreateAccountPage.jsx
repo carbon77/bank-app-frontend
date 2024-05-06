@@ -16,7 +16,7 @@ import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountTitle, MoneyInputFormat, useShowSnackbar} from "../../utils";
 import {useNavigate} from "react-router-dom";
-import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
+import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')

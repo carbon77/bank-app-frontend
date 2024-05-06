@@ -1,10 +1,10 @@
 import {useSelector} from "react-redux"
 import {Avatar, Grid, Paper, Stack, Typography, useTheme} from "@mui/material"
 import {Person} from "@mui/icons-material";
-import {PassportPanel} from "../components/PassportPanel";
-import {ProfileEmailPanel} from "../components/ProfileEmailPanel";
-import {ProfilePhonePanel} from "../components/ProfilePhonePanel";
-import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
+import {PassportPanel} from "../components/panels/PassportPanel";
+import {ProfileEmailPanel} from "../components/panels/ProfileEmailPanel";
+import {ProfilePhonePanel} from "../components/panels/ProfilePhonePanel";
+import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
 
 export function ProfilePage() {
     const user = useSelector(state => state.auth.authorizedUser)

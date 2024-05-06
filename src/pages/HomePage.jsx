@@ -1,9 +1,9 @@
 import {Grid, Stack} from "@mui/material";
-import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
-import {TransferPanel} from "../components/TransferPanel";
-import {TopUpButtonPanel} from "../components/TopUpButtonPanel";
-import {WithdrawButtonPanel} from "../components/WithdrawButtonPanel";
-import {CurrenciesPanel} from "../components/CurrenciesPanel";
+import {OperationsPieChartPanel} from "../components/panels/OperationsPieChartPanel";
+import {TransferPanel} from "../components/panels/TransferPanel";
+import {TopUpButtonPanel} from "../components/panels/TopUpButtonPanel";
+import {WithdrawButtonPanel} from "../components/panels/WithdrawButtonPanel";
+import {CurrenciesPanel} from "../components/panels/CurrenciesPanel";
 
 export function HomePage() {
     return (

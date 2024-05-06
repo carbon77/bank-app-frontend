@@ -1,14 +1,14 @@
 import {Button, Grid, Stack, Step, StepLabel, Stepper, Typography} from "@mui/material";
-import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
+import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
 import React, {useEffect, useState} from "react";
 import {useShowSnackbar} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {createOperationThunk, getPaymentInfoThunk} from "../../store/operationSlice";
 import {getAccountsThunk} from "../../store/accountSlice";
-import {PaymentInfoForm} from "../../components/PaymentInfoForm";
-import {PaymentAmountForm} from "../../components/PaymentAmountForm";
-import {PaymentSubmitForm} from "../../components/PaymentSubmitForm";
+import {PaymentInfoForm} from "../../components/forms/PaymentInfoForm";
+import {PaymentAmountForm} from "../../components/forms/PaymentAmountForm";
+import {PaymentSubmitForm} from "../../components/forms/PaymentSubmitForm";
 
 const steps = [
     "Заполнение информации",

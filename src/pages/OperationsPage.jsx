@@ -1,8 +1,8 @@
 import {Grid, Stack, Typography} from "@mui/material";
-import {OperationsPanel} from "../components/OperationsPanel";
+import {OperationsPanel} from "../components/panels/OperationsPanel";
 import {useSelector} from "react-redux";
-import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
-import {ButtonPanel} from "../components/ButtonPanel";
+import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
+import {ButtonPanel} from "../components/panels/ButtonPanel";
 import {AddCard, ShoppingCart} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 

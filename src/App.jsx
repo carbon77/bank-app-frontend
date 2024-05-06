@@ -1,4 +1,4 @@
-import {Router} from "./router/Router";
+import {Router} from "./Router";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "./theme";
 import {Provider} from "react-redux";

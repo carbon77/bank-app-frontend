@@ -1,10 +1,10 @@
 import {Grid, Stack, Typography} from "@mui/material";
 import {CarCrash, DirectionsBus, House, PhoneAndroid, Receipt, Wifi} from "@mui/icons-material";
-import {ButtonPanel} from "../../components/ButtonPanel";
-import {TopUpButtonPanel} from "../../components/TopUpButtonPanel";
-import {WithdrawButtonPanel} from "../../components/WithdrawButtonPanel";
-import {TransferPanel} from "../../components/TransferPanel";
-import {RouterBreadcrumb} from "../../components/RouterBreadcrumb";
+import {ButtonPanel} from "../../components/panels/ButtonPanel";
+import {TopUpButtonPanel} from "../../components/panels/TopUpButtonPanel";
+import {WithdrawButtonPanel} from "../../components/panels/WithdrawButtonPanel";
+import {TransferPanel} from "../../components/panels/TransferPanel";
+import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
 import {Link} from "react-router-dom";
 
 export function PaymentsPage() {

@@ -1,14 +1,14 @@
 import {Button, ButtonGroup, Grid, Stack, Typography} from "@mui/material";
-import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
+import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
 import {useEffect, useMemo, useState} from "react";
 import {BarChart, DonutLarge} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {getOperationsThunk} from "../store/operationSlice";
-import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
-import {OperationsBarChartPanel} from "../components/OperationsBarChartPanel";
+import {OperationsPieChartPanel} from "../components/panels/OperationsPieChartPanel";
+import {OperationsBarChartPanel} from "../components/panels/OperationsBarChartPanel";
 import {moneyInputFormatter} from "../utils";
 import {useSearchParams} from "react-router-dom";
-import {AccountMultiSelect} from "../components/AccountMultiSelect";
+import {AccountMultiSelect} from "../components/shared/AccountMultiSelect";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 

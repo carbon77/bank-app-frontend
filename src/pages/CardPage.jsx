@@ -5,9 +5,9 @@ import {Alert, Grid, Stack, TextField, ThemeProvider, Typography} from "@mui/mat
 import {deleteCardThunk, getAccountsThunk, patchCardThunk} from "../store/accountSlice";
 import {getAccountAvatarIcon, moneyInputFormatter, useShowSnackbar} from "../utils";
 import {Delete, Lock, LockOpen} from "@mui/icons-material";
-import {Panel} from "../components/Panel";
+import {Panel} from "../components/panels/Panel";
 import {darkTheme} from "../theme";
-import {ButtonPanel} from "../components/ButtonPanel";
+import {ButtonPanel} from "../components/panels/ButtonPanel";
 
 export function CardPage() {
     const {cardId} = useParams()
