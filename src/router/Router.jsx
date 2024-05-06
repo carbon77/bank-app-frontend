@@ -16,6 +16,7 @@ import {CardPage} from "../pages/CardPage";
 import {PaymentsPage} from "../pages/payments/PaymentsPage";
 import {HousePaymentsPage} from "../pages/payments/HousePaymentsPage";
 import {PaymentPage} from "../pages/payments/PaymentPage";
+import {AnalyticsPage} from "../pages/AnalyticsPage";
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -33,7 +34,19 @@ export function Router() {
                     handle: {
                         title: 'Операции',
                     },
-                    element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>,
+                    children: [
+                        {
+                            index: true,
+                            element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>,
+                        },
+                        {
+                            path: 'analytics',
+                            element: <AccountSidebarTemplate><AnalyticsPage/></AccountSidebarTemplate>,
+                            handle: {
+                                title: 'Анализ финансов',
+                            },
+                        },
+                    ],
                 },
                 {
                     path: links.profile,
@@ -64,7 +77,7 @@ export function Router() {
                             handle: {
                                 title: "Оплата",
                             },
-                            element: <AccountSidebarTemplate><PaymentPage /></AccountSidebarTemplate>
+                            element: <AccountSidebarTemplate><PaymentPage/></AccountSidebarTemplate>
                         }
                     ]
                 },

@@ -5,7 +5,11 @@ import {getOperationsStatsByMonthsThunk} from "../store/operationSlice";
 import {Stack, Typography} from "@mui/material";
 import {BarChart} from "@mui/x-charts";
 
-export function OperationsBarChartPanel({accountId = null}) {
+export function OperationsBarChartPanel({
+                                            accountIds = null,
+                                            startDate = null,
+                                            endDate = null,
+}) {
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(true)
     const operationStats = useSelector(state => state.operations.operationStats)
@@ -41,17 +45,17 @@ export function OperationsBarChartPanel({accountId = null}) {
 
     async function handleFetchState() {
         setIsLoading(true)
-        await dispatch(getOperationsStatsByMonthsThunk({accountId}))
+        await dispatch(getOperationsStatsByMonthsThunk({
+            accountIds,
+            startDate,
+            endDate,
+        }))
         setIsLoading(false)
     }
 
     useEffect(() => {
         handleFetchState()
-    }, [accountId])
-
-    useEffect(() => {
-        console.log(operationStatsData)
-    }, [operationStatsData])
+    }, [accountIds])
 
     if (isLoading) {
         return <div>Loading...</div>

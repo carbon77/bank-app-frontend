@@ -13,6 +13,7 @@ instance.interceptors.response.use(
             if (error.response.status === 410) {
                 console.warn("JWT token expired")
                 localStorage.removeItem("auth_token")
+                return Promise.error("JWT expired")
             }
         } else {
             console.error(error)
@@ -101,21 +102,35 @@ async function patchCard({accountId, cardId, data}) {
     return await instance.patch(`/account/${accountId}/card/${cardId}`, data)
 }
 
-async function getOperationCategoryGroups({accountId = null}) {
-    const response = await instance.get("/operations/categories", {
+async function getOperationCategoryGroups({
+                                              accountIds = null,
+                                              startDate = null,
+                                              endDate = null
+                                          }) {
+    const params = {
         params: {
-            accountId,
+            accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),
+            startDate: startDate?.format(),
+            endDate: endDate?.format(),
         },
-    })
+    }
+    const response = await instance.get("/operations/stats/categories", params)
     return response.data
 }
 
-async function getOperationStatsByMonths({accountId = null}) {
-    const response = await instance.get("/operations/stats/months", {
+async function getOperationStatsByMonths({
+                                             accountIds = null,
+                                             startDate = null,
+                                             endDate = null
+                                         }) {
+    const params = {
         params: {
-            accountId,
+            accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),
+            startDate: startDate?.format(),
+            endDate: endDate?.format(),
         },
-    })
+    }
+    const response = await instance.get("/operations/stats/months", params)
     return response.data
 }
 

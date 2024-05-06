@@ -119,10 +119,10 @@ export function AccountPage() {
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
-                    <OperationsPieChartPanel accountId={accountId}/>
+                    <OperationsPieChartPanel accountIds={accountId}/>
                 </Grid>
                 <Grid item md={12}>
-                    <OperationsBarChartPanel accountId={accountId}/>
+                    <OperationsBarChartPanel accountIds={accountId}/>
                 </Grid>
                 <Grid item md={12}>
                     <Panel>

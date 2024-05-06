@@ -42,7 +42,8 @@ export const createTransferOperationThunk = createAsyncThunk(
 export const getOperationsThunk = createAsyncThunk(
     "operations/get",
     async ({accountId = null}) => {
-        return await apiClient.getOperations(accountId)
+        const data = await apiClient.getOperations(accountId)
+        return data.content
     }
 )
 
@@ -55,15 +56,15 @@ export const getPaymentInfoThunk = createAsyncThunk(
 
 export const getOperationCategoriesThunk = createAsyncThunk(
     "operations/categories",
-    async ({accountId = null}) => {
-        return await apiClient.getOperationCategoryGroups({accountId})
+    async ({accountIds = null, startDate = null, endDate = null}) => {
+        return await apiClient.getOperationCategoryGroups({accountIds, startDate, endDate})
     }
 )
 
 export const getOperationsStatsByMonthsThunk = createAsyncThunk(
     "operations/stats/months",
-    async ({accountId = null}) => {
-        return await apiClient.getOperationStatsByMonths({accountId})
+    async ({accountIds = null, startDate = null, endDate = null}) => {
+        return await apiClient.getOperationStatsByMonths({accountIds, startDate, endDate})
     }
 )
 

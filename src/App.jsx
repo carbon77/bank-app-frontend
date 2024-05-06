@@ -4,6 +4,10 @@ import {theme} from "./theme";
 import {Provider} from "react-redux";
 import {store} from "./store";
 import {SnackbarProvider} from "notistack";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import locale from "dayjs/locale/ru";
 
 function App() {
     return (
@@ -12,11 +16,16 @@ function App() {
                 horizontal: "right",
                 vertical: "bottom",
             }}>
-                <Provider store={store}>
-                    <ThemeProvider theme={theme}>
-                        <Router/>
-                    </ThemeProvider>
-                </Provider>
+                <LocalizationProvider
+                    adapterLocale={dayjs.locale('ru')}
+                    dateAdapter={AdapterDayjs}
+                >
+                    <Provider store={store}>
+                        <ThemeProvider theme={theme}>
+                            <Router/>
+                        </ThemeProvider>
+                    </Provider>
+                </LocalizationProvider>
             </SnackbarProvider>
         </div>
     );

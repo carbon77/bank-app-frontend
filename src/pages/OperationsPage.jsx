@@ -1,9 +1,10 @@
-import {Grid, Typography} from "@mui/material";
+import {Grid, Stack, Typography} from "@mui/material";
 import {OperationsPanel} from "../components/OperationsPanel";
 import {useSelector} from "react-redux";
-import {OperationsPieChartPanel} from "../components/OperationsPieChartPanel";
 import {RouterBreadcrumb} from "../components/RouterBreadcrumb";
-import {OperationsBarChartPanel} from "../components/OperationsBarChartPanel";
+import {ButtonPanel} from "../components/ButtonPanel";
+import {AddCard, ShoppingCart} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 export function OperationsPage() {
     const accounts = useSelector(state => state.accounts.accounts)
@@ -21,10 +22,24 @@ export function OperationsPage() {
                 <Typography variant={"h4"}>Операции</Typography>
             </Grid>
             <Grid item md={12}>
-                <OperationsPieChartPanel/>
-            </Grid>
-            <Grid item md={12}>
-                <OperationsBarChartPanel/>
+                <Stack direction={"row"} spacing={2}>
+                    <ButtonPanel
+                        component={Link}
+                        to={"/operations/analytics?type=RECEIPT"}
+                        direction={"row"}
+                        primaryText={"Доходы"}
+                        secondaryText={"Подробнее"}
+                        icon={<AddCard/>}
+                    />
+                    <ButtonPanel
+                        direction={"row"}
+                        primaryText={"Расходы"}
+                        secondaryText={"Подробнее"}
+                        icon={<ShoppingCart/>}
+                        component={Link}
+                        to={"/operations/analytics?type=EXPENSE"}
+                    />
+                </Stack>
             </Grid>
             <Grid item md={12}>
                 <OperationsPanel accounts={accounts}/>
