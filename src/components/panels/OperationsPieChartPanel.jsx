@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Panel} from "./Panel";
 import {getOperationCategoriesThunk} from "../../store/operationSlice";
 import {PieChart} from "@mui/x-charts";
+import {Link} from "@mui/icons-material";
+import {Link as RouterLink} from "react-router-dom";
 
 
 export function OperationsPieChartPanel({
@@ -12,6 +14,7 @@ export function OperationsPieChartPanel({
                                             direction = 'row',
                                             startDate = null,
                                             endDate = null,
+                                            link = null,
                                         }) {
     const colors = [
         '#fc8a9c',
@@ -74,7 +77,18 @@ export function OperationsPieChartPanel({
         <Panel>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography variant={"h5"}>Категории</Typography>
+                    {link ? (
+                        <Stack component={RouterLink} to={link} sx={{
+                            color: 'inherit',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                color: 'grey',
+                            }
+                        }} direction={"row"} spacing={1} alignItems={"center"}>
+                            <Typography variant={"h5"}>Операции</Typography>
+                            {link ? <Link/> : null}
+                        </Stack>
+                        ) : <Typography variant={"h5"}>Операции</Typography>}
                 </Grid>
                 <Grid item md={direction === 'row' ? 7 : 12} xs={12}>
                     <Stack spacing={1}>

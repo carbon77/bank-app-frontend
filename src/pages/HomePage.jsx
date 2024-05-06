@@ -9,7 +9,7 @@ export function HomePage() {
     return (
         <Grid container spacing={2}>
             <Grid item md={12}>
-                <OperationsPieChartPanel/>
+                <OperationsPieChartPanel link={"/operations/analytics"}/>
             </Grid>
             <Grid item md={8}>
                 <Grid container spacing={2}>

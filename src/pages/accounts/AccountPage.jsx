@@ -15,7 +15,6 @@ import {Panel} from "../../components/panels/Panel";
 import {AccountPageName} from "../../components/shared/AccountPageName";
 import {darkTheme} from "../../theme";
 import {Add, Block} from "@mui/icons-material";
-import {OperationsBarChartPanel} from "../../components/panels/OperationsBarChartPanel";
 
 const TabPanel = ({
                       children, value, index
@@ -112,17 +111,17 @@ export function AccountPage() {
             </Grid>
             <Grid item md={4}>
                 <Stack direction={"row"} spacing={1}>
-                    <TopUpButtonPanel sx={{width: '100%'}}/>
-                    <WithdrawButtonPanel sx={{width: '100%'}}/>
-                    <TransferButtonPanel sx={{width: '100%'}}/>
+                    <TopUpButtonPanel/>
+                    <WithdrawButtonPanel/>
+                    <TransferButtonPanel/>
                 </Stack>
             </Grid>
             <Grid item container md={8} spacing={2}>
                 <Grid item md={12}>
-                    <OperationsPieChartPanel accountIds={accountId}/>
-                </Grid>
-                <Grid item md={12}>
-                    <OperationsBarChartPanel accountIds={accountId}/>
+                    <OperationsPieChartPanel
+                        accountIds={[accountId]}
+                        link={`/operations/analytics?accountIds=${accountId}`}
+                    />
                 </Grid>
                 <Grid item md={12}>
                     <Panel>
