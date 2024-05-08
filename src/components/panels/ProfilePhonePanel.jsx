@@ -14,7 +14,8 @@ import {patternFormatter} from "react-number-format";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {getUserThunk, patchUserThunk} from "../../store/authSlice";
-import {CustomPatternFormat, useShowSnackbar} from "../../utils";
+import {CustomPatternFormat} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar"
 
 function ProfilePhoneDialog({user, open, onClose, ...props}) {
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber)

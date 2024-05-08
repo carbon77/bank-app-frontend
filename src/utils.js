@@ -1,7 +1,6 @@
 import {
     Add,
     CarCrash,
-    Close,
     CreditCard,
     CurrencyRuble,
     DirectionsBus,
@@ -18,8 +17,7 @@ import {
 } from "@mui/icons-material";
 import {NumericFormat, numericFormatter, PatternFormat} from "react-number-format";
 import React from "react";
-import {useSnackbar} from "notistack";
-import {IconButton, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 
 export function getAccountAvatarIcon(accountType) {
     if (accountType === 'CREDIT') {
@@ -150,14 +148,3 @@ export const MoneyInputFormat = React.forwardRef(
         />
     }
 )
-
-export function useShowSnackbar() {
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar()
-
-    return function showSnackbar(text, variant = 'success') {
-        const key = enqueueSnackbar(text, {
-            variant: variant,
-            action: () => <IconButton sx={{color: 'white'}} onClick={() => closeSnackbar(key)}><Close/></IconButton>
-        })
-    }
-}

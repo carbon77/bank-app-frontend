@@ -2,7 +2,7 @@ import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import {Cancel, Edit} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {useShowSnackbar} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 import {getAccountsThunk, patchAccountThunk} from "../../store/accountSlice";
 
 export function AccountPageName({account}) {

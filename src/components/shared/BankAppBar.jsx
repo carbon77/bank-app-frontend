@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/authSlice";
 import {clearAccounts} from "../../store/accountSlice";
 import {clearOperations} from "../../store/operationSlice";
-import {useShowSnackbar} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 const LogoutDialog = ({open, handleCancel, handleAccept}) => {
     return (

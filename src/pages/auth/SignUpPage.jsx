@@ -5,7 +5,8 @@ import {links} from "../../links";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";
-import {CustomPatternFormat, useShowSnackbar} from "../../utils";
+import {CustomPatternFormat} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 function getFormattedDate() {
     const today = new Date()

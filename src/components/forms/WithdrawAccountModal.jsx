@@ -4,7 +4,8 @@ import {useDispatch} from "react-redux";
 import {createWithdrawOperationThunk, getOperationsThunk} from "../../store/operationSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../../store/accountSlice";
-import {MoneyInputFormat, useShowSnackbar} from "../../utils";
+import {MoneyInputFormat} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar"
 import {AccountSelect} from "../shared/AccountSelect";
 
 export function WithdrawAccountModal({

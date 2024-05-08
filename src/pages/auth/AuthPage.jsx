@@ -6,7 +6,7 @@ import {LoadingButton} from "@mui/lab";
 import {useDispatch} from "react-redux";
 import {loginThunk} from "../../store/authSlice";
 import {links} from "../../links";
-import {useShowSnackbar} from "../../utils";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 export function AuthPage() {
     const [isLoading, setIsLoading] = useState(false)

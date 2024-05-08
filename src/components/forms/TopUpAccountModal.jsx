@@ -4,8 +4,9 @@ import {useDispatch} from "react-redux";
 import {createTopUpOperationThunk, getOperationsThunk} from "../../store/operationSlice";
 import {LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../../store/accountSlice";
-import {MoneyInputFormat, useShowSnackbar} from "../../utils";
+import {MoneyInputFormat} from "../../utils";
 import {AccountSelect} from "../shared/AccountSelect";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 export function TopUpAccountModal({
                                       open,

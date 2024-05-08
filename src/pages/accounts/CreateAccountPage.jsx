@@ -14,9 +14,10 @@ import {AddCard} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
-import {getAccountTitle, MoneyInputFormat, useShowSnackbar} from "../../utils";
+import {getAccountTitle, MoneyInputFormat} from "../../utils";
 import {useNavigate} from "react-router-dom";
 import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 export function CreateAccountPage() {
     const [accountType, setAccountType] = useState('')
