@@ -5,7 +5,7 @@ import {links} from "../../links";
 export function NotAuthOnlyRoute({children}) {
     const token = useSelector(state => state.auth.token)
 
-    if (token) {
+    if (token || localStorage.getItem("auth_token")) {
         return <Navigate to={links.home}/>
     }
 

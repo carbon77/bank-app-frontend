@@ -1,12 +1,13 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
 import axios from "axios";
 
 export const loginThunk = createAsyncThunk(
     'auth/login',
     async ({email, password}, thunkApi) => {
-        const data = await apiClient.login({email, password})
-        return data.jwtToken
+        const { jwtToken: token } = await apiClient.login({email, password})
+        localStorage.setItem('auth_token', token)
+        return token
     }
 )
 
@@ -17,15 +18,27 @@ export const registerThunk = createAsyncThunk(
     }
 )
 
-export const getUserThunk = createAsyncThunk(
-    'auth/getUser',
+export const fetchUserThunk = createAsyncThunk(
+    'auth/user/fetch',
     async (_, thunkAPI) => {
-        return await apiClient.getUser()
+        try {
+            const token = localStorage.getItem('auth_token')
+            apiClient.setToken(token)
+            // await new Promise(resolve => setTimeout(resolve, 2000))
+            return await apiClient.getUser()
+        } catch (e) {
+            if (e.response.status === 400) {
+                throw "Токен недействителен!"
+            } else if (e.response.status === 410) {
+                throw "Истекло время действия токена!"
+            }
+            throw e
+        }
     }
 )
 
 export const patchUserThunk = createAsyncThunk(
-    'auth/patchUser',
+    'auth/user/patch',
     async (patchData) => {
         return await apiClient.patchUser(patchData)
     }
@@ -46,6 +59,7 @@ const initialState = {
     authorizedUser: null,
     token: localStorage.getItem('auth_token'),
     currencies: null,
+    error: null,
 }
 
 export const authSlice = createSlice({
@@ -55,51 +69,42 @@ export const authSlice = createSlice({
         logout(state) {
             state.token = null
             state.authorizedUser = null
+            localStorage.removeItem('auth_token')
             apiClient.removeToken()
+        },
+        setError(state, action) {
+            state.error = action.payload
         }
     },
     extraReducers: builder => {
         builder
             .addCase(loginThunk.fulfilled, (state, action) => {
-                console.info("User authorized")
-                apiClient.setToken(action.payload)
                 state.token = action.payload
             })
-            .addCase(loginThunk.rejected, (state, action) => {
-                console.error(action.error)
-                throw new Error(action.error.message)
-            })
 
-            .addCase(registerThunk.fulfilled, (state, action) => {
-                console.log("You have successfully signed up")
-            })
-            .addCase(registerThunk.rejected, (state, action) => {
-                console.error(action.error)
-                throw new Error(action.error.message)
-            })
-
-            .addCase(getUserThunk.fulfilled, (state, action) => {
+            .addCase(fetchUserThunk.fulfilled, (state, action) => {
                 state.authorizedUser = action.payload
-            })
-            .addCase(getUserThunk.rejected, (state, action) => {
-                console.error(action.error)
-                throw new Error(action.error.message)
             })
 
             .addCase(fetchCurrenciesThunk.fulfilled, (state, action) => {
                 state.currencies = action.payload
             })
-            .addCase(fetchCurrenciesThunk.rejected, (state, action) => {
-                console.error(action.error)
-            })
 
-            .addCase(patchUserThunk.rejected, (state, action) => {
-                console.error(action.error)
-                throw new Error(action.error.message)
-            })
+            .addMatcher(
+                isAnyOf(
+                    isRejected(loginThunk),
+                    isRejected(registerThunk),
+                    isRejected(fetchUserThunk),
+                    isRejected(patchUserThunk),
+                    isRejected(fetchCurrenciesThunk),
+                ),
+                (state, action) => {
+                    throw action.error
+                }
+            )
     }
 })
 
 export const authReducer = authSlice.reducer
 
-export const {logout} = authSlice.actions
+export const {logout, setError} = authSlice.actions

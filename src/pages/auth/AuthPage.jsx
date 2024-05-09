@@ -3,7 +3,7 @@ import {LoginRounded} from "@mui/icons-material";
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginThunk} from "../../store/authSlice";
 import {links} from "../../links";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
@@ -11,6 +11,7 @@ import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 export function AuthPage() {
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
+    const errorAuth = useSelector(state => state.auth.error)
     const [loginData, setLoginData] = useState({
         email: '',
         password: '',
@@ -40,8 +41,9 @@ export function AuthPage() {
             showSnackbar("Вы успешно вошли!")
         } catch (e) {
             setIsError(true)
+        } finally {
+            setIsLoading(false)
         }
-        setIsLoading(false)
     }
 
     return (
@@ -105,6 +107,7 @@ export function AuthPage() {
                             onChange={handleChange('password')}
                         />
                         {isError ? <Alert severity={"error"}>Неверная почта или пароль!</Alert> : null}
+                        {errorAuth ? <Alert severity={"error"}>{errorAuth}</Alert> : null}
                         <LoadingButton
                             type="submit"
                             size={"large"}

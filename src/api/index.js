@@ -4,24 +4,6 @@ const instance = axios.create({
     baseURL: 'http://localhost:8081/api',
 })
 
-instance.interceptors.response.use(
-    function (config) {
-        return config
-    },
-    function (error) {
-        if (error.response) {
-            if (error.response.status === 410) {
-                console.warn("JWT token expired")
-                localStorage.removeItem("auth_token")
-                return Promise.error("JWT expired")
-            }
-        } else {
-            console.error(error)
-        }
-        return Promise.reject(error)
-    }
-)
-
 async function login({email, password}) {
     const response = await instance.post("/auth/login", {
         email,
@@ -65,12 +47,23 @@ async function createOperation(operationData) {
     return response.data
 }
 
-async function getOperations(accountId = null) {
-    let url = "/operations"
-    if (accountId !== null) {
-        url += '?accountId=' + accountId
-    }
-    const response = await instance.get(url)
+async function getOperations({
+                                 accountIds = null,
+                                 page = 0,
+                                 size = 5,
+                                 startDate = null,
+                                 endDate = null,
+
+                             }) {
+    const response = await instance.get('/operations', {
+        params: {
+            accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),
+            startDate: startDate?.format(),
+            endDate: endDate?.format(),
+            page,
+            size,
+        }
+    })
     return response.data
 }
 
@@ -155,11 +148,9 @@ export const apiClient = {
 
     setToken(token) {
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        localStorage.setItem('auth_token', token)
     },
 
     removeToken() {
         delete instance.defaults.headers.common['Authorization']
-        localStorage.removeItem('auth_token')
     },
 }

@@ -2,40 +2,40 @@ import {useDispatch, useSelector} from "react-redux";
 import {Navigate, Outlet} from "react-router-dom";
 import {links} from "../../links";
 import {useEffect, useState} from "react";
-import {apiClient} from "../../api";
-import {getUserThunk} from "../../store/authSlice";
+import {fetchUserThunk, logout, setError} from "../../store/authSlice";
+import {CircularProgress} from "@mui/material";
 
 export function ProtectedRoute({children}) {
-    const [userLoading, setUserLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const token = useSelector(state => state.auth.token)
     const dispatch = useDispatch()
 
-    async function getUser() {
-        setUserLoading(true)
-        try {
-            await dispatch(getUserThunk())
-        } catch (e) {
-            console.error(e)
-        }
-        setUserLoading(false)
-
-    }
-
     useEffect(() => {
-        if (token) {
-            apiClient.setToken(token)
-            getUser()
-        } else {
-            apiClient.removeToken()
+        async function fetchUser() {
+            setLoading(true)
+            try {
+                await dispatch(fetchUserThunk())
+            } catch (e) {
+                dispatch(setError(e.message))
+                dispatch(logout())
+            } finally {
+                setLoading(false)
+            }
+
         }
-    }, [token])
+
+        if (token || localStorage.getItem("auth_token")) {
+            fetchUser()
+        }
+    }, [dispatch])
 
     if (!token) {
         return <Navigate to={links.login}/>
     }
 
-    if (userLoading) {
-        return <div>Loading...</div>
+    if (loading) {
+        return <CircularProgress/>
     }
+
     return children ? children : <Outlet/>
 }

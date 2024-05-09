@@ -11,41 +11,14 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {getAccountsThunk} from "../../store/accountSlice";
-import {Alert} from "@mui/lab";
+import {useSelector} from "react-redux";
 import {Add} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {getAccountAvatarIcon, getAccountTitle, moneyInputFormatter} from "../../utils";
 
 export function AccountSidebar() {
     const accounts = useSelector(state => state.accounts.accounts)
-    const dispatch = useDispatch()
-    const [dispatchError, setDispatchError] = useState("")
     const theme = useTheme()
-
-    async function getAccounts() {
-        try {
-            await dispatch(getAccountsThunk())
-        } catch (e) {
-            setDispatchError(e.message)
-        }
-    }
-
-    useEffect(() => {
-        if (!accounts) {
-            getAccounts()
-        }
-    }, [])
-
-    if (dispatchError) {
-        return <Alert severity={"error"}>{dispatchError}</Alert>
-    }
-
-    if (!accounts) {
-        return <Paper elevation={2}>Загрузка...</Paper>
-    }
 
     return (<Paper elevation={2} sx={{
         display: 'flex', flexDirection: 'column',

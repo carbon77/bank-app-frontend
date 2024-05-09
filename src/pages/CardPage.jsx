@@ -1,7 +1,6 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {Alert, Grid, Stack, TextField, ThemeProvider, Typography} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {Alert, CircularProgress, Grid, Stack, TextField, ThemeProvider, Typography} from "@mui/material";
 import {deleteCardThunk, getAccountsThunk, patchCardThunk} from "../store/accountSlice";
 import {getAccountAvatarIcon, moneyInputFormatter} from "../utils";
 import {Delete, Lock, LockOpen} from "@mui/icons-material";
@@ -9,12 +8,13 @@ import {Panel} from "../components/panels/Panel";
 import {darkTheme} from "../theme";
 import {ButtonPanel} from "../components/panels/ButtonPanel";
 import {useShowSnackbar} from "../hooks/useShowSnackbar";
+import {useAccounts} from "../hooks/useAccounts";
 
 export function CardPage() {
     const {cardId} = useParams()
-    const accounts = useSelector(state => state.accounts.accounts)
-    const [account, setAccount] = useState(null)
-    const [card, setCard] = useState(null)
+    const {accounts, error, loading} = useAccounts()
+    const account = accounts?.find(acc => acc.cards.map(c => c.id).includes(+cardId))
+    const card = account?.cards.find(c => c.id === +cardId)
     const dispatch = useDispatch()
     const showSnackbar = useShowSnackbar()
     const navigate = useNavigate()
@@ -26,14 +26,6 @@ export function CardPage() {
         const day = String(date.getDate()).padStart(2, '0');
 
         return `${year}/${month}/${day}`;
-    }
-
-    async function getAccounts() {
-        try {
-            await dispatch(getAccountsThunk())
-        } catch (e) {
-            console.error(e.message)
-        }
     }
 
     async function deleteCardHandle() {
@@ -58,29 +50,16 @@ export function CardPage() {
         showSnackbar("Карта " + (card.blocked ? "разблокирована" : "заблокирована"), "info")
     }
 
-    useEffect(() => {
-        if (!accounts) {
-            getAccounts()
-        }
-    }, [])
+    if (loading) {
+        return <CircularProgress/>
+    }
 
-    useEffect(() => {
-        if (!accounts) {
-            return
-        }
+    if (error) {
+        return <Alert severity={"error"}>{error}</Alert>
+    }
 
-        for (const account of accounts) {
-            for (const card of account.cards) {
-                if (card.id === +cardId) {
-                    setAccount(account)
-                    setCard(card)
-                }
-            }
-        }
-    }, [accounts])
-
-    if (!accounts || !account || !card) {
-        return <div>Loading...</div>
+    if (!account || !card) {
+        return <Alert severity={"error"}>Не удалось найти карту</Alert>
     }
 
     return (
