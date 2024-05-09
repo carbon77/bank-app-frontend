@@ -74,7 +74,7 @@ export function CreateAccountPage() {
     }
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} paddingBottom={'100px'}>
             <CssBaseline/>
             <Grid item xs={12}>
                 <RouterBreadcrumb/>
