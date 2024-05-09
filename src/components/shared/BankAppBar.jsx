@@ -149,7 +149,7 @@ export function BankAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        BankWave
+                        WaveBank
                     </Typography>
 
                     <Box sx={{ml: 3, flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>

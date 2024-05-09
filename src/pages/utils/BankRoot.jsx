@@ -1,6 +1,7 @@
 import {Box, CssBaseline} from "@mui/material";
 import {BankAppBar} from "../../components/shared/BankAppBar";
 import {Outlet} from "react-router-dom";
+import {Footer} from "../../components/shared/Footer";
 
 export function BankRoot() {
     return (
@@ -17,6 +18,7 @@ export function BankRoot() {
             >
                 <Outlet/>
             </Box>
+            <Footer />
         </div>
     )
 }
