@@ -83,7 +83,7 @@ export function OperationModal({open, onClose, operation, account}) {
                                 {field.value}
                             </Typography>
                         </Box>
-                        <Divider/>
+                        <Divider key={`divider-${idx}`}/>
                     </>
                 ) : null}
             </Paper>

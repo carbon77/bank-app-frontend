@@ -50,10 +50,10 @@ async function createOperation(operationData) {
 async function getOperations({
                                  accountIds = null,
                                  page = 0,
-                                 size = 5,
+                                 size = 10,
                                  startDate = null,
                                  endDate = null,
-
+                                 type = null,
                              }) {
     const response = await instance.get('/operations', {
         params: {
@@ -62,6 +62,7 @@ async function getOperations({
             endDate: endDate?.format(),
             page,
             size,
+            type,
         }
     })
     return response.data

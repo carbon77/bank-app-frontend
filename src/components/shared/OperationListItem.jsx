@@ -8,6 +8,9 @@ export function OperationListItem({operation, onClick, account}) {
         <ListItem key={operation.id} disablePadding>
             <ListItemButton
                 onClick={onClick}
+                sx={{
+                    borderRadius: '1em',
+                }}
             >
                 <ListItemAvatar>
                     <Avatar sx={{

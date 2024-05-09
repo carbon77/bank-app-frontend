@@ -1,72 +1,54 @@
-import {List, ListItem, ListItemText, Typography} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useMemo, useState} from "react";
-import {getOperationsThunk} from "../../store/operationSlice";
-import {convertDate} from "../../utils";
-import {OperationModal} from "../shared/OperationModal";
-import {OperationListItem} from "../shared/OperationListItem";
 import {Panel} from "./Panel";
+import {Alert, CircularProgress, Pagination, Stack, Typography} from "@mui/material";
+import {getOperationsThunk} from "../../store/operationSlice";
+import {useFetchData} from "../../hooks/useFetchData";
+import {OperationList} from "../shared/OperationList";
+import {useState} from "react";
 
-export const OperationsPanel = ({
-                                    accounts,
-                                    accountId = null,
-                                }) => {
-    const operations = useSelector(state => {
-        if (state.operations.operations === null) {
-            return null
-        }
-        return [...state.operations.operations].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    })
-    const dispatch = useDispatch()
-    const [pickedOp, setPickedOp] = useState(null)
-    const isPicked = useMemo(() => pickedOp !== null, [pickedOp])
-    const pickedAccount = useMemo(() => isPicked ? getAccount(pickedOp) : null, [isPicked, pickedOp])
-
-    function getAccount(op) {
-        return accounts?.find(account => account.id === op.account)
-    }
-
-    const isNewGroup = (op, idx, arr) => idx === 0 || convertDate(arr[idx - 1].createdAt) !== convertDate(op.createdAt)
-    const getOperationElement = (op, idx, arr) => {
-        return (
-            <>
-                {isNewGroup(op, idx, arr) ? (
-                    <ListItem key={idx}>
-                        <ListItemText>{convertDate(op.createdAt)}</ListItemText>
-                    </ListItem>
-                ) : null}
-                <OperationListItem onClick={() => setPickedOp(op)}
-                                   account={getAccount(op)}
-                                   operation={op}
-                />
-            </>
-        )
-    }
-
-    useEffect(() => {
-        dispatch(getOperationsThunk({accountId}))
-    }, [])
+export function OperationsPanel({
+                                    accountIds = null,
+                                    operationType = null,
+                                    startDate = null,
+                                    endDate = null,
+                                    type = null,
+                                }) {
+    const [page, setPage] = useState(0)
+    const {data: operations, error, loading} = useFetchData(
+        state => state.operations.operations,
+        getOperationsThunk,
+        {
+            accountIds,
+            page,
+            operationType,
+            startDate,
+            endDate,
+            type,
+        },
+        [page, accountIds, operationType, startDate, endDate, type],
+        "Ошибка в получении операций"
+    )
 
     return (
-        <>
-            <Panel sx={{p: 0}}>
-                <Typography variant={"h5"} paddingX={".5em"} paddingTop={".5em"}>Операции</Typography>
+        <Panel>
+            <Stack spacing={2}>
+                <Typography variant={"h5"}>Операции</Typography>
 
-                {(!operations || !accounts) ? <div>Loading...</div> :
-                    <>
-                        {operations.length === 0 ?
-                            <Typography p={".5em 1em"}>Вы еще не совершили операций</Typography> : (
-                                <List>{operations.map(getOperationElement)}</List>
-                            )}
-                    </>
-                }
-            </Panel>
-            <OperationModal
-                account={pickedAccount}
-                operation={pickedOp}
-                onClose={() => setPickedOp(null)}
-                open={isPicked}
-            />
-        </>
+                {loading ? <CircularProgress/> : <>
+                    {error ? <Alert severity={"error"}>{error}</Alert> : <>
+                        <OperationList operations={operations.content}/>
+
+                        <Pagination
+                            count={operations.totalPages}
+                            showFirstButton
+                            showLastButton
+                            variant={"outlined"}
+                            color={"primary"}
+                            page={page + 1}
+                            onChange={(event, value) => setPage(value - 1)}
+                        />
+                    </>}
+                </>}
+            </Stack>
+        </Panel>
     )
 }

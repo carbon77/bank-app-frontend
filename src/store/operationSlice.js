@@ -41,9 +41,22 @@ export const createTransferOperationThunk = createAsyncThunk(
 
 export const getOperationsThunk = createAsyncThunk(
     "operations/get",
-    async ({accountId = null}) => {
-        const data = await apiClient.getOperations(accountId)
-        return data.content
+    async ({
+               accountIds = null,
+               startDate = null,
+               endDate = null,
+               page = 0,
+               size = 10,
+               type = null,
+           }) => {
+        return await apiClient.getOperations({
+            accountIds,
+            startDate,
+            endDate,
+            page,
+            size,
+            type,
+        })
     }
 )
 
@@ -101,10 +114,6 @@ export const operationSlice = createSlice({
             state.operations = action.payload
         })
 
-        builder.addCase(getOperationsThunk.rejected, (state, action) => {
-            console.error(action.error)
-        })
-
         builder.addMatcher(
             isAnyOf(
                 isRejected(createWithdrawOperationThunk),
@@ -112,6 +121,7 @@ export const operationSlice = createSlice({
                 isRejected(createTransferOperationThunk),
                 isRejected(createOperationThunk),
                 isRejected(getPaymentInfoThunk),
+                isRejected(getOperationsThunk),
                 isRejected(getOperationCategoriesThunk),
                 isRejected(getOperationsStatsByMonthsThunk),
             ),

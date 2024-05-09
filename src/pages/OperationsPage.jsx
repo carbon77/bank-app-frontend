@@ -1,10 +1,10 @@
 import {Grid, Stack, Typography} from "@mui/material";
-import {OperationsPanel} from "../components/panels/OperationsPanel";
 import {useSelector} from "react-redux";
 import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
 import {ButtonPanel} from "../components/panels/ButtonPanel";
 import {AddCard, ShoppingCart} from "@mui/icons-material";
 import {Link} from "react-router-dom";
+import {OperationsPanel} from "../components/panels/OperationsPanel";
 
 export function OperationsPage() {
     const accounts = useSelector(state => state.accounts.accounts)
@@ -42,7 +42,7 @@ export function OperationsPage() {
                 </Stack>
             </Grid>
             <Grid item md={12}>
-                <OperationsPanel accounts={accounts}/>
+                <OperationsPanel/>
             </Grid>
         </Grid>
     )
