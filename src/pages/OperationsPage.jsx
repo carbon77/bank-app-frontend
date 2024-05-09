@@ -15,13 +15,13 @@ export function OperationsPage() {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <RouterBreadcrumb/>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Typography variant={"h4"}>Операции</Typography>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Stack direction={"row"} spacing={2}>
                     <ButtonPanel
                         component={Link}
@@ -41,7 +41,7 @@ export function OperationsPage() {
                     />
                 </Stack>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <OperationsPanel/>
             </Grid>
         </Grid>

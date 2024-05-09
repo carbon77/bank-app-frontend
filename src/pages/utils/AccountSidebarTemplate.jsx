@@ -14,7 +14,9 @@ export const AccountSidebarTemplate = ({children}) => {
             justifyContent: 'center'
         }}>
             {loading ? <CircularProgress/> : (error ? <Alert severity={"error"}>{error}</Alert> : <>
-                <Grid item md={3} xs={12}>
+                <Grid item md={3} sx={{
+                    display: {md: 'block', xs: 'none'}
+                }}>
                     <AccountSidebar/>
                 </Grid>
                 <Grid item md={9} xs={12}>

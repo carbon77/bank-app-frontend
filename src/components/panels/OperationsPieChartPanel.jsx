@@ -1,4 +1,4 @@
-import {Avatar, Box, Button, ButtonGroup, Chip, Grid, Stack, Typography} from "@mui/material";
+import {Avatar, Box, Button, ButtonGroup, Chip, CircularProgress, Grid, Stack, Typography} from "@mui/material";
 import {useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Panel} from "./Panel";
@@ -70,7 +70,7 @@ export function OperationsPieChartPanel({
     }, [accountIds])
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <CircularProgress />
     }
 
     return (

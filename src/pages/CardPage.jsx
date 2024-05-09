@@ -63,8 +63,8 @@ export function CardPage() {
     }
 
     return (
-        <Grid container width={{md: '60%'}} spacing={2}>
-            <Grid item md={4}>
+        <Grid container width={{md: '60%', xs: '95%'}} spacing={2}>
+            <Grid item md={4} xs={12}>
                 <Stack spacing={2}>
                     <ThemeProvider theme={darkTheme}>
                         <Panel sx={{
@@ -84,11 +84,11 @@ export function CardPage() {
                     ) : null}
                 </Stack>
             </Grid>
-            <Grid item md={8}>
+            <Grid item md={8} xs={12}>
                 <Panel>
                     <Typography variant={"h5"} mb={2}>Реквизиты</Typography>
                     <Grid container spacing={2}>
-                        <Grid item md={12}>
+                        <Grid item xs={12}>
                             <TextField
                                 fullWidth
                                 variant={"outlined"}
@@ -97,7 +97,7 @@ export function CardPage() {
                                 readOnly
                             />
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
                                 variant={"outlined"}
@@ -106,7 +106,7 @@ export function CardPage() {
                                 readOnly
                             />
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
                                 variant={"outlined"}
@@ -118,9 +118,9 @@ export function CardPage() {
                     </Grid>
                 </Panel>
             </Grid>
-            <Grid item md={4}>
+            <Grid item md={4} sx={{display: {md: 'flex', xs: 'none'}}}>
             </Grid>
-            <Grid item mdOffset={2} md={8}>
+            <Grid item mdOffset={2} md={8} xs={12}>
                 <Typography variant={"h5"} mb={2}>Привязана к счёту</Typography>
                 <Stack spacing={2}>
                     <ButtonPanel
@@ -132,10 +132,13 @@ export function CardPage() {
                     />
                 </Stack>
             </Grid>
-            <Grid item md={4}></Grid>
-            <Grid item mdOffset={2} md={8}>
+            <Grid item md={4} sx={{display: {md: 'flex', xs: 'none'}}}></Grid>
+            <Grid item mdOffset={2} md={8} xs={12}>
                 <Typography variant={"h5"} mb={2}>Действия</Typography>
-                <Stack spacing={2}>
+                <Stack spacing={2} direction={{
+                    md: 'column',
+                    xs: 'row',
+                }}>
                     <ButtonPanel
                         direction={"row"}
                         primaryText={card.blocked ? `Разблокировать` : 'Заблокировать'}

@@ -7,7 +7,10 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '30%',
+    width: {
+        md: '30%',
+        xs: '70%',
+    },
 }
 
 export function OperationModal({open, onClose, operation, account}) {

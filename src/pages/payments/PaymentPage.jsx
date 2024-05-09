@@ -91,15 +91,15 @@ export const PaymentPage = () => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={8}>
+            <Grid item md={8} xs={12}>
                 <Grid container spacing={2}>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <RouterBreadcrumb/>
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <Typography variant={"h4"}>{categoryName}</Typography>
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <Stepper activeStep={activeStep}>
                             {steps.map((label) => (
                                 <Step key={label}>
@@ -108,7 +108,7 @@ export const PaymentPage = () => {
                             ))}
                         </Stepper>
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         {activeStep === 0 ? (
                             <PaymentInfoForm paymentData={paymentData} setPaymentData={setPaymentData}
                                              paymentInfo={paymentInfo}/>
@@ -120,7 +120,7 @@ export const PaymentPage = () => {
                             <PaymentSubmitForm onClick={handleSubmit}/>
                         )}
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <Stack direction={"row"} justifyContent={"space-between"}>
                             <Button
                                 onClick={handleBack}

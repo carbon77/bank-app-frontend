@@ -7,14 +7,14 @@ import {Link} from "react-router-dom";
 export function HousePaymentsPage() {
     return (
         <Grid container spacing={2}>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <RouterBreadcrumb/>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Typography variant={"h4"}>ЖКХ</Typography>
             </Grid>
 
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Stack direction={"row"} spacing={2}>
                     <ButtonPanel component={Link} to={"/payments/pay/Электроэнергия"} direction={"row"}
                                  icon={<ElectricBolt/>} primaryText={"Электроэнергия"}/>

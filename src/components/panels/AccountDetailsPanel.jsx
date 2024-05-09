@@ -35,7 +35,10 @@ export function AccountDetailsPanel({account, user}) {
     }
 
     return (
-        <Stack spacing={3} width={"60%"}>
+        <Stack spacing={3} width={{
+            md: '60%',
+            xs: '100%',
+        }}>
             {fields.map(field => (
                 <Box sx={{
                     display: 'flex',

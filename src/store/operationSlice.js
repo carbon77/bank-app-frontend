@@ -95,6 +95,8 @@ export const operationSlice = createSlice({
         clearOperations(state) {
             state.operations = null
             state.paymentInfo = null
+            state.categoryGroups = null
+            state.operationStats = null
         }
     },
     extraReducers: builder => {

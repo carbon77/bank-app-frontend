@@ -11,26 +11,29 @@ export function PaymentsPage() {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md>
+            <Grid item xs={12}>
                 <RouterBreadcrumb/>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Typography variant={"h4"}>Платежи и переводы</Typography>
             </Grid>
 
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <TransferPanel/>
             </Grid>
 
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Stack direction={"row"} spacing={2}>
                     <TopUpButtonPanel/>
                     <WithdrawButtonPanel/>
                 </Stack>
             </Grid>
 
-            <Grid item md={12}>
-                <Stack direction={"row"} spacing={2}>
+            <Grid item xs={12}>
+                <Stack direction={{
+                    md: 'row',
+                    xs: 'column',
+                }} spacing={2}>
                     <ButtonPanel component={Link} to={"/payments/pay/Штрафы ГИБДД"} direction={"row"} icon={<CarCrash/>}
                                  primaryText={"Штрафы ГИБДД"}/>
                     <ButtonPanel component={Link} to={"/payments/pay/Мобильная связь"} direction={"row"}
@@ -40,8 +43,11 @@ export function PaymentsPage() {
                 </Stack>
             </Grid>
 
-            <Grid item md={12}>
-                <Stack direction={"row"} spacing={2}>
+            <Grid item xs={12}>
+                <Stack direction={{
+                    md: 'row',
+                    xs: 'column',
+                }} spacing={2}>
                     <ButtonPanel component={Link} to={"/payments/house"} direction={"row"}
                                  icon={<House/>}
                                  primaryText={"ЖКХ"}/>

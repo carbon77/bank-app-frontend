@@ -76,13 +76,13 @@ export function CreateAccountPage() {
     return (
         <Grid container spacing={2}>
             <CssBaseline/>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <RouterBreadcrumb/>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Typography variant={"h4"}>Открытие счёта</Typography>
             </Grid>
-            <Grid item md={8}>
+            <Grid item md={8} xs={12}>
                 <Stack component={"form"} noValidate onSubmit={onCreateAccountSubmit} spacing={2}>
                     <FormControl fullWidth>
                         <InputLabel id={"account-type-select"}>Тип счёта</InputLabel>

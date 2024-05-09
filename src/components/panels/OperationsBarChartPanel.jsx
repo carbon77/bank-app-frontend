@@ -2,7 +2,7 @@ import {Panel} from "./Panel";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useMemo, useState} from "react";
 import {getOperationsStatsByMonthsThunk} from "../../store/operationSlice";
-import {Stack, Typography} from "@mui/material";
+import {CircularProgress, Stack, Typography} from "@mui/material";
 import {BarChart} from "@mui/x-charts";
 
 export function OperationsBarChartPanel({
@@ -58,7 +58,7 @@ export function OperationsBarChartPanel({
     }, [accountIds])
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <CircularProgress />
     }
 
     return (

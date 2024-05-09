@@ -16,12 +16,12 @@ export function ProfilePage() {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Grid container spacing={2}>
-                    <Grid item md>
+                    <Grid item xs>
                         <RouterBreadcrumb/>
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <Paper elevation={3}>
                             <Stack spacing={2} direction={"row"} alignItems={"center"} padding={"2em"}>
                                 <Avatar sx={{
@@ -38,15 +38,15 @@ export function ProfilePage() {
                         </Paper>
                     </Grid>
 
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <ProfileEmailPanel user={user}/>
                     </Grid>
 
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <ProfilePhonePanel user={user}/>
                     </Grid>
 
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <PassportPanel passport={user.passport}/>
                     </Grid>
                 </Grid>

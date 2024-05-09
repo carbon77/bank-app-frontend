@@ -8,13 +8,15 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    IconButton,
     ListItemIcon,
     Menu,
     MenuItem,
+    Stack,
     Toolbar,
     Typography
 } from "@mui/material";
-import {AccountBalance, AccountCircle, Home, Logout} from "@mui/icons-material";
+import {AccountBalance, AccountCircle, History, Home, Logout, Menu as MenuIcon, Payments} from "@mui/icons-material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {links} from "../../links";
@@ -23,6 +25,7 @@ import {logout} from "../../store/authSlice";
 import {clearAccounts} from "../../store/accountSlice";
 import {clearOperations} from "../../store/operationSlice";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
+import {AppBarDrawer} from "./AppBarDrawer";
 
 const LogoutDialog = ({open, handleCancel, handleAccept}) => {
     return (
@@ -49,16 +52,20 @@ export function BankAppBar() {
         {
             name: 'Главная',
             to: links.home,
+            icon: <AccountBalance/>,
         },
         {
             name: 'Платежи и переводы',
             to: links.payments,
+            icon: <Payments/>,
         },
         {
             name: 'Операции',
             to: links.operations,
+            icon: <History/>,
         },
     ]
+    const [showDrawer, setShowDrawer] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
     const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
     const navigate = useNavigate()
@@ -128,29 +135,29 @@ export function BankAppBar() {
                             : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
                 })}
                 >
-                    <AccountBalance
-                        sx={{
-                            display: {xs: 'none', md: 'flex'},
-                            color: 'primary.main',
-                            mr: 1,
-                        }}
-                    />
-                    <Typography
-                        variant={"h6"}
-                        noWrap
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: {xs: 'none', md: 'flex'},
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.1rem',
-                            color: 'primary.main',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        WaveBank
-                    </Typography>
+                    <Stack direction={"row"} alignItems={"center"} spacing={1}>
+                        <AccountBalance
+                            sx={{
+                                display: 'flex',
+                                color: 'primary.main',
+                            }}
+                        />
+                        <Typography
+                            variant={"h6"}
+                            noWrap
+                            component="a"
+                            sx={{
+                                display: 'flex',
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.1rem',
+                                color: 'primary.main',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            WaveBank
+                        </Typography>
+                    </Stack>
 
                     <Box sx={{ml: 3, flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map(({name, to}) => (
@@ -169,7 +176,12 @@ export function BankAppBar() {
                         ))}
                     </Box>
 
-                    <div>
+                    <Box sx={{
+                        display: {
+                            xs: 'none',
+                            md: 'flex',
+                        }
+                    }}>
                         <Button
                             onClick={handleMenu}
                             size={'large'}
@@ -212,7 +224,30 @@ export function BankAppBar() {
                                 Выйти
                             </MenuItem>
                         </Menu>
-                    </div>
+                    </Box>
+
+
+                    <Box sx={{
+                        display: {
+                            md: 'none',
+                            xs: 'flex',
+                        }
+                    }}>
+                        <IconButton
+                            variant="text"
+                            color="primary"
+                            onClick={() => setShowDrawer(!showDrawer)}
+                        >
+                            <MenuIcon/>
+                        </IconButton>
+
+                        <AppBarDrawer
+                            open={showDrawer}
+                            onClose={() => setShowDrawer(!showDrawer)}
+                            onLogoutClick={handleLogoutMenuClick}
+                            pages={pages}
+                        />
+                    </Box>
                 </Toolbar>
             </Container>
         </AppBar>

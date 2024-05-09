@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Grid, Stack, Typography} from "@mui/material";
+import {Button, ButtonGroup, Grid, Stack, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
 import {useMemo, useState} from "react";
 import {BarChart, DonutLarge} from "@mui/icons-material";
@@ -16,6 +16,7 @@ export function AnalyticsPage() {
         type: 'EXPENSE',
         accountIds: '',
     })
+    const theme = useTheme()
     const accounts = useSelector(state => state.accounts.accounts)
     const accountIds = searchParams.get("accountIds").split(",").filter(id => id).map(id => +id)
     const selectedAccounts = accounts
@@ -24,6 +25,7 @@ export function AnalyticsPage() {
     const [endDate, setEndDate] = useState(dayjs(Date.now()))
     const [shownBar, setShownBar] = useState('PIE')
     const selectedType = useMemo(() => searchParams.get('type'), [searchParams])
+    const match = useMediaQuery(theme.breakpoints.up('md'))
 
     function setSelectedType(newType) {
         setSearchParams(prev => ({
@@ -42,23 +44,29 @@ export function AnalyticsPage() {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <RouterBreadcrumb/>
             </Grid>
-            <Grid item md={12}>
-                <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                    <Typography variant={"h4"}>Анализ финансов</Typography>
-                    <ButtonGroup>
-                        <Button sx={{
-                            textTransform: 'none',
-                        }} variant={selectedType === 'EXPENSE' ? 'contained' : 'outlined'}
-                                onClick={() => setSelectedType('EXPENSE')}>Расходы</Button>,
-                        <Button sx={{
-                            textTransform: 'none',
-                        }} variant={selectedType === 'RECEIPT' ? 'contained' : 'outlined'}
-                                onClick={() => setSelectedType('RECEIPT')}>Доходы</Button>,
-                    </ButtonGroup>
-                </Stack>
+            <Grid item md={6} xs={12}>
+                <Typography variant={"h4"}>Анализ финансов</Typography>
+            </Grid>
+            <Grid item md={6} xs={12} sx={{
+                display: 'flex',
+                justifyContent: {
+                    md: 'end',
+                    xs: 'start',
+                },
+            }}>
+                <ButtonGroup>
+                    <Button sx={{
+                        textTransform: 'none',
+                    }} variant={selectedType === 'EXPENSE' ? 'contained' : 'outlined'}
+                            onClick={() => setSelectedType('EXPENSE')}>Расходы</Button>,
+                    <Button sx={{
+                        textTransform: 'none',
+                    }} variant={selectedType === 'RECEIPT' ? 'contained' : 'outlined'}
+                            onClick={() => setSelectedType('RECEIPT')}>Доходы</Button>,
+                </ButtonGroup>
             </Grid>
             <Grid item xs={12}>
                 <Stack spacing={2} sx={{
@@ -101,7 +109,7 @@ export function AnalyticsPage() {
                     </Stack>
                 </Stack>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
                     <Stack direction={"row"} spacing={2}>
                         <Button
@@ -121,10 +129,10 @@ export function AnalyticsPage() {
                     </Stack>
                 </Stack>
             </Grid>
-            <Grid item md={12}>
+            <Grid item xs={12}>
                 {shownBar === 'PIE' ? (
                     <OperationsPieChartPanel
-                        direction={"column"}
+                        direction={match ? "column" : "row"}
                         accountIds={selectedAccounts.map(account => account.id)}
                         operationType={selectedType}
                         startDate={startDate}

@@ -64,8 +64,8 @@ export function AccountPage() {
     }
 
     return (
-        <Grid container width={{md: '80%'}} spacing={2}>
-            <Grid item md={12}>
+        <Grid container width={{md: '80%', xs: '95%'}} spacing={2}>
+            <Grid item xs={12}>
                 <ThemeProvider theme={darkTheme}>
                     <Panel sx={{
                         border: '2px solid',
@@ -109,21 +109,21 @@ export function AccountPage() {
                     </Panel>
                 </ThemeProvider>
             </Grid>
-            <Grid item md={4}>
+            <Grid item md={4} xs={12}>
                 <Stack direction={"row"} spacing={1}>
                     <TopUpButtonPanel/>
                     <WithdrawButtonPanel/>
                     <TransferButtonPanel/>
                 </Stack>
             </Grid>
-            <Grid item container md={8} spacing={2}>
-                <Grid item md={12}>
+            <Grid item container md={8} xs={12} spacing={2}>
+                <Grid item xs={12}>
                     <OperationsPieChartPanel
                         accountIds={[accountId]}
                         link={`/operations/analytics?accountIds=${accountId}`}
                     />
                 </Grid>
-                <Grid item md={12}>
+                <Grid item xs={12}>
                     <Panel>
                         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                             <Tabs value={detailsTab} onChange={(event, newValue) => setDetailsTab(newValue)}>

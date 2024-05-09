@@ -84,7 +84,10 @@ export const SignUpPage = () => {
 
     return (
         <Container component={"main"} sx={{
-            width: '40%',
+            width: {
+                md: '40%',
+                xs: '100%',
+            },
         }}>
             <CssBaseline/>
             <Box
@@ -141,7 +144,7 @@ export const SignUpPage = () => {
                                 onChange={onChangeHandler('patronimic')}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item md={6} xs={12}>
                             <CustomPatternFormat
                                 required
                                 fullWidth
@@ -153,7 +156,7 @@ export const SignUpPage = () => {
                                 mask={"_"}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item md={6} xs={12}>
                             <TextField
                                 required
                                 fullWidth
@@ -164,7 +167,7 @@ export const SignUpPage = () => {
                                 onChange={onChangeHandler('email')}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item md={6} xs={12}>
                             <TextField
                                 required
                                 fullWidth
@@ -175,7 +178,7 @@ export const SignUpPage = () => {
                                 onChange={onChangeHandler("password")}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item md={6} xs={12}>
                             <TextField
                                 required
                                 fullWidth
