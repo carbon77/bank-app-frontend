@@ -13,10 +13,10 @@ export function OperationsPanel({
                                     type = null,
                                 }) {
     const [page, setPage] = useState(0)
-    const {data: operations, error, loading} = useFetchData(
-        state => state.operations.operations,
-        getOperationsThunk,
-        {
+    const {data: operations, error, loading} = useFetchData({
+        selector: state => state.operations.operations,
+        fetchThunk: getOperationsThunk,
+        patchParams: {
             accountIds,
             page,
             operationType,
@@ -24,9 +24,8 @@ export function OperationsPanel({
             endDate,
             type,
         },
-        [page, accountIds, operationType, startDate, endDate, type],
-        "Ошибка в получении операций"
-    )
+        deps: [page, accountIds, operationType, startDate, endDate, type],
+    })
 
     return (
         <Panel>

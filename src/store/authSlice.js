@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
 import {apiClient} from "../api";
 import axios from "axios";
+import fx from 'money'
 
 export const loginThunk = createAsyncThunk(
     'auth/login',
@@ -47,10 +48,11 @@ export const patchUserThunk = createAsyncThunk(
 export const fetchCurrenciesThunk = createAsyncThunk(
     'auth/fetchCurrencies',
     async () => {
-        return await axios.get('https://api.freecurrencyapi.com/v1/latest?base_currency=RUB&apikey=fca_live_ko9CkmxeFyiT6rrXEE0BuIVDu9eqCHHQjCBwTKgI').then(res => {
-            const rub = res.data.data['RUB']
-            return Object.entries(res.data.data)
-                .map(([currency, value]) => [currency, rub / value])
+        return await axios.get('https://www.cbr-xml-daily.ru/latest.js').then(({data}) => {
+            fx.rates = data.rates
+            fx.base = data.base
+
+            return Object.keys(data.rates)
         })
     }
 )

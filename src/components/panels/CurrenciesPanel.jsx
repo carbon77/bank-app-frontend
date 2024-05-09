@@ -1,26 +1,60 @@
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
-import {moneyInputFormatter} from "../../utils";
-import {useDispatch, useSelector} from "react-redux";
+import {
+    Alert,
+    Box,
+    CircularProgress,
+    IconButton,
+    Stack, Table, TableBody,
+    TableCell, TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from "@mui/material";
 import {fetchCurrenciesThunk} from "../../store/authSlice";
 import {Panel} from "./Panel";
+import {Cached} from "@mui/icons-material";
+import {useFetchData} from "../../hooks/useFetchData";
+import {moneyInputFormatter} from "../../utils";
+import fx from "money"
 
-const TabPanel = ({
-                      children, value, index
-                  }) => (
-    <Box
-        hidden={value !== index}
-    >
-        {children}
-    </Box>
-)
-
+function CurrenciesTable({currencies, currencyNames}) {
+    return (
+        <TableContainer>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Валюта</TableCell>
+                        <TableCell>Курс</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {currencies
+                        ?.filter(currency => currencyNames.hasOwnProperty(currency))
+                        ?.map(currency => (
+                            <TableRow key={currency}>
+                                <TableCell>{currencyNames[currency]}, {currency}</TableCell>
+                                <TableCell>{moneyInputFormatter(fx(1).from(currency).to("RUB").toString(), {
+                                    decimalScale: 2,
+                                    decimalSeparator: ',',
+                                })}</TableCell>
+                            </TableRow>
+                        ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    )
+}
 
 export function CurrenciesPanel() {
-    const [selectedTab, setSelectedTab] = useState(0)
-    const [isLoading, setIsLoading] = useState(false)
-    const currencies = useSelector(state => state.auth.currencies)
-    const dispatch = useDispatch()
+    const {
+        data: currencies,
+        error,
+        loading,
+        fetchData,
+    } = useFetchData({
+        selector: state => state.auth.currencies,
+        fetchThunk: fetchCurrenciesThunk,
+        cache: true,
+    })
     const currencyNames = {
         'USD': 'Доллар США',
         'EUR': 'Евро',
@@ -28,57 +62,36 @@ export function CurrenciesPanel() {
         'GBP': 'Фунт стерлингов',
     }
 
-    async function fetchCurrencies() {
-        setIsLoading(true)
-        await dispatch(fetchCurrenciesThunk())
-        setIsLoading(false)
-    }
-
-    useEffect(() => {
-        if (!currencies) {
-            fetchCurrencies()
-        }
-    }, [currencies])
-
     return (
-        <Panel sx={{p: 0}}>
-            <Typography variant={"h6"} sx={{padding: '.5em 1em'}}>Курсы валют</Typography>
+        <Panel sx={{
+            p: 0
+        }}>
+            <Stack
+                sx={{
+                    p: '.5em 1em'
+                }}
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+            >
+                <Typography variant={"h6"}>Курсы валют</Typography>
+                <IconButton color={"primary"} disabled={loading} onClick={() => fetchData()}>
+                    <Cached/>
+                </IconButton>
+            </Stack>
 
-            {isLoading ? <div>Loading...</div> : (
+            {loading ? (
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}>
+                    <CircularProgress sx={{p: 'auto', m: '1em'}}/>
+                </Box>
+            ) : (
                 <>
-                    {/*<Tabs centered value={selectedTab} onChange={(e, newTab) => setSelectedTab(newTab)}>*/}
-                    {/*    <Tab label={"Валюты"}/>*/}
-                    {/*    <Tab label={"Металлы"}/>*/}
-                    {/*</Tabs>*/}
-
-                    <TabPanel value={selectedTab} index={0}>
-                        <TableContainer>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Валюта</TableCell>
-                                        <TableCell>Курс</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {currencies
-                                        ?.filter(c => currencyNames.hasOwnProperty(c[0]))
-                                        ?.map(([currency, value]) => (
-                                            <TableRow key={currency}>
-                                                <TableCell>{currencyNames[currency]}, {currency}</TableCell>
-                                                <TableCell>{moneyInputFormatter(value.toString(), {
-                                                    decimalScale: 2,
-                                                    decimalSeparator: ',',
-                                                })}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </TabPanel>
-                    <TabPanel value={selectedTab} index={1}>
-                        Металлы
-                    </TabPanel>
+                    {error ? <Alert severity={"error"}>{error}</Alert> : (
+                        <CurrenciesTable currencies={currencies} currencyNames={currencyNames} />
+                    )}
                 </>
             )}
         </Panel>
