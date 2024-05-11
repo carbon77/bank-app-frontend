@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
-import {apiClient} from "../api";
+import operationService from "../api/operationService";
 
 export const createOperationThunk = createAsyncThunk(
     "operations/create",
     async (operationData) => {
-        return await apiClient.createOperation(operationData)
+        return await operationService.createOperation(operationData)
     }
 )
 
 export const createWithdrawOperationThunk = createAsyncThunk(
     "operations/withdraw",
     async ({amount, accountId}) => {
-        return await apiClient.createOperation({
+        return await operationService.createOperation({
             type: 'EXPENSE',
             amount,
             accountId,
@@ -23,7 +23,7 @@ export const createWithdrawOperationThunk = createAsyncThunk(
 export const createTopUpOperationThunk = createAsyncThunk(
     "operations/topup",
     async ({amount, accountId}) => {
-        return await apiClient.createOperation({
+        return await operationService.createOperation({
             type: 'RECEIPT',
             amount,
             accountId,
@@ -35,7 +35,7 @@ export const createTopUpOperationThunk = createAsyncThunk(
 export const createTransferOperationThunk = createAsyncThunk(
     "operations/transfer",
     async ({data}) => {
-        return await apiClient.createTransfer(data)
+        return await operationService.createTransfer(data)
     }
 )
 
@@ -49,7 +49,7 @@ export const getOperationsThunk = createAsyncThunk(
                size = 10,
                type = null,
            }) => {
-        return await apiClient.getOperations({
+        return await operationService.getOperations({
             accountIds,
             startDate,
             endDate,
@@ -63,21 +63,21 @@ export const getOperationsThunk = createAsyncThunk(
 export const getPaymentInfoThunk = createAsyncThunk(
     "operations/getPaymentInfo",
     async ({categoryName}) => {
-        return await apiClient.findPaymentInfo(categoryName)
+        return await operationService.findPaymentInfo(categoryName)
     }
 )
 
 export const getOperationCategoriesThunk = createAsyncThunk(
     "operations/categories",
     async ({accountIds = null, startDate = null, endDate = null}) => {
-        return await apiClient.getOperationCategoryGroups({accountIds, startDate, endDate})
+        return await operationService.getOperationCategoryGroups({accountIds, startDate, endDate})
     }
 )
 
 export const getOperationsStatsByMonthsThunk = createAsyncThunk(
     "operations/stats/months",
     async ({accountIds = null, startDate = null, endDate = null}) => {
-        return await apiClient.getOperationStatsByMonths({accountIds, startDate, endDate})
+        return await operationService.getOperationStatsByMonths({accountIds, startDate, endDate})
     }
 )
 

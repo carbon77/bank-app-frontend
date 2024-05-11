@@ -1,12 +1,13 @@
 import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
-import {apiClient} from "../api";
 import axios from "axios";
 import fx from 'money'
+import authService from "../api/authService";
+import userService from "../api/userService";
 
 export const loginThunk = createAsyncThunk(
     'auth/login',
     async ({email, password}, thunkApi) => {
-        const { jwtToken: token } = await apiClient.login({email, password})
+        const {jwtToken: token} = await authService.login({email, password})
         localStorage.setItem('auth_token', token)
         return token
     }
@@ -15,7 +16,7 @@ export const loginThunk = createAsyncThunk(
 export const registerThunk = createAsyncThunk(
     'auth/register',
     async (userData) => {
-        return await apiClient.register(userData)
+        return await authService.register(userData)
     }
 )
 
@@ -24,9 +25,8 @@ export const fetchUserThunk = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const token = localStorage.getItem('auth_token')
-            apiClient.setToken(token)
-            // await new Promise(resolve => setTimeout(resolve, 2000))
-            return await apiClient.getUser()
+            authService.setToken(token)
+            return await userService.getUser()
         } catch (e) {
             if (e.response.status === 400) {
                 throw "Токен недействителен!"
@@ -41,7 +41,7 @@ export const fetchUserThunk = createAsyncThunk(
 export const patchUserThunk = createAsyncThunk(
     'auth/user/patch',
     async (patchData) => {
-        return await apiClient.patchUser(patchData)
+        return await userService.patchUser(patchData)
     }
 )
 
@@ -72,7 +72,7 @@ export const authSlice = createSlice({
             state.token = null
             state.authorizedUser = null
             localStorage.removeItem('auth_token')
-            apiClient.removeToken()
+            authService.removeToken()
         },
         setError(state, action) {
             state.error = action.payload

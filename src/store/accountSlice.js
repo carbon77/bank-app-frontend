@@ -1,45 +1,45 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {apiClient} from "../api";
+import accountService from "../api/accountService";
 
 export const getAccountsThunk = createAsyncThunk(
     '/accounts/get',
     async (_) => {
-        return await apiClient.getAccounts()
+        return await accountService.getAccounts()
     }
 )
 
 export const createAccountThunk = createAsyncThunk(
     '/accounts/create',
     async (accountData) => {
-        return await apiClient.createAccount(accountData)
+        return await accountService.createAccount(accountData)
     }
 )
 
 export const createCardThunk = createAsyncThunk(
     '/accounts/cards/create',
     async ({accountId}) => {
-        return await apiClient.createCard(accountId)
+        return await accountService.createCard(accountId)
     }
 )
 
 export const deleteCardThunk = createAsyncThunk(
     '/accounts/cards/delete',
     async ({accountId, cardId}) => {
-        return await apiClient.deleteCard(accountId, cardId)
+        return await accountService.deleteCard(accountId, cardId)
     }
 )
 
 export const patchAccountThunk = createAsyncThunk(
     '/accounts/patch',
     async ({accountId, data}) => {
-        return await apiClient.patchAccount({accountId, data})
+        return await accountService.patchAccount({accountId, data})
     }
 )
 
 export const patchCardThunk = createAsyncThunk(
     '/accounts/cards/patch',
     async ({accountId, cardId, data}) => {
-        return await apiClient.patchCard({accountId, cardId, data})
+        return await accountService.patchCard({accountId, cardId, data})
     }
 )
 

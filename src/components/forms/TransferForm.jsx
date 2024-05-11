@@ -5,9 +5,9 @@ import {useShowSnackbar} from "../../hooks/useShowSnackbar"
 import {LoadingButton} from "@mui/lab";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {apiClient} from "../../api";
 import {createTransferOperationThunk, getOperationsThunk} from "../../store/operationSlice";
 import {getAccountsThunk} from "../../store/accountSlice";
+import userService from "../../api/userService";
 
 export function TransferForm({accountId = null, ...props}) {
     const [foundUser, setFoundUser] = useState(null)
@@ -32,7 +32,7 @@ export function TransferForm({accountId = null, ...props}) {
         if (field === 'recipientCard' && e.target.value.length === 16) {
             try {
                 setLoading(true)
-                setFoundUser(await apiClient.findUserByCardNumber(e.target.value))
+                setFoundUser(await userService.findUserByCardNumber(e.target.value))
                 setUserNotFoundError(false)
             } catch (e) {
                 setFoundUser(null)
