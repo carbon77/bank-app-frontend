@@ -69,7 +69,11 @@ export function OperationModal({open, onClose, operation, account}) {
                     <Avatar sx={{bgcolor: theme.palette.primary.main}}>
                         {getAccountAvatarIcon(account.accountType)}
                     </Avatar>
-                    <Link style={{textDecoration: 'none'}} to={`/accounts/${account.id}`}>{account.name}</Link>
+                    {account.closed ? (
+                        <Typography>{account.name}</Typography>
+                    ) : (
+                        <Link style={{textDecoration: 'none'}} to={`/accounts/${account.id}`}>{account.name}</Link>
+                    )}
                 </Box>
                 <Divider/>
                 {!!operation.extraFields ? operation.extraFields.map((field, idx) =>

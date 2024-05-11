@@ -31,6 +31,7 @@ import {Panel} from "../../components/panels/Panel";
 import {AccountPageName} from "../../components/shared/AccountPageName";
 import {darkTheme} from "../../theme";
 import {Add, Block, DeleteForever} from "@mui/icons-material";
+import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 const TabPanel = ({
                       children, value, index
@@ -53,6 +54,7 @@ export function AccountPage() {
     const user = useSelector(state => state.auth.authorizedUser)
     const [detailsTab, setDetailsTab] = useState(0)
     const [cardDialogOpen, setCardDialogOpen] = useState(false)
+    const showSnackbar = useShowSnackbar()
     const isClosable = useMemo(() => {
         if (!account) {
             return false
@@ -92,6 +94,9 @@ export function AccountPage() {
                 closed: !account.closed
             },
         }))
+        await dispatch(getAccountsThunk())
+        showSnackbar("Счёт закрыт")
+        navigate("/")
     }
 
     useEffect(() => {

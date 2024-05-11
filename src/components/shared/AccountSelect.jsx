@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import React from "react";
 
 export function AccountSelect({value, onChange, ...other}) {
-    const accounts = useSelector(state => state.accounts.accounts)
+    const accounts = useSelector(state => state.accounts.accounts.filter(acc => !acc.closed))
 
     if (!accounts) {
         return <div>Loading...</div>

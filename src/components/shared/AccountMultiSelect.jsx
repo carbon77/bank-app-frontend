@@ -6,7 +6,7 @@ import React from "react";
 export function AccountMultiSelect({
                                        selectedAccounts, setSelectedAccounts, onChange, ...other
                                    }) {
-    const accounts = useSelector(state => state.accounts.accounts)
+    const accounts = useSelector(state => state.accounts.accounts.filter(acc => !acc.closed))
 
     if (!accounts) {
         return <div>Loading...</div>

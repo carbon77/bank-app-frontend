@@ -16,7 +16,7 @@ export function OperationsPanel({
     const {data: operations, error, loading} = useFetchData({
         selector: state => state.operations.operations,
         fetchThunk: getOperationsThunk,
-        patchParams: {
+        fetchParams: {
             accountIds,
             page,
             operationType,

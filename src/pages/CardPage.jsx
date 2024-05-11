@@ -1,14 +1,26 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {Alert, CircularProgress, Grid, Stack, TextField, ThemeProvider, Typography} from "@mui/material";
+import {
+    Alert,
+    CircularProgress,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField,
+    ThemeProvider,
+    Typography
+} from "@mui/material";
 import {deleteCardThunk, getAccountsThunk, patchCardThunk} from "../store/accountSlice";
 import {getAccountAvatarIcon, moneyInputFormatter} from "../utils";
-import {Delete, Lock, LockOpen} from "@mui/icons-material";
+import {ContentCopy, Delete, Lock, LockOpen, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Panel} from "../components/panels/Panel";
 import {darkTheme} from "../theme";
 import {ButtonPanel} from "../components/panels/ButtonPanel";
 import {useShowSnackbar} from "../hooks/useShowSnackbar";
 import {useAccounts} from "../hooks/useAccounts";
+import {useState} from "react";
 
 export function CardPage() {
     const {cardId} = useParams()
@@ -18,6 +30,7 @@ export function CardPage() {
     const dispatch = useDispatch()
     const showSnackbar = useShowSnackbar()
     const navigate = useNavigate()
+    const [showData, setShowData] = useState(false)
 
     function convertDateFormat(dateString) {
         const date = new Date(dateString);
@@ -50,6 +63,12 @@ export function CardPage() {
         showSnackbar("Карта " + (card.blocked ? "разблокирована" : "заблокирована"), "info")
     }
 
+    function copyFieldHandler(text) {
+        return e => {
+            navigator.clipboard.writeText(text)
+        }
+    }
+
     if (loading) {
         return <CircularProgress/>
     }
@@ -58,7 +77,7 @@ export function CardPage() {
         return <Alert severity={"error"}>{error}</Alert>
     }
 
-    if (!account || !card) {
+    if (!account || account.closed || !card) {
         return <Alert severity={"error"}>Не удалось найти карту</Alert>
     }
 
@@ -86,33 +105,72 @@ export function CardPage() {
             </Grid>
             <Grid item md={8} xs={12}>
                 <Panel>
-                    <Typography variant={"h5"} mb={2}>Реквизиты</Typography>
+                    <Stack mb={2} direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+                        <Typography variant={"h5"}>Реквизиты</Typography>
+                        <IconButton onClick={() => setShowData(!showData)}>
+                            {showData ? <VisibilityOff/> : <Visibility/>}
+                        </IconButton>
+                    </Stack>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                variant={"outlined"}
-                                value={card.number.replace(/\D/g, '').match(/.{1,4}/g).join(' ')}
-                                label={"Номер карты"}
-                                readOnly
-                            />
+                            <FormControl fullWidth>
+                                <TextField
+                                    type={showData ? 'text' : 'password'}
+                                    variant={"outlined"}
+                                    value={card.number.replace(/\D/g, '').match(/.{1,4}/g).join(' ')}
+                                    label={"Номер карты"}
+                                    readOnly
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={copyFieldHandler(card.number)}
+                                                            disabled={!showData}>
+                                                    <ContentCopy/>
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                            </FormControl>
                         </Grid>
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
+                                type={showData ? 'text' : 'password'}
                                 variant={"outlined"}
                                 value={convertDateFormat(card.expirationDate)}
                                 label={"Срок действия"}
                                 readOnly
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={copyFieldHandler(convertDateFormat(card.expirationDate))}
+                                                disabled={!showData}>
+                                                <ContentCopy/>
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
                         </Grid>
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
+                                type={showData ? 'text' : 'password'}
                                 variant={"outlined"}
                                 value={card.svv}
                                 label={"SVV"}
                                 readOnly
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={copyFieldHandler(card.svv)} disabled={!showData}>
+                                                <ContentCopy/>
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
                         </Grid>
                     </Grid>
