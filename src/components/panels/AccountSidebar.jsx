@@ -39,7 +39,7 @@ export function AccountSidebar() {
         <List sx={{
             paddingX: '0'
         }}>
-            {accounts.map(account => (
+            {accounts.filter(account => !account.closed).map(account => (
                 <ListItem key={account.id} disablePadding>
                     <ListItemButton
                         component={Link}

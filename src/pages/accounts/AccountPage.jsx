@@ -1,8 +1,24 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Chip, Grid, IconButton, Stack, Tab, Tabs, ThemeProvider, Typography} from "@mui/material";
+import {
+    Alert,
+    Avatar,
+    Box,
+    Chip,
+    Grid,
+    IconButton,
+    List,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemText,
+    Stack,
+    Tab,
+    Tabs,
+    ThemeProvider,
+    Typography
+} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {createCardThunk, getAccountsThunk} from "../../store/accountSlice";
+import {useEffect, useMemo, useState} from "react";
+import {createCardThunk, getAccountsThunk, patchAccountThunk} from "../../store/accountSlice";
 import {getAccountTitle, moneyInputFormatter} from "../../utils";
 import {AccountDetailsPanel} from "../../components/panels/AccountDetailsPanel";
 import {AccountTariffPanel} from "../../components/panels/AccountTariffPanel";
@@ -14,7 +30,7 @@ import {TransferButtonPanel} from "../../components/panels/TransferButtonPanel";
 import {Panel} from "../../components/panels/Panel";
 import {AccountPageName} from "../../components/shared/AccountPageName";
 import {darkTheme} from "../../theme";
-import {Add, Block} from "@mui/icons-material";
+import {Add, Block, DeleteForever} from "@mui/icons-material";
 
 const TabPanel = ({
                       children, value, index
@@ -22,7 +38,7 @@ const TabPanel = ({
     <Box
         hidden={value !== index}
         sx={{
-            margin: '1.5em .5em',
+            marginTop: '1em',
         }}
     >
         {children}
@@ -31,11 +47,27 @@ const TabPanel = ({
 
 export function AccountPage() {
     const {accountId} = useParams()
+    const accountIds = useMemo(() => [accountId], [accountId])
     const accounts = useSelector(state => state.accounts.accounts)
     const account = useSelector(state => state.accounts.accounts?.find(account => account.id === +accountId))
     const user = useSelector(state => state.auth.authorizedUser)
     const [detailsTab, setDetailsTab] = useState(0)
     const [cardDialogOpen, setCardDialogOpen] = useState(false)
+    const isClosable = useMemo(() => {
+        if (!account) {
+            return false
+        }
+
+        if (account.closed) {
+            return false
+        }
+
+        if (account.accountType === 'CREDIT' && account.balance >= account.accountLimit) {
+            return true
+        }
+
+        return account.balance <= 0
+    }, [account])
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -53,6 +85,15 @@ export function AccountPage() {
         setCardDialogOpen(false)
     }
 
+    async function handleCloseAccount() {
+        await dispatch(patchAccountThunk({
+            accountId,
+            data: {
+                closed: !account.closed
+            },
+        }))
+    }
+
     useEffect(() => {
         if (!accounts) {
             getAccounts()
@@ -61,6 +102,10 @@ export function AccountPage() {
 
     if (!accounts || !user) {
         return <div>Loading...</div>
+    }
+
+    if (account.closed) {
+        return <Alert severity={'error'}>Счёт закрыт!</Alert>
     }
 
     return (
@@ -83,6 +128,7 @@ export function AccountPage() {
                             <Stack direction={"row"} spacing={1}>
                                 {account.cards.map(card => (
                                     <Chip
+                                        key={card.id}
                                         onClick={() => {
                                             navigate(`/cards/${card.id}`)
                                         }}
@@ -119,7 +165,7 @@ export function AccountPage() {
             <Grid item container md={8} xs={12} spacing={2}>
                 <Grid item xs={12}>
                     <OperationsPieChartPanel
-                        accountIds={[accountId]}
+                        accountIds={accountIds}
                         link={`/operations/analytics?accountIds=${accountId}`}
                     />
                 </Grid>
@@ -129,6 +175,7 @@ export function AccountPage() {
                             <Tabs value={detailsTab} onChange={(event, newValue) => setDetailsTab(newValue)}>
                                 <Tab label={"Детали счёта"}/>
                                 <Tab label={"Реквизиты"}/>
+                                <Tab label={"Действия"}/>
                             </Tabs>
                         </Box>
                         <TabPanel value={detailsTab} index={0}>
@@ -136,6 +183,27 @@ export function AccountPage() {
                         </TabPanel>
                         <TabPanel value={detailsTab} index={1}>
                             <AccountDetailsPanel user={user} account={account}/>
+                        </TabPanel>
+                        <TabPanel value={detailsTab} index={2}>
+                            <List sx={{p: 0}}>
+                                <ListItemButton
+                                    onClick={handleCloseAccount}
+                                    disabled={!isClosable}
+                                    sx={{
+                                        borderRadius: '1em',
+                                    }}>
+                                    <ListItemAvatar>
+                                        <Avatar sx={{
+                                            bgcolor: 'primary.main',
+                                        }}>
+                                            <DeleteForever/>
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={"Закрыть счёт"}
+                                    />
+                                </ListItemButton>
+                            </List>
                         </TabPanel>
                     </Panel>
                 </Grid>

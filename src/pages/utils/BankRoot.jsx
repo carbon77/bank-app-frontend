@@ -14,6 +14,7 @@ export function BankRoot() {
                     justifyContent: 'center',
                     mt: 15,
                     mb: 5,
+                    minHeight: '500px',
                 }}
             >
                 <Outlet/>

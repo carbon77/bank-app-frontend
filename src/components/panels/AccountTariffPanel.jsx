@@ -46,7 +46,7 @@ export function AccountTariffPanel({user, account}) {
             xs: '100%',
         }}>
             {fields.map(field => (
-                <Box sx={{
+                <Box key={field.title} sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                 }}>

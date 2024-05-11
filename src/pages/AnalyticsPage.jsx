@@ -18,9 +18,14 @@ export function AnalyticsPage() {
     })
     const theme = useTheme()
     const accounts = useSelector(state => state.accounts.accounts)
-    const accountIds = searchParams.get("accountIds").split(",").filter(id => id).map(id => +id)
-    const selectedAccounts = accounts
-        .filter(acc => accountIds.includes(acc.id))
+    const accountIds = useMemo(
+        () => searchParams.get("accountIds").split(",").filter(id => id).map(id => +id),
+        [searchParams]
+    )
+    const selectedAccounts = useMemo(
+        () => accounts.filter(acc => accountIds.includes(acc.id)),
+        [accountIds]
+    )
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(dayjs(Date.now()))
     const [shownBar, setShownBar] = useState('PIE')
