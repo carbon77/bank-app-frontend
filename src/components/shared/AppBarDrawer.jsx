@@ -45,7 +45,7 @@ export function AppBarDrawer({
                 <List sx={{color: 'primary.main'}}>
 
                     {pages.map(({name, to, icon}) => (
-                        <ListItem key={name} disablePadding>
+                        <ListItem key={name} sx={{p: 0}}>
                             <ListItemButton component={Link} to={to}>
                                 <ListItemIcon sx={{color: 'primary.main'}}>
                                     {icon}
@@ -57,7 +57,7 @@ export function AppBarDrawer({
 
                     <Divider/>
 
-                    <ListItem disablePadding>
+                    <ListItem sx={{p: 0}}>
                         <ListItemButton onClick={() => setOpenProfileList(!openProfileList)}>
                             <ListItemIcon>
                                 <AccountCircle sx={{color: "primary.main"}}/>
@@ -83,7 +83,7 @@ export function AppBarDrawer({
                     </Collapse>
 
                     <Divider/>
-                    <ListItem disablePadding>
+                    <ListItem sx={{p: 0}}>
                         <ListItemButton onClick={() => setOpenAccountList(!openAccountList)}>
                             <ListItemIcon>
                                 <CreditCard sx={{color: "primary.main"}}/>
@@ -97,7 +97,6 @@ export function AppBarDrawer({
                         <ListItemButton
                             component={Link}
                             to={`/accounts/create`}
-                            disablePadding
                             sx={{pl: 4}}
                         >
                             <ListItemAvatar>
@@ -109,12 +108,11 @@ export function AppBarDrawer({
                                 primary={"Открыть новый счёт"}
                             />
                         </ListItemButton>
-                        {loading ? <CircularProgress/> : accounts.map(account => (
+                        {loading ? <CircularProgress/> : accounts.filter(acc => !acc.closed).map(account => (
                             <ListItemButton
                                 component={Link}
                                 to={`/accounts/${account.id}`}
                                 key={account.id}
-                                disablePadding
                                 sx={{pl: 4}}
                             >
                                 <ListItemAvatar>

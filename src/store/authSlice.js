@@ -57,6 +57,13 @@ export const fetchCurrenciesThunk = createAsyncThunk(
     }
 )
 
+export const changePasswordThunk = createAsyncThunk(
+    'auth/user/changePassword',
+    async ({password, newPassword}) => {
+        return await userService.changePassword({password, newPassword})
+    }
+)
+
 const initialState = {
     authorizedUser: null,
     token: localStorage.getItem('auth_token'),
@@ -99,6 +106,7 @@ export const authSlice = createSlice({
                     isRejected(fetchUserThunk),
                     isRejected(patchUserThunk),
                     isRejected(fetchCurrenciesThunk),
+                    isRejected(changePasswordThunk),
                 ),
                 (state, action) => {
                     throw action.error

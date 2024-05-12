@@ -66,6 +66,7 @@ export function CardPage() {
     function copyFieldHandler(text) {
         return e => {
             navigator.clipboard.writeText(text)
+            showSnackbar("Скопировано", "info")
         }
     }
 

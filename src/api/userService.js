@@ -15,6 +15,14 @@ const userService = {
         const response = await apiClient.patch('/users', patchData)
         return response.data
     },
-}
+
+    async changePassword({ password, newPassword }) {
+        const response = await apiClient.patch('/users/changePassword', {
+            password,
+            newPassword
+        })
+        return response.data
+    }
+ }
 
 export default userService

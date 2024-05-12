@@ -5,6 +5,7 @@ import {PassportPanel} from "../components/panels/PassportPanel";
 import {ProfileEmailPanel} from "../components/panels/ProfileEmailPanel";
 import {ProfilePhonePanel} from "../components/panels/ProfilePhonePanel";
 import {RouterBreadcrumb} from "../components/shared/RouterBreadcrumb";
+import {ChangePasswordPanel} from "../components/panels/ChangePasswordPanel";
 
 export function ProfilePage() {
     const user = useSelector(state => state.auth.authorizedUser)
@@ -44,6 +45,10 @@ export function ProfilePage() {
 
                     <Grid item xs={12}>
                         <ProfilePhonePanel user={user}/>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <ChangePasswordPanel/>
                     </Grid>
 
                     <Grid item xs={12}>
