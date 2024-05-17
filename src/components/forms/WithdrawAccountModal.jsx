@@ -16,16 +16,21 @@ export function WithdrawAccountModal({
     const [withdrawAmount, setWithdrawAmount] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
-    const [errorMessage, setErrorMessage] = useState('')
+    const [error, setError] = useState('')
     const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : null)
     const showSnackbar = useShowSnackbar()
 
     function onCloseHandle() {
-        setErrorMessage('')
+        setError('')
         onClose()
     }
 
     async function handleSubmit(e) {
+        if (withdrawAmount <= 0) {
+            setError("Введите сумму")
+            return
+        }
+
         setLoading(true)
         try {
             await dispatch(createWithdrawOperationThunk({amount: withdrawAmount, accountId: selectedAccount}))
@@ -37,7 +42,7 @@ export function WithdrawAccountModal({
             onCloseHandle()
             showSnackbar("Операция успешно прошла!")
         } catch (e) {
-            setErrorMessage("Недостаточно денег на счету!")
+            setError("Недостаточно денег на счету!")
             showSnackbar("Операция не прошла!", 'error')
         }
         setLoading(false)
@@ -67,8 +72,8 @@ export function WithdrawAccountModal({
                             inputComponent: MoneyInputFormat,
                         }}
                     />
-                    {!errorMessage ? null : (
-                        <Alert severity={"error"}>{errorMessage}</Alert>
+                    {!error ? null : (
+                        <Alert severity={"error"}>{error}</Alert>
                     )}
                 </Stack>
             </DialogContent>

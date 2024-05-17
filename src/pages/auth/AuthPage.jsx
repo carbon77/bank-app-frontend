@@ -1,5 +1,16 @@
-import {Alert, Box, CssBaseline, Grid, Link, Paper, TextField, Typography} from "@mui/material";
-import {LoginRounded} from "@mui/icons-material";
+import {
+    Alert,
+    Box,
+    CssBaseline,
+    Grid,
+    IconButton,
+    InputAdornment,
+    Link,
+    Paper,
+    TextField,
+    Typography
+} from "@mui/material";
+import {LoginRounded, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useState} from "react";
 import {LoadingButton} from "@mui/lab";
@@ -19,6 +30,7 @@ export function AuthPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const showSnackbar = useShowSnackbar()
+    const [showPassword, setShowPassword] = useState(false)
 
     function handleChange(name) {
         return e => {
@@ -100,11 +112,20 @@ export function AuthPage() {
                             required
                             name="password"
                             label="Пароль"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             id="password"
                             autoComplete="current-password"
                             value={loginData.password}
                             onChange={handleChange('password')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position={'end'}>
+                                        <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                         {isError ? <Alert severity={"error"}>Неверная почта или пароль!</Alert> : null}
                         {errorAuth ? <Alert severity={"error"}>{errorAuth}</Alert> : null}

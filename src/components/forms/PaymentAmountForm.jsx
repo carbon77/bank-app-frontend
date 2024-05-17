@@ -4,7 +4,7 @@ import {AccountSelect} from "../shared/AccountSelect";
 import {MoneyInputFormat} from "../../utils";
 import React from "react";
 
-export function PaymentAmountForm({amount, setAmount, selectedAccount, setSelectedAccount}) {
+export function PaymentAmountForm({paymentInfo, amount, setAmount, selectedAccount, setSelectedAccount}) {
     return (
         <Panel>
             <Stack spacing={2}>
@@ -16,6 +16,7 @@ export function PaymentAmountForm({amount, setAmount, selectedAccount, setSelect
                     label={"Сумма"}
                     value={amount}
                     onChange={e => setAmount(e.target.value)}
+                    helperText={`Минимальная сумма ${paymentInfo.minAmount} руб.`}
                     InputProps={{
                         inputComponent: MoneyInputFormat,
                     }}

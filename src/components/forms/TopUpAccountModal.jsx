@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {createTopUpOperationThunk, getOperationsThunk} from "../../store/operationSlice";
-import {LoadingButton} from "@mui/lab";
+import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountsThunk} from "../../store/accountSlice";
 import {MoneyInputFormat} from "../../utils";
 import {AccountSelect} from "../shared/AccountSelect";
@@ -16,10 +16,16 @@ export function TopUpAccountModal({
     const [topUpAmount, setTopUpAmount] = useState('')
     const [loading, setLoading] = useState(false)
     const [selectedAccount, setSelectedAccount] = useState(accountId ? accountId : null)
+    const [error, setError] = useState(null)
     const dispatch = useDispatch()
     const showSnackbar = useShowSnackbar()
 
     async function handleSubmit(e) {
+        if (topUpAmount <= 0) {
+            setError("Введите сумму")
+            return
+        }
+
         setLoading(true)
         try {
             await dispatch(createTopUpOperationThunk({amount: topUpAmount, accountId: selectedAccount}))
@@ -63,6 +69,9 @@ export function TopUpAccountModal({
                             inputComponent: MoneyInputFormat,
                         }}
                     />
+                    {!error ? null : (
+                        <Alert severity={"error"}>{error}</Alert>
+                    )}
                 </Stack>
             </DialogContent>
             <DialogActions>

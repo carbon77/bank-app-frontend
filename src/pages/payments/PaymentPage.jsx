@@ -1,4 +1,4 @@
-import {Button, Grid, Stack, Step, StepLabel, Stepper, Typography} from "@mui/material";
+import {Alert, Button, CircularProgress, Grid, Stack, Step, StepLabel, Stepper, Typography} from "@mui/material";
 import {RouterBreadcrumb} from "../../components/shared/RouterBreadcrumb";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
@@ -9,6 +9,7 @@ import {PaymentInfoForm} from "../../components/forms/PaymentInfoForm";
 import {PaymentAmountForm} from "../../components/forms/PaymentAmountForm";
 import {PaymentSubmitForm} from "../../components/forms/PaymentSubmitForm";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
+import {Panel} from "../../components/panels/Panel";
 
 const steps = [
     "Заполнение информации",
@@ -17,10 +18,32 @@ const steps = [
 ]
 
 export const PaymentPage = () => {
+    const fields = [
+        {
+            name: 'number',
+            title: 'Счёт',
+        },
+        {
+            name: 'bankName',
+            title: 'Банк',
+        },
+        {
+            name: 'correctionAccount',
+            title: 'Корр. счёт',
+        }, {
+            name: 'bik',
+            title: 'БИК',
+        },
+        {
+            name: 'inn',
+            title: 'ИНН',
+        },
+    ]
     const {categoryName} = useParams()
     const [activeStep, setActiveStep] = useState(0)
     const [amount, setAmount] = useState('')
     const [paymentData, setPaymentData] = useState(null)
+    const [error, setError] = useState(null)
     const dispatch = useDispatch()
     const paymentInfo = useSelector(state => state.operations.paymentInfo)
     const [isLoading, setIsLoading] = useState()
@@ -58,12 +81,20 @@ export const PaymentPage = () => {
     }
 
     async function handleSubmit() {
+        if (amount < paymentInfo.minAmount) {
+            setError(`Минимальная сумма: ${paymentInfo.minAmount} руб.`)
+            return
+        }
+
         const operationData = {
             type: 'EXPENSE',
             amount,
             accountId: selectedAccount,
             category: paymentInfo.category.name,
-            extraFields: Object.entries(paymentData).map(([name, value]) => ({name, value}))
+            extraFields: [
+                ...Object.entries(paymentData).map(([name, value]) => ({name, value})),
+                ...fields.map(field => ({name: field.title, value: paymentInfo.accountDetails[field.name]}))
+            ]
         }
 
         try {
@@ -85,13 +116,13 @@ export const PaymentPage = () => {
         setActiveStep(prev => prev - 1)
     }
 
-    if (isLoading) {
-        return <div>Loading...</div>
+    if (isLoading || !paymentInfo) {
+        return <CircularProgress/>
     }
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={8} xs={12}>
+            <Grid item md={!paymentInfo.accountDetails ? 8 : 7} xs={12}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <RouterBreadcrumb/>
@@ -113,7 +144,7 @@ export const PaymentPage = () => {
                             <PaymentInfoForm paymentData={paymentData} setPaymentData={setPaymentData}
                                              paymentInfo={paymentInfo}/>
                         ) : activeStep === 1 ? (
-                            <PaymentAmountForm amount={amount} setAmount={setAmount}
+                            <PaymentAmountForm paymentInfo={paymentInfo} amount={amount} setAmount={setAmount}
                                                setSelectedAccount={setSelectedAccount}
                                                selectedAccount={selectedAccount}/>
                         ) : (
@@ -121,6 +152,7 @@ export const PaymentPage = () => {
                         )}
                     </Grid>
                     <Grid item xs={12}>
+                        {!error ? null : <Alert severity={"error"} variant={"outlined"}>{error}</Alert>}
                         <Stack direction={"row"} justifyContent={"space-between"}>
                             <Button
                                 onClick={handleBack}
@@ -136,6 +168,21 @@ export const PaymentPage = () => {
                     </Grid>
                 </Grid>
             </Grid>
+            {!paymentInfo.accountDetails ? null : (
+                <Grid item md={5} xs={12}>
+                    <Panel>
+                        <Typography mb={2} variant={"h5"}>Детали платежа</Typography>
+                        <Stack spacing={2}>
+                            {fields.map(field => (
+                                <Stack key={field.name}>
+                                    <Typography>{field.title}</Typography>
+                                    <Typography>{paymentInfo.accountDetails[field.name]}</Typography>
+                                </Stack>
+                            ))}
+                        </Stack>
+                    </Panel>
+                </Grid>
+            )}
         </Grid>
     )
 }
