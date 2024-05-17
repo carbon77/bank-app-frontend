@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import {OperationsPanel} from "../components/panels/OperationsPanel";
 import {OperationsPieChartPanel} from "../components/panels/OperationsPieChartPanel";
 import {OperationsBarChartPanel} from "../components/panels/OperationsBarChartPanel";
+import {TotalAmountTitle} from "../components/shared/TotalAmountTitle";
 
 export function AnalyticsPage() {
     const [searchParams, setSearchParams] = useSearchParams({
@@ -116,6 +117,12 @@ export function AnalyticsPage() {
             </Grid>
             <Grid item xs={12}>
                 <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
+                    <TotalAmountTitle
+                        accountIds={accountIds}
+                        startDate={startDate}
+                        endDate={endDate}
+                        type={selectedType}
+                    />
                     <Stack direction={"row"} spacing={2}>
                         <Button
                             color={shownBar === 'PIE' ? 'primary' : 'inherit'}
