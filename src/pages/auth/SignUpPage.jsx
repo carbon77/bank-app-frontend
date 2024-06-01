@@ -1,12 +1,13 @@
-import {Alert, Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
+import {Alert, Avatar, Box, Container, CssBaseline, Grid, Link, TextField, Typography} from "@mui/material";
 import {AssignmentInd, LoginRounded} from "@mui/icons-material";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {links} from "../../links";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {registerThunk} from "../../store/authSlice";
 import {CustomPatternFormat} from "../../utils";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
+import {LoadingButton} from "@mui/lab";
 
 function getFormattedDate() {
     const today = new Date()
@@ -16,11 +17,16 @@ function getFormattedDate() {
     return `${year}-${month}-${day}`
 }
 
+function validateEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+}
+
 export const SignUpPage = () => {
-    const [passwordConfirm, setPasswordConfirm] = useState('')
     const [formData, setFormData] = useState({
         email: '',
         password: '',
+        passwordConfirm: '',
         phoneNumber: '',
         number: '',
         series: '',
@@ -32,10 +38,26 @@ export const SignUpPage = () => {
         birthday: getFormattedDate(),
     })
     const [errorMessage, setErrorMessage] = useState("")
+    const [emailValidationError, setEmailValidationError] = useState(null)
+    const [passwordValidationError, setPasswordValidationError] = useState(null)
+    const [loading, setLoading] = useState(null)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const showSnackbar = useShowSnackbar()
 
     const onChangeHandler = field => e => {
+        if (field === 'email') {
+            setEmailValidationError(validateEmail(e.target.value) ? null : 'Некорректная почта')
+        }
+
+        if (field === 'password') {
+            setPasswordValidationError(e.target.value === formData.passwordConfirm ? null : 'Пароли не совпадают')
+        }
+
+        if (field === 'passwordConfirm') {
+            setPasswordValidationError(e.target.value === formData.password ? null : 'Пароли не совпадают')
+        }
+
         return setFormData(formData => {
             return {
                 ...formData,
@@ -47,14 +69,17 @@ export const SignUpPage = () => {
     const onSubmitHandle = async e => {
         e.preventDefault()
 
-        if (formData.password !== passwordConfirm) {
-            setErrorMessage("Пароли не совпадают!")
+        if (passwordValidationError) {
             return false
+        }
+
+        if (emailValidationError) {
+            return
         }
 
         for (const field of Object.keys(formData)) {
             if (formData[field] === '') {
-                setErrorMessage(`Поле ${field} не может быть пустым!`)
+                setErrorMessage(`Поле ${field} не заполнено!`)
                 return false
             }
         }
@@ -74,11 +99,15 @@ export const SignUpPage = () => {
             }
         }
 
+        setLoading(true)
         try {
             await dispatch(registerThunk(registerData))
             showSnackbar("Вы успешно зарегистрировались! Теперь вы можете войти в аккаунт")
+            navigate("/login")
         } catch (e) {
             setErrorMessage("Пользователь уже существует!")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -158,6 +187,8 @@ export const SignUpPage = () => {
                         </Grid>
                         <Grid item md={6} xs={12}>
                             <TextField
+                                error={emailValidationError}
+                                helperText={emailValidationError}
                                 required
                                 fullWidth
                                 label="Электронная почта"
@@ -185,10 +216,18 @@ export const SignUpPage = () => {
                                 label="Подтверждение пароля"
                                 type="password"
                                 size={"small"}
-                                value={passwordConfirm}
-                                onChange={e => setPasswordConfirm(e.target.value)}
+                                value={formData.passwordConfirm}
+                                onChange={onChangeHandler("passwordConfirm")}
                             />
                         </Grid>
+
+                        {passwordValidationError ? (
+                            <Grid item xs={12}>
+                                <Alert severity={"error"}>
+                                    {passwordValidationError}
+                                </Alert>
+                            </Grid>
+                        ) : null}
 
                         <Grid item xs={12}>
                             <Typography variant={'h6'} marginTop={'1em'}>Пасспортные данные</Typography>
@@ -263,17 +302,17 @@ export const SignUpPage = () => {
                         )}
                     </Box>
 
-
-                    <Button
-                        type={"submit"}
-                        variant={"contained"}
+                    <LoadingButton
+                        type="submit"
                         size={"large"}
                         endIcon={<LoginRounded/>}
+                        variant="contained"
+                        loading={loading}
+                        loadingPosition="end"
                         fullWidth
-                        sx={{mb: 2}}
                     >
                         Зарегистрироваться
-                    </Button>
+                    </LoadingButton>
                     <Link
                         to={links.login}
                         variant="body2"
