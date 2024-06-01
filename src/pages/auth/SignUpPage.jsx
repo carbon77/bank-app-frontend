@@ -230,7 +230,7 @@ export const SignUpPage = () => {
                         ) : null}
 
                         <Grid item xs={12}>
-                            <Typography variant={'h6'} marginTop={'1em'}>Пасспортные данные</Typography>
+                            <Typography variant={'h6'} marginTop={'1em'}>Паспортные данные</Typography>
                         </Grid>
 
                         <Grid item xs={6}>

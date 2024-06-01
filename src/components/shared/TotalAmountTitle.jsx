@@ -22,7 +22,7 @@ export const TotalAmountTitle = ({
                 const newOperations = await operationService.getOperations({
                     accountIds, endDate, startDate, type, size: Number.MAX_VALUE
                 }).then(data => data.content)
-                setOperations(newOperations)
+                setOperations(newOperations.filter(op => op.status !== 'FAILED'))
             } catch (e) {
                 setError(e.message)
             } finally {
