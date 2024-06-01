@@ -79,8 +79,7 @@ export function Footer() {
                 </Grid>
                 <Grid item xs={12}>
                     <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"}>
-                        <Typography variant={"caption"}>© 2006—2024, АО «Wave Bank», официальный сайт, универсальная
-                            лицензия ЦБ РФ № XXXX</Typography>
+                        <Typography variant={"caption"}>2024, РТУ МИРЭА, ИКБО-01-21, Закатов И.С.</Typography>
                         <IconButton size={"small"}>
                             <Telegram/>
                         </IconButton>
