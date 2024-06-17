@@ -7,7 +7,7 @@ export function PassportPanel({passport}) {
         {name: 'Дата выдачи', value: convertDate(passport.issueDate)},
         {name: 'Имя', value: passport.firstName},
         {name: 'Фамилия', value: passport.lastName},
-        {name: 'Отчество', value: passport.patronimic},
+        {name: 'Отчество', value: passport.patronymic},
         {name: 'Код отдела', value: passport.departmentCode},
         {name: 'Дата рождения', value: convertDate(passport.birthday)},
     ]

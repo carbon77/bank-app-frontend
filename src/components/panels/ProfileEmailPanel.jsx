@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {fetchUserThunk, patchUserThunk} from "../../store/authSlice";
 
 function ProfileEmailDialog({user, open, onClose, ...props}) {
     const [email, setEmail] = useState(user.email)
@@ -21,11 +20,6 @@ function ProfileEmailDialog({user, open, onClose, ...props}) {
         if (email === '' || email === user.email) {
             return
         }
-
-        await dispatch(patchUserThunk({
-            email
-        }))
-        await dispatch(fetchUserThunk())
     }
 
     return (

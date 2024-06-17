@@ -3,18 +3,21 @@ import {
     Box,
     CircularProgress,
     IconButton,
-    Stack, Table, TableBody,
-    TableCell, TableContainer,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
     TableHead,
     TableRow,
     Typography
 } from "@mui/material";
-import {fetchCurrenciesThunk} from "../../store/authSlice";
+import {fetchCurrenciesThunk} from "../../store/authSlice.ts";
 import {Panel} from "./Panel";
 import {Cached} from "@mui/icons-material";
 import {useFetchData} from "../../hooks/useFetchData";
 import {moneyInputFormatter} from "../../utils";
-import fx from "money"
+import {useEffect} from "react";
 
 function CurrenciesTable({currencies, currencyNames}) {
     return (
@@ -27,12 +30,12 @@ function CurrenciesTable({currencies, currencyNames}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {currencies
-                        ?.filter(currency => currencyNames.hasOwnProperty(currency))
-                        ?.map(currency => (
+                    {Object.entries(currencies)
+                        ?.filter(([currency, rate]) => currencyNames.hasOwnProperty(currency))
+                        ?.map(([currency, rate]) => (
                             <TableRow key={currency}>
                                 <TableCell>{currencyNames[currency]}, {currency}</TableCell>
-                                <TableCell>{moneyInputFormatter(fx(1).from(currency).to("RUB").toString(), {
+                                <TableCell>{moneyInputFormatter((1 / rate).toString(), {
                                     decimalScale: 2,
                                     decimalSeparator: ',',
                                 })}</TableCell>
@@ -62,6 +65,10 @@ export function CurrenciesPanel() {
         'GBP': 'Фунт стерлингов',
     }
 
+    useEffect(() => {
+        console.log(currencies)
+    }, [currencies]);
+
     return (
         <Panel sx={{
             p: 0
@@ -80,7 +87,7 @@ export function CurrenciesPanel() {
                 </IconButton>
             </Stack>
 
-            {loading ? (
+            {loading || !currencies ? (
                 <Box sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -90,7 +97,7 @@ export function CurrenciesPanel() {
             ) : (
                 <>
                     {error ? <Alert severity={"error"}>{error}</Alert> : (
-                        <CurrenciesTable currencies={currencies} currencyNames={currencyNames} />
+                        <CurrenciesTable currencies={currencies} currencyNames={currencyNames}/>
                     )}
                 </>
             )}

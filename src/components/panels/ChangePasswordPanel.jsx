@@ -1,24 +1,14 @@
 import {Panel} from "./Panel";
-import {
-    Alert,
-    Button,
-    FormControl,
-    Grid,
-    IconButton,
-    InputAdornment,
-    Stack,
-    TextField,
-    Typography
-} from "@mui/material";
-import {useEffect, useState} from "react";
+import {Alert, Button, FormControl, Grid, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {changePasswordThunk} from "../../store/authSlice";
+import {changePasswordThunk} from "../../store/authSlice.ts";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 
 export function ChangePasswordPanel() {
     const [formData, setFormData] = useState({
-        password: '',
+        oldPassword: '',
         newPassword: '',
         newPasswordConfirmation: '',
     })
@@ -44,6 +34,7 @@ export function ChangePasswordPanel() {
             }
         }
     }
+
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -83,8 +74,8 @@ export function ChangePasswordPanel() {
                             size={"small"}
                             disabled={loading}
                             label={"Старый пароль"}
-                            value={formData.password}
-                            onChange={changeHandler('password')}
+                            value={formData.oldPassword}
+                            onChange={changeHandler('oldPassword')}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
                                 endAdornment: (

@@ -1,41 +1,24 @@
-import {useDispatch, useSelector} from "react-redux";
 import {Navigate, Outlet} from "react-router-dom";
-import {links} from "../../links";
-import {useEffect, useState} from "react";
-import {fetchUserThunk, logout, setError} from "../../store/authSlice";
+import {useKeycloak} from "@react-keycloak/web";
 import {CircularProgress} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {setUser} from "../../store/authSlice.ts";
+import {links} from "../../links";
 
 export function ProtectedRoute({children}) {
-    const [loading, setLoading] = useState(true)
-    const token = useSelector(state => state.auth.token)
+    const {keycloak, initialized} = useKeycloak()
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        async function fetchUser() {
-            setLoading(true)
-            try {
-                await dispatch(fetchUserThunk())
-            } catch (e) {
-                dispatch(setError(e.message))
-                dispatch(logout())
-            } finally {
-                setLoading(false)
-            }
-
-        }
-
-        if (token || localStorage.getItem("auth_token")) {
-            fetchUser()
-        }
-    }, [dispatch])
-
-    if (!token) {
-        return <Navigate to={links.login}/>
-    }
-
-    if (loading) {
+    if (!initialized) {
         return <CircularProgress/>
     }
 
-    return children ? children : <Outlet/>
+    if (keycloak.authenticated) {
+        keycloak.loadUserProfile().then(() => {
+            dispatch(setUser(keycloak.profile))
+        })
+        return children ? children : <Outlet/>
+    }
+
+    return <Navigate to={links.login}/>
 }

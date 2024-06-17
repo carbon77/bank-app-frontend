@@ -11,6 +11,7 @@
     "@mui/material": "^5.15.14",
     "@mui/x-charts": "^7.3.1",
     "@mui/x-date-pickers": "^7.3.1",
+    "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "^2.2.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -21,6 +22,7 @@
     "@types/react-dom": "^18.3.0",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
+    "keycloak-js": "^25.0.0",
     "money": "^0.2.0",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
@@ -30,6 +32,7 @@
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
+    "ts-money": "^0.4.8",
     "typescript": "^5.4.5",
     "web-vitals": "^2.1.4"
   },

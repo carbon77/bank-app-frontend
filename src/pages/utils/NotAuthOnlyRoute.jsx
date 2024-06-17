@@ -1,11 +1,11 @@
-import {useSelector} from "react-redux";
 import {Navigate, Outlet} from "react-router-dom";
 import {links} from "../../links";
+import {useKeycloak} from "@react-keycloak/web";
 
 export function NotAuthOnlyRoute({children}) {
-    const token = useSelector(state => state.auth.token)
+    const {keycloak} = useKeycloak()
 
-    if (token || localStorage.getItem("auth_token")) {
+    if (keycloak.authenticated) {
         return <Navigate to={links.home}/>
     }
 

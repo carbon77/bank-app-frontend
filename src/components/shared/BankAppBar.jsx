@@ -21,11 +21,11 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {links} from "../../links";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../store/authSlice";
 import {clearAccounts} from "../../store/accountSlice";
 import {clearOperations} from "../../store/operationSlice";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 import {AppBarDrawer} from "./AppBarDrawer";
+import {useKeycloak} from "@react-keycloak/web";
 
 const LogoutDialog = ({open, handleCancel, handleAccept}) => {
     return (
@@ -65,6 +65,7 @@ export function BankAppBar() {
             icon: <History/>,
         },
     ]
+    const {keycloak} = useKeycloak()
     const [showDrawer, setShowDrawer] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
     const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
@@ -85,8 +86,8 @@ export function BankAppBar() {
         setIsLogoutDialogOpen(false)
     }
 
-    function handleLogout() {
-        dispatch(logout())
+    async function handleLogout() {
+        await keycloak.logout()
         dispatch(clearAccounts())
         dispatch(clearOperations())
         navigate(links.login, {replace: true})

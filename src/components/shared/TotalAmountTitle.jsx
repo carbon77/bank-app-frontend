@@ -1,6 +1,6 @@
 import {Alert, CircularProgress, Typography} from "@mui/material";
 import {useEffect, useMemo, useState} from "react";
-import operationService from "../../api/operationService";
+import operationService from "../../api/operationService.ts";
 
 export const TotalAmountTitle = ({
                                      accountIds,

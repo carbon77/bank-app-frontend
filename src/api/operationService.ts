@@ -1,7 +1,9 @@
-import {apiClient} from "./index";
+import {apiClient} from "./index.ts";
+import {CreateOperationRequest, CreateTransferRequest} from "../types/api";
+import {CategoryGroupDto, Operation, OperationMonthDto, OperationType, PaymentInfo} from "../types/models";
 
 const operationService = {
-    async createOperation(operationData) {
+    async createOperation(operationData: CreateOperationRequest) {
         const response = await apiClient.post("/operations", operationData)
         return response.data
     },
@@ -13,7 +15,18 @@ const operationService = {
                             startDate = null,
                             endDate = null,
                             type = null,
-                        }) {
+                        }: {
+        accountIds?: number[],
+        startDate?: any,
+        endDate?: any,
+        type?: OperationType,
+        page: number,
+        size: number,
+    }): {
+        totalPages: number,
+        totalElements: number,
+        content: Operation[],
+    } {
         const response = await apiClient.get('/operations', {
             params: {
                 accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),
@@ -27,12 +40,12 @@ const operationService = {
         return response.data
     },
 
-    async createTransfer(transferData) {
+    async createTransfer(transferData: CreateTransferRequest) {
         const response = await apiClient.post("/operations/transfer", transferData)
         return response.data
     },
 
-    async findPaymentInfo(categoryName) {
+    async findPaymentInfo(categoryName: string): PaymentInfo {
         const response = await apiClient.get(`/payments/info/${categoryName}`)
         return response.data
     },
@@ -41,7 +54,11 @@ const operationService = {
                                          accountIds = null,
                                          startDate = null,
                                          endDate = null
-                                     }) {
+                                     }: {
+        accountIds?: number[],
+        startDate?: any,
+        endDate?: any,
+    }): CategoryGroupDto[] {
         const params = {
             params: {
                 accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),
@@ -57,7 +74,11 @@ const operationService = {
                                         accountIds = null,
                                         startDate = null,
                                         endDate = null
-                                    }) {
+                                    }: {
+        accountIds?: number[],
+        startDate?: any,
+        endDate?: any,
+    }): OperationMonthDto[] {
         const params = {
             params: {
                 accountIds: (!accountIds || accountIds.length === 0) ? null : accountIds.join(','),

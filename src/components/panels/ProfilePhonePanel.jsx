@@ -13,7 +13,6 @@ import {Edit} from "@mui/icons-material";
 import {patternFormatter} from "react-number-format";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {fetchUserThunk, patchUserThunk} from "../../store/authSlice";
 import {CustomPatternFormat} from "../../utils";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar"
 
@@ -28,8 +27,6 @@ function ProfilePhoneDialog({user, open, onClose, ...props}) {
         }
 
         try {
-            await dispatch(patchUserThunk({phoneNumber}))
-            await dispatch(fetchUserThunk())
             showSnackbar("Телефон успешно изменён!")
             onClose()
         } catch (e) {

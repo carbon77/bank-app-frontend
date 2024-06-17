@@ -7,7 +7,7 @@ import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {createTransferOperationThunk, getOperationsThunk} from "../../store/operationSlice";
 import {getAccountsThunk} from "../../store/accountSlice";
-import userService from "../../api/userService";
+import userService from "../../api/userService.ts";
 
 export function TransferForm({accountId = null, ...props}) {
     const [foundUser, setFoundUser] = useState(null)

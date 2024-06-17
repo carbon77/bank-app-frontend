@@ -33,7 +33,7 @@ export function ProfilePage() {
                                 <Stack>
                                     <Typography variant={"h4"}>{user.passport.firstName}</Typography>
                                     <Typography
-                                        variant={"h4"}>{user.passport.patronimic} {user.passport.lastName[0]}.</Typography>
+                                        variant={"h4"}>{user.passport.patronymic} {user.passport.lastName[0]}.</Typography>
                                 </Stack>
                             </Stack>
                         </Paper>

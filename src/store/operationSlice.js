@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, isAnyOf, isRejected} from "@reduxjs/toolkit";
-import operationService from "../api/operationService";
+import operationService from "../api/operationService.ts";
 
 export const createOperationThunk = createAsyncThunk(
     "operations/create",
