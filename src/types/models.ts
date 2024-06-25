@@ -44,6 +44,10 @@ export type Account = {
     createdAt: Date,
     cards: Card[],
     accountDetails: AccountDetails,
+    userId: String,
+    userFirstName: String,
+    userLastName: String,
+
 
     // Credit account
     accountLimit?: number,

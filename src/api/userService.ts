@@ -4,7 +4,7 @@ import {ChangePasswordRequest, PatchUserRequest} from "../types/api";
 
 const userService = {
     async findUserByCardNumber(cardNumber: string): User {
-        const response = await apiClient.get(`/users/findByCard?cardNumber=${cardNumber}`)
+        const response = await apiClient.get(`/account/findByCard?cardNumber=${cardNumber}`)
         return response.data
     },
 

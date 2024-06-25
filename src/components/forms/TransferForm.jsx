@@ -83,7 +83,7 @@ export function TransferForm({accountId = null, ...props}) {
             />
             {foundUser ? (
                 <Alert
-                    severity={"success"}>Получатель: {foundUser.passport.firstName} {foundUser.passport.lastName[0]}.</Alert>
+                    severity={"success"}>Получатель: {foundUser.firstName} {foundUser.lastName}.</Alert>
             ) : null}
             {userNotFoundError ? (
                 <Alert severity={"error"}>Получатель не найден!</Alert>

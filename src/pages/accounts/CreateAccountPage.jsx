@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import {useState} from "react";
 import {AddCard} from "@mui/icons-material";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createAccountThunk, getAccountsThunk} from "../../store/accountSlice";
 import {Alert, LoadingButton} from "@mui/lab";
 import {getAccountTitle, MoneyInputFormat} from "../../utils";
@@ -30,6 +30,7 @@ export function CreateAccountPage() {
     const dispatch = useDispatch()
     const showSnackbar = useShowSnackbar()
     const navigate = useNavigate()
+    const user = useSelector(state => state.auth.authorizedUser)
 
     const handleAccountTypeChange = (event) => {
         if (accountName === '' || accountName === getAccountTitle(accountType)) {
@@ -61,7 +62,9 @@ export function CreateAccountPage() {
                     accountLimit: Number.parseFloat(accountLimit),
                     rate: Number.parseFloat(rate),
                     interestRate: Number.parseFloat(interestRate),
-                }
+                },
+                userFirstName: user.passport.firstName,
+                userLastName: user.passport.lastName,
             }))
         } catch (e) {
             setErrorMessage(e.message)

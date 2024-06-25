@@ -27,6 +27,8 @@ export type CreateAccountRequest = {
     accountType: AccountType,
     name: string,
     extraFields?: Record<String, Any>,
+    userFirstName: String,
+    userLastName: String,
 }
 
 export type PatchAccountRequest = {
