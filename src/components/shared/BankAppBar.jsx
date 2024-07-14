@@ -15,19 +15,19 @@ import {
     Stack,
     Toolbar,
     Typography
-} from "@mui/material";
-import {AccountBalance, AccountCircle, History, Home, Logout, Menu as MenuIcon, Payments} from "@mui/icons-material";
-import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {links} from "../../links";
-import {useDispatch, useSelector} from "react-redux";
-import {clearAccounts} from "../../store/accountSlice";
-import {clearOperations} from "../../store/operationSlice";
-import {useShowSnackbar} from "../../hooks/useShowSnackbar";
-import {AppBarDrawer} from "./AppBarDrawer";
-import {useKeycloak} from "@react-keycloak/web";
+} from "@mui/material"
+import { AccountBalance, AccountCircle, History, Home, Logout, Menu as MenuIcon, Payments } from "@mui/icons-material"
+import { Link as RouterLink, useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { links } from "../../links"
+import { useDispatch, useSelector } from "react-redux"
+import { clearAccounts } from "../../store/accountSlice"
+import { clearOperations } from "../../store/operationSlice"
+import { useShowSnackbar } from "../../hooks/useShowSnackbar"
+import { AppBarDrawer } from "./AppBarDrawer"
+import { useKeycloak } from "@react-keycloak/web"
 
-const LogoutDialog = ({open, handleCancel, handleAccept}) => {
+const LogoutDialog = ({ open, handleCancel, handleAccept }) => {
     return (
         <Dialog
             open={open}
@@ -52,20 +52,24 @@ export function BankAppBar() {
         {
             name: 'Главная',
             to: links.home,
-            icon: <AccountBalance/>,
+            icon: <AccountBalance />,
         },
         {
             name: 'Платежи и переводы',
             to: links.payments,
-            icon: <Payments/>,
+            icon: <Payments />,
         },
         {
             name: 'Операции',
             to: links.operations,
-            icon: <History/>,
+            icon: <History />,
         },
+        {
+            name: "Чат",
+            to: "chat",
+        }
     ]
-    const {keycloak} = useKeycloak()
+    const { keycloak } = useKeycloak()
     const [showDrawer, setShowDrawer] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
     const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
@@ -75,12 +79,12 @@ export function BankAppBar() {
     const showSnackbar = useShowSnackbar()
 
     const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
 
     const handleClose = () => {
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     function handleLogoutDialogCancel() {
         setIsLogoutDialogOpen(false)
@@ -90,7 +94,7 @@ export function BankAppBar() {
         await keycloak.logout()
         dispatch(clearAccounts())
         dispatch(clearOperations())
-        navigate(links.login, {replace: true})
+        navigate(links.login, { replace: true })
         showSnackbar("Вы успешно вышли!")
     }
 
@@ -160,8 +164,8 @@ export function BankAppBar() {
                         </Typography>
                     </Stack>
 
-                    <Box sx={{ml: 3, flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {pages.map(({name, to}) => (
+                    <Box sx={{ ml: 3, flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        {pages.map(({ name, to }) => (
                             <Button
                                 key={name}
                                 component={RouterLink}
@@ -191,7 +195,7 @@ export function BankAppBar() {
                                 borderRadius: '999px',
                                 textTransform: 'none',
                             }}
-                            startIcon={<AccountCircle/>}
+                            startIcon={<AccountCircle />}
                         >
                             {`${user.passport.firstName}`}
                         </Button>
@@ -214,13 +218,13 @@ export function BankAppBar() {
                                 to={links.profile}
                             >
                                 <ListItemIcon>
-                                    <Home sx={{color: "primary.main"}}/>
+                                    <Home sx={{ color: "primary.main" }} />
                                 </ListItemIcon>
                                 Профиль
                             </MenuItem>
                             <MenuItem onClick={handleLogoutMenuClick}>
                                 <ListItemIcon>
-                                    <Logout sx={{color: "primary.main"}}/>
+                                    <Logout sx={{ color: "primary.main" }} />
                                 </ListItemIcon>
                                 Выйти
                             </MenuItem>
@@ -239,7 +243,7 @@ export function BankAppBar() {
                             color="primary"
                             onClick={() => setShowDrawer(!showDrawer)}
                         >
-                            <MenuIcon/>
+                            <MenuIcon />
                         </IconButton>
 
                         <AppBarDrawer

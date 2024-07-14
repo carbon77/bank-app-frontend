@@ -1,33 +1,34 @@
-import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import {ErrorPage} from "./pages/ErrorPage";
-import {OperationsPage} from "./pages/OperationsPage";
-import {ProfilePage} from "./pages/ProfilePage";
-import {ProtectedRoute} from "./pages/utils/ProtectedRoute";
-import {BankRoot} from "./pages/utils/BankRoot";
-import {HomePage} from "./pages/HomePage";
-import {links} from "./links";
-import {AccountSidebarTemplate} from "./pages/utils/AccountSidebarTemplate";
-import {CreateAccountPage} from "./pages/accounts/CreateAccountPage";
-import {AccountPage} from "./pages/accounts/AccountPage";
-import {CardPage} from "./pages/CardPage";
-import {PaymentsPage} from "./pages/payments/PaymentsPage";
-import {HousePaymentsPage} from "./pages/payments/HousePaymentsPage";
-import {PaymentPage} from "./pages/payments/PaymentPage";
-import {AnalyticsPage} from "./pages/AnalyticsPage";
-import {NotAuthOnlyRoute} from "./pages/utils/NotAuthOnlyRoute";
-import {AuthPage} from "./pages/auth/AuthPage";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
+import { ErrorPage } from "./pages/ErrorPage"
+import { OperationsPage } from "./pages/OperationsPage"
+import { ProfilePage } from "./pages/ProfilePage"
+import { ProtectedRoute } from "./pages/utils/ProtectedRoute"
+import { BankRoot } from "./pages/utils/BankRoot"
+import { HomePage } from "./pages/HomePage"
+import { links } from "./links"
+import { AccountSidebarTemplate } from "./pages/utils/AccountSidebarTemplate"
+import { CreateAccountPage } from "./pages/accounts/CreateAccountPage"
+import { AccountPage } from "./pages/accounts/AccountPage"
+import { CardPage } from "./pages/CardPage"
+import { PaymentsPage } from "./pages/payments/PaymentsPage"
+import { HousePaymentsPage } from "./pages/payments/HousePaymentsPage"
+import { PaymentPage } from "./pages/payments/PaymentPage"
+import { AnalyticsPage } from "./pages/AnalyticsPage"
+import { NotAuthOnlyRoute } from "./pages/utils/NotAuthOnlyRoute"
+import { AuthPage } from "./pages/auth/AuthPage"
+import { ChatPage } from "./pages/ChatPage.tsx"
 
 export function Router() {
     const routesForAuthenticatedOnly = [
         {
             path: links.home,
-            errorElement: <ErrorPage/>,
-            element: <ProtectedRoute><BankRoot/></ProtectedRoute>,
+            errorElement: <ErrorPage />,
+            element: <ProtectedRoute><BankRoot /></ProtectedRoute>,
             handle: {
                 title: 'Главная'
             },
             children: [
-                {index: true, element: <AccountSidebarTemplate><HomePage/></AccountSidebarTemplate>},
+                { index: true, element: <AccountSidebarTemplate><HomePage /></AccountSidebarTemplate> },
                 {
                     path: links.operations,
                     handle: {
@@ -36,11 +37,11 @@ export function Router() {
                     children: [
                         {
                             index: true,
-                            element: <AccountSidebarTemplate><OperationsPage/></AccountSidebarTemplate>,
+                            element: <AccountSidebarTemplate><OperationsPage /></AccountSidebarTemplate>,
                         },
                         {
                             path: 'analytics',
-                            element: <AccountSidebarTemplate><AnalyticsPage/></AccountSidebarTemplate>,
+                            element: <AccountSidebarTemplate><AnalyticsPage /></AccountSidebarTemplate>,
                             handle: {
                                 title: 'Анализ финансов',
                             },
@@ -52,7 +53,7 @@ export function Router() {
                     handle: {
                         title: "Профиль",
                     },
-                    element: <AccountSidebarTemplate><ProfilePage/></AccountSidebarTemplate>
+                    element: <AccountSidebarTemplate><ProfilePage /></AccountSidebarTemplate>
                 },
                 {
                     path: links.payments,
@@ -62,21 +63,21 @@ export function Router() {
                     children: [
                         {
                             index: true,
-                            element: <AccountSidebarTemplate><PaymentsPage/></AccountSidebarTemplate>,
+                            element: <AccountSidebarTemplate><PaymentsPage /></AccountSidebarTemplate>,
                         },
                         {
                             path: "house",
                             handle: {
                                 title: "ЖКХ",
                             },
-                            element: <AccountSidebarTemplate><HousePaymentsPage/></AccountSidebarTemplate>,
+                            element: <AccountSidebarTemplate><HousePaymentsPage /></AccountSidebarTemplate>,
                         },
                         {
                             path: "pay/:categoryName",
                             handle: {
                                 title: "Оплата",
                             },
-                            element: <AccountSidebarTemplate><PaymentPage/></AccountSidebarTemplate>
+                            element: <AccountSidebarTemplate><PaymentPage /></AccountSidebarTemplate>
                         }
                     ]
                 },
@@ -88,23 +89,33 @@ export function Router() {
                     children: [
                         {
                             index: true,
-                            element: <Navigate to={"/"}/>
+                            element: <Navigate to={"/"} />
                         },
                         {
                             path: ":accountId",
-                            handle: {title: 'Счёт'},
-                            element: <AccountPage/>
+                            handle: { title: 'Счёт' },
+                            element: <AccountPage />
                         },
                         {
                             path: "create",
-                            handle: {title: 'Открытие счёта'},
-                            element: <AccountSidebarTemplate><CreateAccountPage/></AccountSidebarTemplate>
+                            handle: { title: 'Открытие счёта' },
+                            element: <AccountSidebarTemplate><CreateAccountPage /></AccountSidebarTemplate>
                         }
                     ]
                 },
                 {
                     path: links.cards, children: [
-                        {path: ':cardId', element: <CardPage/>}
+                        { path: ':cardId', element: <CardPage /> }
+                    ]
+                },
+                {
+                    path: 'chat',
+                    handle: { title: 'Чат' },
+                    children: [
+                        {
+                            index: true,
+                            element: <ChatPage />
+                        }
                     ]
                 }
             ]
@@ -112,7 +123,7 @@ export function Router() {
     ]
 
     const routesForNotAuthenticatedOnly = [
-        {path: links.login, element: <NotAuthOnlyRoute><AuthPage/></NotAuthOnlyRoute>},
+        { path: links.login, element: <NotAuthOnlyRoute><AuthPage /></NotAuthOnlyRoute> },
     ]
 
     const router = createBrowserRouter([
@@ -120,5 +131,5 @@ export function Router() {
         ...routesForAuthenticatedOnly,
     ])
 
-    return <RouterProvider router={router}/>
+    return <RouterProvider router={router} />
 }
