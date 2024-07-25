@@ -2,7 +2,7 @@ import { useKeycloak } from '@react-keycloak/web'
 import { CircularProgress } from '@mui/material'
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import { links } from '../../links'
+import { links } from '../../links.ts'
 
 export function HasRoleRoute({ role, children }: { role: string, children?: string | JSX.Element }) {
 

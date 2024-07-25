@@ -1,6 +1,6 @@
 import { Router } from "./Router.tsx"
 import { ThemeProvider } from "@mui/material"
-import { theme } from "./theme.js"
+import { theme } from "./theme.ts"
 import { Provider } from "react-redux"
 import { store } from "./store/index.ts"
 import { SnackbarProvider } from "notistack"

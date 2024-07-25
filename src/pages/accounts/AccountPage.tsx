@@ -29,7 +29,7 @@ import {WithdrawButtonPanel} from "../../components/panels/WithdrawButtonPanel";
 import {TransferButtonPanel} from "../../components/panels/TransferButtonPanel";
 import {Panel} from "../../components/panels/Panel";
 import {AccountPageName} from "../../components/shared/AccountPageName";
-import {darkTheme} from "../../theme";
+import {darkTheme} from "../../theme.ts";
 import {Add, Block, DeleteForever} from "@mui/icons-material";
 import {useShowSnackbar} from "../../hooks/useShowSnackbar";
 

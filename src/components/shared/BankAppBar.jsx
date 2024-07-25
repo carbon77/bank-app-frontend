@@ -19,7 +19,7 @@ import {
 import { AccountBalance, AccountCircle, History, Home, Logout, Menu as MenuIcon, Payments } from "@mui/icons-material"
 import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { links } from "../../links"
+import { links } from "../../links.ts"
 import { useDispatch, useSelector } from "react-redux"
 import { clearAccounts } from "../../store/accountSlice"
 import { clearOperations } from "../../store/operationSlice"

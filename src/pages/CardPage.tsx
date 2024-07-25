@@ -16,7 +16,7 @@ import {deleteCardThunk, getAccountsThunk, patchCardThunk} from "../store/accoun
 import {getAccountAvatarIcon, moneyInputFormatter} from "../utils";
 import {ContentCopy, Delete, Lock, LockOpen, Visibility, VisibilityOff} from "@mui/icons-material";
 import {Panel} from "../components/panels/Panel";
-import {darkTheme} from "../theme";
+import {darkTheme} from "../theme.ts";
 import {ButtonPanel} from "../components/panels/ButtonPanel";
 import {useShowSnackbar} from "../hooks/useShowSnackbar";
 import {useAccounts} from "../hooks/useAccounts";

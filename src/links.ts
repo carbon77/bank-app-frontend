@@ -1,4 +1,4 @@
-export const links = {
+export const links: Record<string, string> = {
     login: '/login',
     register: '/login/register',
     home: '/',

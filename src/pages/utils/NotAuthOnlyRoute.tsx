@@ -1,5 +1,5 @@
 import {Navigate, Outlet} from "react-router-dom";
-import {links} from "../../links";
+import {links} from "../../links.ts";
 import {useKeycloak} from "@react-keycloak/web";
 
 export function NotAuthOnlyRoute({children}) {

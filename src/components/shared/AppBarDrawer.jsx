@@ -14,7 +14,7 @@ import {
     useTheme
 } from "@mui/material";
 import {Link as RouterLink, Link} from "react-router-dom";
-import {links} from "../../links";
+import {links} from "../../links.ts";
 import {AccountCircle, Add, CreditCard, ExpandLess, ExpandMore, Home, Logout} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {useAccounts} from "../../hooks/useAccounts";

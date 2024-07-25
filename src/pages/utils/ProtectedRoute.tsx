@@ -3,7 +3,7 @@ import { useKeycloak } from "@react-keycloak/web"
 import { CircularProgress } from "@mui/material"
 import { useDispatch } from "react-redux"
 import { setUser } from "../../store/authSlice.ts"
-import { links } from "../../links"
+import { links } from "../../links.ts"
 
 export function ProtectedRoute({ children }) {
     const { keycloak, initialized } = useKeycloak()
