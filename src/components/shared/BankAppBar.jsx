@@ -26,6 +26,29 @@ import { clearOperations } from "../../store/operationSlice"
 import { useShowSnackbar } from "../../hooks/useShowSnackbar"
 import { AppBarDrawer } from "./AppBarDrawer"
 import { useKeycloak } from "@react-keycloak/web"
+import {AppBarPages} from "./AppBarPages.tsx";
+
+const pages = [
+    {
+        name: 'Главная',
+        to: links.home,
+        icon: <AccountBalance />,
+    },
+    {
+        name: 'Платежи и переводы',
+        to: links.payments,
+        icon: <Payments />,
+    },
+    {
+        name: 'Операции',
+        to: links.operations,
+        icon: <History />,
+    },
+    {
+        name: "Чат",
+        to: "chat",
+    }
+]
 
 const LogoutDialog = ({ open, handleCancel, handleAccept }) => {
     return (
@@ -48,27 +71,6 @@ const LogoutDialog = ({ open, handleCancel, handleAccept }) => {
 }
 
 export function BankAppBar() {
-    const pages = [
-        {
-            name: 'Главная',
-            to: links.home,
-            icon: <AccountBalance />,
-        },
-        {
-            name: 'Платежи и переводы',
-            to: links.payments,
-            icon: <Payments />,
-        },
-        {
-            name: 'Операции',
-            to: links.operations,
-            icon: <History />,
-        },
-        {
-            name: "Чат",
-            to: "chat",
-        }
-    ]
     const { keycloak } = useKeycloak()
     const [showDrawer, setShowDrawer] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
@@ -164,22 +166,7 @@ export function BankAppBar() {
                         </Typography>
                     </Stack>
 
-                    <Box sx={{ ml: 3, flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map(({ name, to }) => (
-                            <Button
-                                key={name}
-                                component={RouterLink}
-                                to={to}
-                                size={'large'}
-                                sx={{
-                                    borderRadius: '999px',
-                                    textTransform: 'none',
-                                }}
-                            >
-                                {name}
-                            </Button>
-                        ))}
-                    </Box>
+                    <AppBarPages pages={pages} />
 
                     <Box sx={{
                         display: {
@@ -187,6 +174,15 @@ export function BankAppBar() {
                             md: 'flex',
                         }
                     }}>
+                        {keycloak.hasRealmRole("ROLE_EMPLOYEE") ? (
+                            <Button
+                                component={RouterLink}
+                                to={"/admin"}
+                                size={'large'}
+                                variant={"contained"}>
+                                Админ
+                            </Button>
+                        ) : null}
                         <Button
                             onClick={handleMenu}
                             size={'large'}

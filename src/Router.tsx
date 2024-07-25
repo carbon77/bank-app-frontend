@@ -1,22 +1,25 @@
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
-import { ErrorPage } from "./pages/ErrorPage"
-import { OperationsPage } from "./pages/OperationsPage"
-import { ProfilePage } from "./pages/ProfilePage"
-import { ProtectedRoute } from "./pages/utils/ProtectedRoute"
-import { BankRoot } from "./pages/utils/BankRoot"
-import { HomePage } from "./pages/HomePage"
-import { links } from "./links"
-import { AccountSidebarTemplate } from "./pages/utils/AccountSidebarTemplate"
-import { CreateAccountPage } from "./pages/accounts/CreateAccountPage"
-import { AccountPage } from "./pages/accounts/AccountPage"
-import { CardPage } from "./pages/CardPage"
-import { PaymentsPage } from "./pages/payments/PaymentsPage"
-import { HousePaymentsPage } from "./pages/payments/HousePaymentsPage"
-import { PaymentPage } from "./pages/payments/PaymentPage"
-import { AnalyticsPage } from "./pages/AnalyticsPage"
-import { NotAuthOnlyRoute } from "./pages/utils/NotAuthOnlyRoute"
-import { AuthPage } from "./pages/auth/AuthPage"
+import { ErrorPage } from "./pages/ErrorPage.jsx"
+import { OperationsPage } from "./pages/OperationsPage.jsx"
+import { ProfilePage } from "./pages/ProfilePage.jsx"
+import { ProtectedRoute } from "./pages/utils/ProtectedRoute.jsx"
+import { BankRoot } from "./pages/utils/BankRoot.jsx"
+import { HomePage } from "./pages/HomePage.jsx"
+import { links } from "./links.js"
+import { AccountSidebarTemplate } from "./pages/utils/AccountSidebarTemplate.jsx"
+import { CreateAccountPage } from "./pages/accounts/CreateAccountPage.jsx"
+import { AccountPage } from "./pages/accounts/AccountPage.jsx"
+import { CardPage } from "./pages/CardPage.jsx"
+import { PaymentsPage } from "./pages/payments/PaymentsPage.jsx"
+import { HousePaymentsPage } from "./pages/payments/HousePaymentsPage.jsx"
+import { PaymentPage } from "./pages/payments/PaymentPage.jsx"
+import { AnalyticsPage } from "./pages/AnalyticsPage.jsx"
+import { NotAuthOnlyRoute } from "./pages/utils/NotAuthOnlyRoute.jsx"
+import { AuthPage } from "./pages/auth/AuthPage.jsx"
 import { ChatPage } from "./pages/ChatPage.tsx"
+import React from 'react'
+import { HasRoleRoute } from './pages/utils/HasRoleRoute.tsx'
+import { AdminPage } from './pages/admin/AdminPage.tsx'
 
 export function Router() {
     const routesForAuthenticatedOnly = [
@@ -115,6 +118,16 @@ export function Router() {
                         {
                             index: true,
                             element: <ChatPage />
+                        }
+                    ]
+                },
+                {
+                    path: 'admin',
+                    element: <HasRoleRoute role='ROLE_EMPLOYEE' />,
+                    children: [
+                        {
+                            index: true,
+                            element: <AdminPage />
                         }
                     ]
                 }
